@@ -4,12 +4,64 @@ import { db } from "../firebase";
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/id';
+
+const ConfirmDeleteModal = ({ isOpen, onConfirm, onCancel, item }) => {
+  if (!isOpen) return null;
+
+  return (
+	<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
+        <h2 className="text-xl font-semibold mb-4">Konfirmasi</h2>
+        <p className="mb-6">Lanjutkan hapus data penjualan: {item}?</p>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [namaItem, setNamaItem] = useState(null);
 
+  const handleDeleteClick = (sale) => {
+    setItemToDelete(sale.id);
+	setNamaItem(sale.flavor);
+    setShowConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    // Perform your actual delete logic here, e.g., API call
+	
+    console.log(`Deleting item: ${itemToDelete}`);
+    if (!user) return;
+    await deleteDoc(doc(db, "users", user.uid, "sales", itemToDelete));
+
+    setShowConfirm(false);
+    setItemToDelete(null); // Clear itemToDelete
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);
+    setItemToDelete(null); // Clear itemToDelete
+  };
+  
   dayjs.extend(relativeTime);
+  // dayjs.locale('id');
 
   useEffect(() => {
 
@@ -22,11 +74,6 @@ export default function SalesList({ user }) {
     });
     return () => unsub();
   }, []);
-
-  const handleDelete = async (id) => {
-    if (!user) return;
-    await deleteDoc(doc(db, "users", user.uid, "sales", id));
-  };
 
   const diffMinutes = (createdAt) => {
     if(!createdAt) return true;
@@ -52,23 +99,29 @@ export default function SalesList({ user }) {
 				<span> [ {Intl.NumberFormat('en-US').format(sale.subTotal)} ]</span>
               </p>
 			  <p className="text-xs">
-			    {dayjs(sale.createdAt?.toDate()).locale('id').fromNow()}
+			    {dayjs(sale.createdAt?.toDate()).fromNow()}
                 {sale.note && <span className="text-sm text-gray-500 ml-1">{sale.note}</span>}
 			  </p>
             </div>
             <div className="space-x-2">
 			  {diffMinutes(sale.createdAt) && (
               <button
-                onClick={() => handleDelete(sale.id)}
+                onClick={() => handleDeleteClick(sale)}
                 className="text-sm bg-red-500 text-white px-2 py-1 rounded"
               >
-                Hapus
+                X
               </button>
 			  )}
             </div>
           </li>
         ))}
       </ul>
+	  <ConfirmDeleteModal
+        isOpen={showConfirm}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+		item={namaItem}
+      />
     </div>
   );
 }
