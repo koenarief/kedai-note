@@ -56,7 +56,7 @@ export default function Login() {
     <div className="flex justify-center my-4">
       {user ? (
         <div className="flex items-center space-x-4">
-          <img src={user.photoURL} alt="avatar" className="w-8 h-8 rounded-full" />
+          <img src={user.photoURL} alt="av" className="w-8 h-8 rounded-full" />
           <span>{user.displayName}</span>
           <button
             onClick={handleLogout}

@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
-export default function SalesForm({ selectedSale, setSelectedSale, user }) {
+
+export default function SalesForm({ selectedSale, user }) {
   const [flavor, setFlavor] = useState("");
   const [price, setPrice] = useState("");
   const [qty, setQty] = useState(1);
@@ -38,7 +39,6 @@ export default function SalesForm({ selectedSale, setSelectedSale, user }) {
     setPrice("");
     setQty(1);
     setNote("");
-	setSelectedSale(null); // ✅ reset after submit
   };
 
   return (

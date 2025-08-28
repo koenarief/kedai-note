@@ -11,7 +11,6 @@ import Summary from "./components/Summary";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
-  const [selectedSale, setSelectedSale] = useState(null); // ✅ new state
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
@@ -22,10 +21,9 @@ export default function App() {
         <Login />
         {user ? (
           <>
-            <ItemForm />
-            <SalesForm selectedSale={selectedSale} setSelectedSale={setSelectedSale} user={user} />
+            <ItemForm user={user} />
             <Summary user={user} />
-            <SalesList setSelectedSale={setSelectedSale} user={user} />
+            <SalesList user={user} />
           </>
         ) : (
           <p className="text-center text-gray-600">Silakan login untuk melanjutkan.</p>

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/id';
 
-export default function SalesList({ setSelectedSale, user }) {
+export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
 
   dayjs.extend(relativeTime);
@@ -48,12 +48,13 @@ export default function SalesList({ setSelectedSale, user }) {
           >
             <div>
               <p>
-                {sale.flavor} - {sale.qty} x Rp{sale.price}
+                {sale.flavor} - {sale.qty} x {Intl.NumberFormat('en-US').format(sale.price)}
+				<span> [ {Intl.NumberFormat('en-US').format(sale.subTotal)} ]</span>
               </p>
 			  <p className="text-xs">
 			    {dayjs(sale.createdAt?.toDate()).locale('id').fromNow()}
+                {sale.note && <span className="text-sm text-gray-500 ml-1">{sale.note}</span>}
 			  </p>
-              {sale.note && <p className="text-sm text-gray-500">{sale.note}</p>}
             </div>
             <div className="space-x-2">
 			  {diffMinutes(sale.createdAt) && (
@@ -64,12 +65,6 @@ export default function SalesList({ setSelectedSale, user }) {
                 Hapus
               </button>
 			  )}
-              <button
-                onClick={() => setSelectedSale(sale)} // ✅ send sale to form
-                className="text-sm bg-green-400 text-white px-2 py-1 rounded"
-              >
-                Copy
-              </button>
             </div>
           </li>
         ))}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
+import short from 'short-uuid';
 
 const items = [
   { id: 1, name: "Esteh Manis", price: 2500 },
@@ -9,8 +10,9 @@ const items = [
   { id: 4, name: "Kopi Susu", price: 3500 },
 ];
 
-export default function ItemForm() {
+export default function ItemForm({ user }) {
   const [qty, setQty] = useState({});
+  const translator = short();
 
   const sumTotal = () => items.reduce((sum, item) => {
     const jml = qty[item.id] ?? 0;
@@ -33,6 +35,20 @@ export default function ItemForm() {
   };
 
   const sendQty = () => {
+    if (!user) return;
+	const shortId = translator.generate();
+	items.forEach(async (item) => {
+	  if(qty[item.id] > 0) {
+	    await addDoc(collection(db, "users", user.uid, "sales"), {
+          flavor: item.name,
+          price: parseInt(item.price),
+          qty: parseInt(qty[item.id]),
+		  subTotal: item.price * qty[item.id],
+          note: shortId,
+          createdAt: serverTimestamp(),
+        });
+	  }
+	});
     setQty({});
   }
 
@@ -42,7 +58,7 @@ export default function ItemForm() {
 	    <span className="text-4xl px-4">{Intl.NumberFormat('en-US').format(sumTotal())}</span>
 	  </p>
 	  {items.map((item) => (
-	    <div className="mb-2">
+	    <div className="mb-2" key={item.id}>
 		  <button className="bg-blue-400 text-white px-4 py-1 rounded ml-1" onClick={() => addQty(item.id) }>
 		    {qty[item.id] > 0 ? qty[item.id] : ''}
 		    {qty[item.id] > 0 ? ' x ' : ''}
