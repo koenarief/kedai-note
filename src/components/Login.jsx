@@ -2,9 +2,45 @@
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { setDoc, getDoc, doc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
+import { useEffect } from "react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
+
+  async function saveUserProfile(user) {
+    const profileRef = doc(db, "users", user.uid, "config", "profile");
+    const profileSnap = await getDoc(profileRef);
+
+    if (profileSnap.exists()) {
+      console.log("Profile already exists:", profileSnap.data());
+      // bisa update atau merge kalau perlu
+      await setDoc(
+        profileRef,
+        {
+          email: user.email,
+          name: user.displayName,
+          lastLogin: serverTimestamp(),
+        },
+        { merge: true } // merge biar tidak overwrite semua field
+      );
+    } else {
+      console.log("No profile found, creating new...");
+      await setDoc(profileRef, {
+        email: user.email,
+        name: user.displayName,
+        createdAt: serverTimestamp(),
+		active: false,
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+	  saveUserProfile(user);
+    }
+  }, [user]);
 
   const handleLogin = async () => {
     try {

@@ -19,13 +19,13 @@ export default function SalesForm({ selectedSale, setSelectedSale, user }) {
     }
   }, [selectedSale]);
 
-	
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-	  if (!user) return; // jaga-jaga
+    if (!user) return; // jaga-jaga
 	  
     if (!flavor || !price) return alert("Isi rasa dan harga!");
-
+	  
     await addDoc(collection(db, "users", user.uid, "sales"), {
       flavor,
       price: parseInt(price),
