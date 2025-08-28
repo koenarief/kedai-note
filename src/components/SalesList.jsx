@@ -2,9 +2,14 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/id';
 
 export default function SalesList({ setSelectedSale, user }) {
   const [sales, setSales] = useState([]);
+
+  dayjs.extend(relativeTime);
 
   useEffect(() => {
 
@@ -23,9 +28,18 @@ export default function SalesList({ setSelectedSale, user }) {
     await deleteDoc(doc(db, "users", user.uid, "sales", id));
   };
 
+  const diffMinutes = (createdAt) => {
+    if(!createdAt) return true;
+    const firestoreDate = createdAt.toDate();
+	const now = new Date();
+	const differenceInMilliseconds = Math.abs(now.getTime() - firestoreDate.getTime());
+	const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+	return differenceInMinutes < 500;
+  }
+
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Daftar Penjualan</h2>
+      <h2 className="text-lg font-bold mb-2">Penjualan Hari Ini</h2>
       <ul className="space-y-2">
 		{sales.map((sale) => (
           <li
@@ -36,20 +50,25 @@ export default function SalesList({ setSelectedSale, user }) {
               <p>
                 {sale.flavor} - {sale.qty} x Rp{sale.price}
               </p>
+			  <p className="text-xs">
+			    {dayjs(sale.createdAt?.toDate()).locale('id').fromNow()}
+			  </p>
               {sale.note && <p className="text-sm text-gray-500">{sale.note}</p>}
             </div>
             <div className="space-x-2">
-              <button
-                onClick={() => setSelectedSale(sale)} // ✅ send sale to form
-                className="text-sm bg-yellow-400 text-white px-2 py-1 rounded"
-              >
-                Copy
-              </button>
+			  {diffMinutes(sale.createdAt) && (
               <button
                 onClick={() => handleDelete(sale.id)}
                 className="text-sm bg-red-500 text-white px-2 py-1 rounded"
               >
                 Hapus
+              </button>
+			  )}
+              <button
+                onClick={() => setSelectedSale(sale)} // ✅ send sale to form
+                className="text-sm bg-green-400 text-white px-2 py-1 rounded"
+              >
+                Copy
               </button>
             </div>
           </li>

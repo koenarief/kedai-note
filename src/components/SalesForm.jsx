@@ -24,7 +24,7 @@ export default function SalesForm({ selectedSale, setSelectedSale, user }) {
     e.preventDefault();
     if (!user) return; // jaga-jaga
 	  
-    if (!flavor || !price) return alert("Isi rasa dan harga!");
+    if (!flavor || !price) return alert("Isi item dan harga!");
 	  
     await addDoc(collection(db, "users", user.uid, "sales"), {
       flavor,
@@ -45,7 +45,7 @@ export default function SalesForm({ selectedSale, setSelectedSale, user }) {
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">Tambah Penjualan</h2>
       <div className="grid gap-2">
-        <input className="border p-2 rounded" placeholder="Rasa" value={flavor} onChange={(e) => setFlavor(e.target.value)} />
+        <input className="border p-2 rounded" placeholder="Item" value={flavor} onChange={(e) => setFlavor(e.target.value)} />
         <input type="number" className="border p-2 rounded" placeholder="Harga" value={price} onChange={(e) => setPrice(e.target.value)} />
         <input type="number" className="border p-2 rounded" placeholder="Jumlah" value={qty} onChange={(e) => setQty(e.target.value)} />
         <input className="border p-2 rounded" placeholder="Catatan" value={note} onChange={(e) => setNote(e.target.value)} />

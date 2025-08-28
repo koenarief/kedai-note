@@ -14,7 +14,6 @@ export default function Login() {
     const profileSnap = await getDoc(profileRef);
 
     if (profileSnap.exists()) {
-      console.log("Profile already exists:", profileSnap.data());
       // bisa update atau merge kalau perlu
       await setDoc(
         profileRef,
@@ -26,7 +25,6 @@ export default function Login() {
         { merge: true } // merge biar tidak overwrite semua field
       );
     } else {
-      console.log("No profile found, creating new...");
       await setDoc(profileRef, {
         email: user.email,
         name: user.displayName,

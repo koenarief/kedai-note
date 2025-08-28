@@ -31,11 +31,11 @@ export default function Summary({ user }) {
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Ringkasan Hari Ini ({format(new Date(), "dd/MM/yyyy")})</h2>
+      <h2 className="text-lg font-bold mb-2">Ringkasan Penjualan ({format(new Date(), "dd/MM/yyyy")})</h2>
       <p>Jumlah Transaksi: {summary.count}</p>
       <p>Total Unit: {summary.totalQty}</p>
       <p>Total Pendapatan: Rp{summary.total}</p>
-      <h3 className="mt-2 font-semibold">Pendapatan per Rasa:</h3>
+      <h3 className="mt-2 font-semibold">Pendapatan per item:</h3>
       <ul className="list-disc list-inside">
         {Object.entries(summary.perFlavor).map(([flavor, amt]) => (
           <li key={flavor}>{flavor}: Rp{amt}</li>

@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import Login from "./components/Login";
 
+import ItemForm from "./components/ItemForm";
 import SalesForm from "./components/SalesForm";
 import SalesList from "./components/SalesList";
 import Summary from "./components/Summary";
@@ -17,10 +18,11 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-2xl mx-auto space-y-4">
-        <h1 className="text-2xl font-bold text-center">📊 Pencatatan Penjualan Es Teh</h1>
+        <h1 className="text-2xl font-bold text-center">📊 Pencatatan Penjualan</h1>
         <Login />
         {user ? (
           <>
+            <ItemForm />
             <SalesForm selectedSale={selectedSale} setSelectedSale={setSelectedSale} user={user} />
             <Summary user={user} />
             <SalesList setSelectedSale={setSelectedSale} user={user} />
