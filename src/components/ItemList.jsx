@@ -56,7 +56,7 @@ export default function ItemList({ user }) {
           >
             <div>
               <p>
-                {item.name}
+                {item.kategori} / {item.name}
 				<span> / {Intl.NumberFormat('en-US').format(item.price/1000)}k</span>
               </p>
 			  <p className="text-xs">

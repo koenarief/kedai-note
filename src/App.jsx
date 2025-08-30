@@ -5,6 +5,7 @@ import { auth } from "./firebase";
 import Login from "./components/Login";
 
 import ItemForm from "./components/ItemForm";
+import AddItemForm from "./components/AddItemForm";
 import SalesForm from "./components/SalesForm";
 import SalesList from "./components/SalesList";
 import ItemList from "./components/ItemList";
@@ -35,7 +36,7 @@ export default function App() {
 		
 		{page == 'settings' && user && (
 		  <>
-		  <Settings user={user} />
+		  <AddItemForm user={user} />
 		  <ItemList user={user} />
 		  </>
 		)}
