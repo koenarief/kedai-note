@@ -1,12 +1,13 @@
 // src/components/AddItemForm.jsx
 import { useState, useEffect } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-export default function AddItemForm({ selectedItem, user }) {
+export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [kategori, setKategori] = useState("");
+  const [edit, setEdit] = useState(false);
 
   // ✅ Whenever selectedItem changes, pre-fill fields
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function AddItemForm({ selectedItem, user }) {
       setName(selectedItem.name || "");
       setPrice(selectedItem.price || "");
       setKategori(selectedItem.kategori || "");
+	  setEdit(true);
     }
   }, [selectedItem]);
 
@@ -22,17 +24,28 @@ export default function AddItemForm({ selectedItem, user }) {
     e.preventDefault();
     if (!user) return;
 	  
-    if (!name || !price) return alert("Isi item dan harga!");
+    if (!name || !price || !kategori) return alert("Lengkapi data item..");
 
     const harga = parseInt(price);
-	  
-    await addDoc(collection(db, "users", user.uid, "items"), {
-      name,
-      price: harga < 100 ? harga * 1000 : harga,
-      kategori,
-      createdAt: serverTimestamp(),
-    });
 
+    if(edit) {
+	  const reff = doc(db, "users", user.uid, "items", selectedItem.id);
+	  await setDoc(reff, {
+        name,
+        price: harga < 100 ? harga * 1000 : harga,
+        kategori,
+      }, { merge: true });
+	} else {
+      await addDoc(collection(db, "users", user.uid, "items"), {
+        name,
+        price: harga < 100 ? harga * 1000 : harga,
+        kategori,
+        createdAt: serverTimestamp(),
+      });
+	}
+
+	setEdit(false);
+	setSelectedItem(null);
     setName("");
     setPrice("");
     setKategori("");

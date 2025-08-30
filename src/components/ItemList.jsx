@@ -8,7 +8,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import DeleteIcon from '../icons/DeleteIcon';
 
-export default function ItemList({ user }) {
+export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -65,10 +65,16 @@ export default function ItemList({ user }) {
             </div>
             <div className="space-x-2">
               <button
+                onClick={() => setSelectedItem(item)}
+                className="text-sm bg-blue-500 text-white px-2 py-2 rounded"
+              >
+                Edit
+              </button>
+              <button
                 onClick={() => handleDeleteClick(item)}
                 className="text-sm bg-red-500 text-white px-2 py-2 rounded"
               >
-                <DeleteIcon width="22"/>
+                Delete
               </button>
             </div>
           </li>

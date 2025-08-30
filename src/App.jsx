@@ -17,6 +17,7 @@ import AddIcon from "./icons/AddIcon";
 export default function App() {
   const [user, loading] = useAuthState(auth);
   const [page, setPage] = useState('home');
+  const [selectedItem, setSelectedItem] = useState({});
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
@@ -36,8 +37,8 @@ export default function App() {
 		
 		{page == 'settings' && user && (
 		  <>
-		  <AddItemForm user={user} />
-		  <ItemList user={user} />
+		  <AddItemForm user={user} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+		  <ItemList user={user} setSelectedItem={setSelectedItem} />
 		  </>
 		)}
 		
