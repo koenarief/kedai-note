@@ -4,14 +4,14 @@ import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
 
-export default function Summary({ user }) {
+export default function Settings({ user }) {
   const [summary, setSummary] = useState({ count: 0, totalQty: 0, total: 0, perFlavor: {} });
 
   useEffect(() => {
 	if(!user) return;
     const today = new Date();
     const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const q = query(collection(db, "users", user.uid, "sales") , where("createdAt", ">=", start));
+    const q = query(collection(db, "users", user.uid, "sales") , where("createdAt", ">=", start));
 
     const unsub = onSnapshot(q, (snap) => {
       let count = 0, totalQty = 0, total = 0;
@@ -31,7 +31,7 @@ export default function Summary({ user }) {
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Ringkasan Penjualan ({format(new Date(), "dd/MM/yyyy")})</h2>
+      <h2 className="text-lg font-bold mb-2">Settings Items</h2>
       <p>Jumlah Transaksi: {summary.count}</p>
       <p>Total Unit: {summary.totalQty}</p>
       <p>Total Pendapatan: {Intl.NumberFormat('en-US').format(summary.total/1000)}k</p>

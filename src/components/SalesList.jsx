@@ -5,38 +5,24 @@ import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-const ConfirmDeleteModal = ({ isOpen, onConfirm, onCancel, item }) => {
-  if (!isOpen) return null;
-
-  return (
-	<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Konfirmasi</h2>
-        <p className="mb-6">Lanjutkan hapus data penjualan: {item}?</p>
-        <div className="flex justify-end space-x-4">
-          <button
-            onClick={onCancel}
-            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            className="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import ConfirmDeleteModal from './ConfirmDeleteModal';
+import DeleteIcon from '../icons/DeleteIcon';
 
 export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [namaItem, setNamaItem] = useState(null);
+
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDeleteClick = (sale) => {
     setItemToDelete(sale.id);
@@ -60,10 +46,10 @@ export default function SalesList({ user }) {
     setItemToDelete(null); // Clear itemToDelete
   };
   
-  dayjs.extend(relativeTime);
-  // dayjs.locale('id');
-
   useEffect(() => {
+
+    dayjs.extend(relativeTime);
+    dayjs.locale('id');
 
     const q = query(
       collection(db, "users", user.uid, "sales"),
@@ -81,7 +67,7 @@ export default function SalesList({ user }) {
 	const now = new Date();
 	const differenceInMilliseconds = Math.abs(now.getTime() - firestoreDate.getTime());
 	const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
-	return differenceInMinutes < 500;
+	return differenceInMinutes < 60;
   }
 
   return (
@@ -95,11 +81,12 @@ export default function SalesList({ user }) {
           >
             <div>
               <p>
-                {sale.flavor} - {sale.qty} x {Intl.NumberFormat('en-US').format(sale.price)}
-				<span> [ {Intl.NumberFormat('en-US').format(sale.subTotal)} ]</span>
+                {sale.flavor} / {sale.qty} x {Intl.NumberFormat('en-US').format(sale.price/1000)}k
+				<span> / {Intl.NumberFormat('en-US').format(sale.subTotal/1000)}k</span>
               </p>
 			  <p className="text-xs">
 			    {dayjs(sale.createdAt?.toDate()).fromNow()}
+				<span className="ml-1">/</span>
                 {sale.note && <span className="text-sm text-gray-500 ml-1">{sale.note}</span>}
 			  </p>
             </div>
@@ -107,9 +94,9 @@ export default function SalesList({ user }) {
 			  {diffMinutes(sale.createdAt) && (
               <button
                 onClick={() => handleDeleteClick(sale)}
-                className="text-sm bg-red-500 text-white px-2 py-1 rounded"
+                className="text-sm bg-red-500 text-white px-2 py-2 rounded"
               >
-                X
+                <DeleteIcon width="22"/>
               </button>
 			  )}
             </div>
@@ -125,3 +112,4 @@ export default function SalesList({ user }) {
     </div>
   );
 }
+

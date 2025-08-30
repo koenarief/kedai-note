@@ -10,7 +10,7 @@ export default function Login() {
   const [user] = useAuthState(auth);
 
   async function saveUserProfile(user) {
-    const profileRef = doc(db, "users", user.uid, "config", "profile");
+    const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
     if (profileSnap.exists()) {
