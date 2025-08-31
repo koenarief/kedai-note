@@ -66,7 +66,7 @@ export default function SalesList({ user }) {
 	const now = new Date();
 	const differenceInMilliseconds = Math.abs(now.getTime() - firestoreDate.getTime());
 	const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
-	return differenceInMinutes < 6000;
+	return differenceInMinutes < 60;
   }
 
   return (
