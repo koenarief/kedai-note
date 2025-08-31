@@ -10,7 +10,7 @@ const itemsSample = [
   { id: 4, name: "Kopi Susu", price: 3500, kategori: "Minuman" },
 ];
 
-export default function ItemForm({ user }) {
+export default function ItemForm({ user, blokir }) {
   const [qty, setQty] = useState({});
   const translator = short();
   const [items, setItems] = useState(itemsSample);
@@ -122,9 +122,14 @@ export default function ItemForm({ user }) {
 		  </div>
 		</div>
 	  ))}
+
+
+	  {!blokir && (
 	  <div className="flex justify-between">
 	    <button onClick={submitForm} className="bg-green-600 text-white px-4 py-1 rounded ml-1">Submit</button>
 	  </div>
+	  )}
+	  
 	</div>
   );
 }

@@ -6,7 +6,7 @@ import { setDoc, getDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect } from "react";
 
-export default function Login() {
+export default function Login({ blokir }) {
   const [user] = useAuthState(auth);
 
   async function saveUserProfile(user) {

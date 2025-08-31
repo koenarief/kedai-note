@@ -33,7 +33,6 @@ export default function SalesList({ user }) {
   const handleConfirmDelete = async () => {
     // Perform your actual delete logic here, e.g., API call
 	
-    console.log(`Deleting item: ${itemToDelete}`);
     if (!user) return;
     await deleteDoc(doc(db, "users", user.uid, "sales", itemToDelete));
 
@@ -67,7 +66,7 @@ export default function SalesList({ user }) {
 	const now = new Date();
 	const differenceInMilliseconds = Math.abs(now.getTime() - firestoreDate.getTime());
 	const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
-	return differenceInMinutes < 60;
+	return differenceInMinutes < 6000;
   }
 
   return (

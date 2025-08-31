@@ -3,9 +3,8 @@ import { doc, onSnapshot, collection, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 
-export default function Profile() {
+export default function Profile({ setBlokir, blokir }) {
   const [user] = useAuthState(auth);
-  const [blokir, setBlokir] = useState(false);
   const [active, setActive] = useState(false);
   const [qty, setQty] = useState(0); // ✅ state for sales count
 
@@ -40,18 +39,16 @@ export default function Profile() {
     });
 
     return () => unsub(); // ✅ cleanup on unmount or user change
-  }, [active, qty]); // listen when user changes
+  }, [active]); // listen when active changes
 
 
   return (
-    <div className="">
+    <div className="flex justify-center my-4">
 	  {blokir && (
-	    <span>Blokir</span>
+		<span>❌ Inactive — Sales Count: {qty}</span>
 	  )}
-      {active ? (
+      {active && (
         <span>✅ Active</span>
-      ) : (
-        <span>❌ Inactive — Sales Count: {qty}</span>
       )}
     </div>
   );

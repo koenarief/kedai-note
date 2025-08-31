@@ -19,6 +19,7 @@ export default function App() {
   const [user, loading] = useAuthState(auth);
   const [page, setPage] = useState('home');
   const [selectedItem, setSelectedItem] = useState({});
+  const [blokir, setBlokir] = useState(false);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
@@ -27,7 +28,9 @@ export default function App() {
       <div className="max-w-2xl mx-auto space-y-4">
         <h1 className="text-2xl font-bold text-center">📊 Jurnal Harian</h1>
 		
-		<Profile />
+		<Profile setBlokir={setBlokir} blokir={blokir} />
+		
+        <Login blokir={blokir} />
 		
 		<div className="flex justify-center my-4">
 		  <button onClick={() => setPage('home')}>
@@ -49,7 +52,7 @@ export default function App() {
 		<>
         {user ? (
           <>
-            <ItemForm user={user} />
+            <ItemForm user={user} blokir={blokir}/>
             <Summary user={user} />
             <SalesList user={user} />
           </>
@@ -58,7 +61,6 @@ export default function App() {
         )}
 		</>
 		)}
-        <Login />
 		
       </div>
     </div>
