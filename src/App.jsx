@@ -11,6 +11,7 @@ import SalesList from "./components/SalesList";
 import ItemList from "./components/ItemList";
 import Summary from "./components/Summary";
 import Settings from "./components/Settings";
+import Profile from "./components/Profile";
 import HomeIcon from "./icons/HomeIcon";
 import AddIcon from "./icons/AddIcon";
 
@@ -25,6 +26,8 @@ export default function App() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-2xl mx-auto space-y-4">
         <h1 className="text-2xl font-bold text-center">📊 Jurnal Harian</h1>
+		
+		<Profile />
 		
 		<div className="flex justify-center my-4">
 		  <button onClick={() => setPage('home')}>

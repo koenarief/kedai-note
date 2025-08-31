@@ -34,8 +34,6 @@ export default function ItemForm({ user }) {
             createdAt: serverTimestamp(),
           });
 	    });
-	  } else {
-	    console.log('items sudah terisi');
 	  }
     });
     return () => unsub();

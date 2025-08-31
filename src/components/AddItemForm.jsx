@@ -53,7 +53,7 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Tambah Item</h2>
+      <h2 className="text-lg font-bold mb-2">{edit ? 'Edit Item': 'Tambah Item'}</h2>
       <div className="grid gap-2">
         <input className="border p-2 rounded" placeholder="Item" value={name} onChange={(e) => setName(e.target.value)} />
         <input type="number" className="border p-2 rounded" placeholder="Harga" value={price} onChange={(e) => setPrice(e.target.value)} />
