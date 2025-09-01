@@ -1,5 +1,5 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, onSnapshot, collection, getDocs } from "firebase/firestore";
+import { doc, onSnapshot, collection, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 
@@ -7,6 +7,7 @@ export default function Profile({ setBlokir, blokir }) {
   const [user] = useAuthState(auth);
   const [active, setActive] = useState(false);
   const [qty, setQty] = useState(0); // ✅ state for sales count
+  const [name, setName] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -16,6 +17,7 @@ export default function Profile({ setBlokir, blokir }) {
     const unsub = onSnapshot(profileRef, async (snap) => {
       if (snap.exists()) {
         const data = snap.data();
+        setName(data.name);
         setActive(data.active ?? false);
         if (data.active) {
           setBlokir(false);
@@ -25,6 +27,21 @@ export default function Profile({ setBlokir, blokir }) {
 
     return () => unsub(); // ✅ cleanup on unmount or user change
   }, [user]);
+
+  const saveName = async () => {
+    const profileRef = doc(db, "profiles", user.uid);
+    const profileSnap = await getDoc(profileRef);
+
+    if (profileSnap.exists()) {
+      await setDoc(
+        profileRef,
+        {
+          name: name,
+        },
+        { merge: true }, // merge biar tidak overwrite semua field
+      );
+    }
+  }
 
   useEffect(() => {
     if (!user) return;
@@ -42,9 +59,13 @@ export default function Profile({ setBlokir, blokir }) {
   }, [active]); // listen when active changes
 
   return (
-    <div className="flex justify-center my-4">
+    <div className="flex justify-center my-4 bg-white p-4 rounded shadow">
       {blokir && <span>❌ Inactive — Sales Count: {qty}</span>}
       {active && <span>✅ Active</span>}
+      <input value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="w-80 bg-gray-100 p-2 border"/>
+      <button onClick={saveName} className="ml-2">Save</button>
     </div>
   );
 }

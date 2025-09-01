@@ -100,6 +100,7 @@ export default function ItemForm({ user, blokir }) {
 
       {items.map((item) => (
         <ButtonGroup
+          key={item.id}
           onPrimary={() => addQty(item.id)}
           onIcon={() => minusQty(item.id)}
           item={item}

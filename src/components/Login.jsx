@@ -6,13 +6,14 @@ import {
 } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { setDoc, getDoc, doc, serverTimestamp } from "firebase/firestore";
+import { setDoc, getDoc, doc, serverTimestamp, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { useState, useEffect } from "react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -37,11 +38,10 @@ export default function Login() {
 
     if (profileSnap.exists()) {
       // bisa update atau merge kalau perlu
+      setName(profileSnap.data().name);
       await setDoc(
         profileRef,
         {
-          email: user.email,
-          name: user.displayName,
           lastLogin: serverTimestamp(),
         },
         { merge: true }, // merge biar tidak overwrite semua field
@@ -55,6 +55,17 @@ export default function Login() {
       });
     }
   }
+
+  useEffect(() => {
+    const profileRef = doc(db, "profiles", user.uid);
+    const unsub = onSnapshot(profileRef, async (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        setName(data.name);
+      }
+    });
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     // setError('');
@@ -91,7 +102,7 @@ export default function Login() {
             />
           )}
 
-          {user.displayName && <span>{user.displayName}</span>}
+          {name && <span>{name}</span>}
 
           <button
             onClick={handleLogout}
