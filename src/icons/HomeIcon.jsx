@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * HomeIcon
@@ -13,9 +13,9 @@ import React from 'react';
 
 export default function HomeIcon({
   size = 24,
-  className = '',
+  className = "",
   strokeWidth = 2,
-  title = 'Home',
+  title = "Home",
   ...props
 }) {
   return (

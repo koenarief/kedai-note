@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
-
 export default function SalesForm({ selectedSale, user }) {
   const [flavor, setFlavor] = useState("");
   const [price, setPrice] = useState("");
@@ -20,13 +19,12 @@ export default function SalesForm({ selectedSale, user }) {
     }
   }, [selectedSale]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return; // jaga-jaga
-	  
+
     if (!flavor || !price) return alert("Isi item dan harga!");
-	  
+
     await addDoc(collection(db, "users", user.uid, "sales"), {
       flavor,
       price: parseInt(price),
@@ -42,14 +40,41 @@ export default function SalesForm({ selectedSale, user }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 rounded-2xl shadow mb-4">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 rounded-2xl shadow mb-4"
+    >
       <h2 className="text-lg font-bold mb-2">Tambah Penjualan</h2>
       <div className="grid gap-2">
-        <input className="border p-2 rounded" placeholder="Item" value={flavor} onChange={(e) => setFlavor(e.target.value)} />
-        <input type="number" className="border p-2 rounded" placeholder="Harga" value={price} onChange={(e) => setPrice(e.target.value)} />
-        <input type="number" className="border p-2 rounded" placeholder="Jumlah" value={qty} onChange={(e) => setQty(e.target.value)} />
-        <input className="border p-2 rounded" placeholder="Catatan" value={note} onChange={(e) => setNote(e.target.value)} />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Entri</button>
+        <input
+          className="border p-2 rounded"
+          placeholder="Item"
+          value={flavor}
+          onChange={(e) => setFlavor(e.target.value)}
+        />
+        <input
+          type="number"
+          className="border p-2 rounded"
+          placeholder="Harga"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <input
+          type="number"
+          className="border p-2 rounded"
+          placeholder="Jumlah"
+          value={qty}
+          onChange={(e) => setQty(e.target.value)}
+        />
+        <input
+          className="border p-2 rounded"
+          placeholder="Catatan"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+          Entri
+        </button>
       </div>
     </form>
   );

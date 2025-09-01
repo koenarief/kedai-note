@@ -17,7 +17,7 @@ import AddIcon from "./icons/AddIcon";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
-  const [page, setPage] = useState('home');
+  const [page, setPage] = useState("home");
   const [selectedItem, setSelectedItem] = useState({});
   const [blokir, setBlokir] = useState(false);
 
@@ -27,40 +27,43 @@ export default function App() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-2xl mx-auto space-y-4">
         <h1 className="text-2xl font-bold text-center">📊 Jurnal Harian</h1>
-		
+
         <Login />
-		
+
         {user && (
-		<div className="flex justify-center my-4">
-		  <button onClick={() => setPage('home')}>
-		    <HomeIcon />
-		  </button>
-		  <button className="ml-2" onClick={() => setPage('settings')}>
-		    <AddIcon />
-		  </button>
-		</div>
+          <div className="flex justify-center my-4">
+            <button onClick={() => setPage("home")}>
+              <HomeIcon />
+            </button>
+            <button className="ml-2" onClick={() => setPage("settings")}>
+              <AddIcon />
+            </button>
+          </div>
         )}
-		
-		{page == 'settings' && user && (
-		  <>
-		  <AddItemForm user={user} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-		  <ItemList user={user} setSelectedItem={setSelectedItem} />
-		  </>
-		)}
-		
-		{page == 'home' && (
-		<>
-        {user && (
+
+        {page == "settings" && user && (
           <>
-    		<Profile setBlokir={setBlokir} blokir={blokir} />		
-            <ItemForm user={user} blokir={blokir}/>
-            <Summary user={user} />
-            <SalesList user={user} />
+            <AddItemForm
+              user={user}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
+            <ItemList user={user} setSelectedItem={setSelectedItem} />
           </>
         )}
-		</>
-		)}
-		
+
+        {page == "home" && (
+          <>
+            {user && (
+              <>
+                <Profile setBlokir={setBlokir} blokir={blokir} />
+                <ItemForm user={user} blokir={blokir} />
+                <Summary user={user} />
+                <SalesList user={user} />
+              </>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

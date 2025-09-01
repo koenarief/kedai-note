@@ -1,8 +1,13 @@
-export default function ConfirmDeleteModal({ isOpen, onConfirm, onCancel, item }) {
+export default function ConfirmDeleteModal({
+  isOpen,
+  onConfirm,
+  onCancel,
+  item,
+}) {
   if (!isOpen) return null;
 
   return (
-	<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
         <h2 className="text-xl font-semibold mb-4">Konfirmasi</h2>
         <p className="mb-6">Lanjutkan hapus data: {item}?</p>
@@ -23,5 +28,4 @@ export default function ConfirmDeleteModal({ isOpen, onConfirm, onCancel, item }
       </div>
     </div>
   );
-};
-
+}

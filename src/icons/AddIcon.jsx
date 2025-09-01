@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * AddIcon
@@ -14,9 +14,9 @@ import React from 'react';
 
 export default function AddIcon({
   size = 24,
-  className = '',
+  className = "",
   strokeWidth = 2,
-  title = 'Add',
+  title = "Add",
   filled = false,
   ...props
 }) {

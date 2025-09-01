@@ -1,12 +1,19 @@
 // src/components/ItemList.jsx
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import DeleteIcon from '../icons/DeleteIcon';
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import DeleteIcon from "../icons/DeleteIcon";
 
 export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);
@@ -16,13 +23,13 @@ export default function ItemList({ user, setSelectedItem }) {
 
   const handleDeleteClick = (item) => {
     setItemToDelete(item.id);
-	setNamaItem(item.name);
+    setNamaItem(item.name);
     setShowConfirm(true);
   };
 
   const handleConfirmDelete = async () => {
     if (!user) return;
-	  
+
     await deleteDoc(doc(db, "users", user.uid, "items", itemToDelete));
 
     setShowConfirm(false);
@@ -33,11 +40,11 @@ export default function ItemList({ user, setSelectedItem }) {
     setShowConfirm(false);
     setItemToDelete(null);
   };
-  
+
   useEffect(() => {
     const q = query(
       collection(db, "users", user.uid, "items"),
-      orderBy("createdAt", "desc")
+      orderBy("createdAt", "desc"),
     );
     const unsub = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -49,7 +56,7 @@ export default function ItemList({ user, setSelectedItem }) {
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">Item Penjualan</h2>
       <ul className="space-y-2">
-		{items.map((item) => (
+        {items.map((item) => (
           <li
             key={item.id}
             className="flex justify-between items-center border-b pb-1"
@@ -57,11 +64,14 @@ export default function ItemList({ user, setSelectedItem }) {
             <div>
               <p>
                 {item.kategori} / {item.name}
-				<span> / {Intl.NumberFormat('en-US').format(item.price/1000)}k</span>
+                <span>
+                  {" "}
+                  / {Intl.NumberFormat("en-US").format(item.price / 1000)}k
+                </span>
               </p>
-			  <p className="text-xs">
-			    {dayjs(item.createdAt?.toDate()).format('DD/MM/YYYY HH:mm')}
-			  </p>
+              <p className="text-xs">
+                {dayjs(item.createdAt?.toDate()).format("DD/MM/YYYY HH:mm")}
+              </p>
             </div>
             <div className="space-x-2">
               <button
@@ -80,13 +90,12 @@ export default function ItemList({ user, setSelectedItem }) {
           </li>
         ))}
       </ul>
-	  <ConfirmDeleteModal
+      <ConfirmDeleteModal
         isOpen={showConfirm}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
-		item={namaItem}
+        item={namaItem}
       />
     </div>
   );
 }
-
