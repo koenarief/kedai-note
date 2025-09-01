@@ -28,10 +28,9 @@ export default function App() {
       <div className="max-w-2xl mx-auto space-y-4">
         <h1 className="text-2xl font-bold text-center">📊 Jurnal Harian</h1>
 		
-		<Profile setBlokir={setBlokir} blokir={blokir} />
+        <Login />
 		
-        <Login blokir={blokir} />
-		
+        {user && (
 		<div className="flex justify-center my-4">
 		  <button onClick={() => setPage('home')}>
 		    <HomeIcon />
@@ -40,6 +39,7 @@ export default function App() {
 		    <AddIcon />
 		  </button>
 		</div>
+        )}
 		
 		{page == 'settings' && user && (
 		  <>
@@ -50,14 +50,13 @@ export default function App() {
 		
 		{page == 'home' && (
 		<>
-        {user ? (
+        {user && (
           <>
+    		<Profile setBlokir={setBlokir} blokir={blokir} />		
             <ItemForm user={user} blokir={blokir}/>
             <Summary user={user} />
             <SalesList user={user} />
           </>
-        ) : (
-          <p className="text-center text-gray-600">Silakan login untuk melanjutkan.</p>
         )}
 		</>
 		)}

@@ -93,39 +93,13 @@ export default function ItemForm({ user, blokir }) {
 	  <p className="mb-4 text-4xl">Total:
 	    <span className="px-2">{Intl.NumberFormat('en-US').format(sumTotal())}</span>
 	  </p>
+	  
 	  {items.map((item) => (
-	    <div className="mb-2 flex justify-between" key={item.id}>
-		  {qty[item.id] > 0 ? (
-		  <div>
-          <span className="mr-2">✅</span>
-		  <button className="bg-blue-500 text-white px-4 py-1 rounded ml-1" onClick={() => addQty(item.id) }>
-		    {qty[item.id] > 0 ? qty[item.id] : ''}
-		    {qty[item.id] > 0 ? ' x ' : ''}
-		    {item.name} @ {Intl.NumberFormat('en-US').format(item.price/1000)}k
-		  </button>
-		  </div>
-		  ) : (
-		  <button className="bg-blue-500 text-white px-4 py-1 rounded ml-1" onClick={() => addQty(item.id) }>
-		    {qty[item.id] > 0 ? qty[item.id] : ''}
-		    {qty[item.id] > 0 ? ' x ' : ''}
-		    {item.name} @ {Intl.NumberFormat('en-US').format(item.price/1000)}k
-		  </button>
-		  )}
-
-		  
-          <div className="space-x-2">
-		  {qty[item.id] > 0 && (
-		    <button className="bg-red-500 text-white px-1 py-1 rounded hover:bg-red-600 ml-1" onClick={() => minusQty(item.id) }>
-			  <MinusIcon />
-			</button>
-		  )}
-		  </div>
-		</div>
+	    <ButtonGroup onPrimary={() => addQty(item.id)} onIcon={() => minusQty(item.id)} item={item} qty={qty[item.id]} />
 	  ))}
-
-
+	  
 	  {!blokir && (
-	  <div className="flex justify-between">
+	  <div className="flex justify-between mt-2">
 	    <button onClick={submitForm} className="bg-green-600 text-white px-4 py-1 rounded ml-1">Submit</button>
 	  </div>
 	  )}
@@ -170,3 +144,40 @@ const MinusIcon = (props) => (
     <line x1="5" y1="12" x2="19" y2="12" />
   </svg>
 );
+
+
+function ButtonGroup({ onPrimary, onIcon, item, qty }) {
+  return (
+    <div className="inline-flex overflow-hidden rounded shadow-xl mr-2 mt-2">
+      {/* Primary text button */}
+      <button
+        type="button"
+        onClick={onPrimary}
+        className="w-58 h-14 px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+      >
+	    {qty > 0 && (
+		  <span className="mr-2">✅</span>
+		)}
+		{qty > 0 ? qty : ''}
+		{qty > 0 ? ' x ' : ''}
+		{item.name} @ {Intl.NumberFormat('en-US').format(item.price/1000)}K
+      </button>
+
+      {/* Icon-only button */}
+      <button
+        type="button"
+        onClick={onIcon}
+        className="p-2.5 bg-indigo-600/90 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+        aria-label="More options"
+      >
+        {/* 3-dots vertical icon (SVG) */}
+ 	    {qty > 0 && (
+		<span className="px-2">-</span>
+		)}
+		{qty==0 &&(
+		<span className="px-2">&nbsp;</span>
+		)}
+      </button>
+    </div>
+  );
+}
