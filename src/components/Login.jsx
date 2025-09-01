@@ -57,6 +57,9 @@ export default function Login() {
   }
 
   useEffect(() => {
+    if(user == null) {
+      return;
+    }
     const profileRef = doc(db, "profiles", user.uid);
     const unsub = onSnapshot(profileRef, async (snap) => {
       if (snap.exists()) {
