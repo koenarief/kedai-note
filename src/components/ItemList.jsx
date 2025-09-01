@@ -44,7 +44,7 @@ export default function ItemList({ user, setSelectedItem }) {
   useEffect(() => {
     const q = query(
       collection(db, "users", user.uid, "items"),
-      orderBy("createdAt", "desc"),
+      orderBy("createdAt", "asc"),
     );
     const unsub = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));

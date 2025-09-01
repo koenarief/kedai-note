@@ -47,7 +47,7 @@ export default function ItemForm({ user, blokir }) {
   useEffect(() => {
     const q = query(
       collection(db, "users", user.uid, "items"),
-      orderBy("createdAt", "desc"),
+      orderBy("createdAt", "asc"),
     );
     const unsub = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -97,12 +97,6 @@ export default function ItemForm({ user, blokir }) {
   return (
     <div>
     <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
-      <p className="mb-4 text-4xl">
-        Total:
-        <span className="px-2">
-          {Intl.NumberFormat("en-US").format(sumTotal())}
-        </span>
-      </p>
 
       {items.map((item) => (
         <ButtonGroup
@@ -125,7 +119,22 @@ export default function ItemForm({ user, blokir }) {
       )}
     </div>
 
+    {sumTotal() > 9 && (
+    <div>
+    <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
+      <p className="text-2xl">
+        Total:
+        <span className="px-2">
+          {Intl.NumberFormat("en-US").format(sumTotal())}
+        </span>
+      </p>
+    </div>
+
     <ItemList qty={qty} minusQty={minusQty} items={items} />
+    </div>
+
+    )}
+
 
     </div>
   );
