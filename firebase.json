@@ -1,0 +1,19 @@
+{
+  "hosting": [{
+    "target": "kopiku",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }, {
+    "target": "bsbr",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }]
+}

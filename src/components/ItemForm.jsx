@@ -19,8 +19,8 @@ const itemsSample = [
 
 export default function ItemForm({ user, blokir }) {
   const [qty, setQty] = useState({});
-  const translator = short();
   const [items, setItems] = useState(itemsSample);
+  const translator = short();
   let running = false;
 
   useEffect(() => {
@@ -95,6 +95,7 @@ export default function ItemForm({ user, blokir }) {
   };
 
   return (
+    <div>
     <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
       <p className="mb-4 text-4xl">
         Total:
@@ -123,45 +124,12 @@ export default function ItemForm({ user, blokir }) {
         </div>
       )}
     </div>
+
+    <ItemList qty={qty} minusQty={minusQty} items={items} />
+
+    </div>
   );
 }
-
-const ItemsListIcon = (props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={props.size || 24}
-    height={props.size || 24}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <line x1="8" y1="6" x2="21" y2="6" />
-    <line x1="8" y1="12" x2="21" y2="12" />
-    <line x1="8" y1="18" x2="21" y2="18" />
-    <circle cx="3" cy="6" r="1" />
-    <circle cx="3" cy="12" r="1" />
-    <circle cx="3" cy="18" r="1" />
-  </svg>
-);
-
-const MinusIcon = (props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={props.size || 24}
-    height={props.size || 24}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
 
 function ButtonGroup({ onPrimary, onIcon, item, qty }) {
   return (
@@ -170,25 +138,36 @@ function ButtonGroup({ onPrimary, onIcon, item, qty }) {
       <button
         type="button"
         onClick={onPrimary}
-        className="w-58 h-14 px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+        className="w-58 h-10 px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
       >
-        {qty > 0 && <span className="mr-2">✅</span>}
-        {qty > 0 ? qty : ""}
-        {qty > 0 ? " x " : ""}
         {item.name} @ {Intl.NumberFormat("en-US").format(item.price / 1000)}K
-      </button>
-
-      {/* Icon-only button */}
-      <button
-        type="button"
-        onClick={onIcon}
-        className="p-2.5 bg-indigo-600/90 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
-        aria-label="More options"
-      >
-        {/* 3-dots vertical icon (SVG) */}
-        {qty > 0 && <span className="px-2">-</span>}
-        {qty == 0 && <span className="px-2">&nbsp;</span>}
       </button>
     </div>
   );
+}
+
+function ItemList({ items, qty, minusQty }) {
+
+  return (
+    <div className="bg-white p-4 rounded-2xl shadow mb-4">
+      <h2 className="text-lg font-bold mb-2">Nota Penjualan</h2>
+      <ul className="space-y-2">
+        {items.filter(itm => qty[itm.id] > 0).map((item) => (
+          <li
+            key={item.id}
+            className="flex justify-between items-center border-b pb-1"
+          >
+              <button
+                onClick={() => minusQty(item.id)}>
+                {qty[item.id]} x {item.name}
+                <span className="ml-2">
+                  @ {Intl.NumberFormat("en-US").format(item.price / 1000)}k
+                </span>
+              </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
 }

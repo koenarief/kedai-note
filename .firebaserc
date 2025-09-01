@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "gemilang-bsbr"
+  },
+  "targets": {
+    "gemilang-bsbr": {
+      "hosting": {
+        "kopiku": [
+          "kopiku"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -62,29 +62,23 @@ export default function ItemList({ user, setSelectedItem }) {
             className="flex justify-between items-center border-b pb-1"
           >
             <div>
-              <p>
+              <button onClick={() => setSelectedItem(item)}>
                 {item.kategori} / {item.name}
                 <span>
                   {" "}
                   / {Intl.NumberFormat("en-US").format(item.price / 1000)}k
                 </span>
-              </p>
+              </button>
               <p className="text-xs">
                 {dayjs(item.createdAt?.toDate()).format("DD/MM/YYYY HH:mm")}
               </p>
             </div>
             <div className="space-x-2">
               <button
-                onClick={() => setSelectedItem(item)}
-                className="text-sm bg-blue-500 text-white px-2 py-2 rounded"
-              >
-                Edit
-              </button>
-              <button
                 onClick={() => handleDeleteClick(item)}
                 className="text-sm bg-red-500 text-white px-2 py-2 rounded"
               >
-                Delete
+                Del
               </button>
             </div>
           </li>

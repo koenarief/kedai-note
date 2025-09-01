@@ -33,7 +33,7 @@ export default function Profile({ setBlokir, blokir }) {
 
     const unsub = onSnapshot(trxRef, (snap) => {
       setQty(snap.size); // snap.size is the number of docs
-      if (!active && snap.size > 10) {
+      if (!active && snap.size > 100) {
         setBlokir(true);
       }
     });
