@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import short from "short-uuid";
+import ItemCard from "./ItemCard";
 
 const itemsSample = [
   { id: 1, name: "Esteh Manis", price: 2500, kategori: "Minuman" },
@@ -99,12 +100,11 @@ export default function ItemForm({ user, blokir }) {
     <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
 
       {items.map((item) => (
-        <ButtonGroup
+        <ItemCard
           key={item.id}
-          onPrimary={() => addQty(item.id)}
-          onIcon={() => minusQty(item.id)}
+          onAdd={() => addQty(item.id)}
+          onSub={() => minusQty(item.id)}
           item={item}
-          qty={qty[item.id]}
         />
       ))}
 
