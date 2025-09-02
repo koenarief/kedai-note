@@ -105,6 +105,7 @@ export default function ItemForm({ user, blokir }) {
           onAdd={() => addQty(item.id)}
           onSub={() => minusQty(item.id)}
           item={item}
+          qty={qty}
         />
       ))}
 
