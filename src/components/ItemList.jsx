@@ -12,7 +12,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import DeleteIcon from "../icons/DeleteIcon";
 
 export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);

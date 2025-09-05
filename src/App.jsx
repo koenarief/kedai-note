@@ -3,7 +3,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
-import HomeIcon from "./icons/HomeIcon";
 import ItemAddForm from "./components/ItemAddForm";
 import ItemCardList from "./components/ItemCardList";
 import ItemList from "./components/ItemList";

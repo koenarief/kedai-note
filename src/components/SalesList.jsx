@@ -8,11 +8,10 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import DeleteIcon from "../icons/DeleteIcon";
 
 export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
@@ -108,9 +107,9 @@ export default function SalesList({ user }) {
               {diffMinutes(sale.createdAt) && (
                 <button
                   onClick={() => handleDeleteClick(sale)}
-                  className="text-sm bg-red-500 text-white px-2 py-2 rounded"
+                  className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
                 >
-                  <DeleteIcon width="22" />
+                  <Trash2 size={16} />
                 </button>
               )}
             </div>

@@ -5,7 +5,7 @@ export default function NavMenu({ page, setPage }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative flex justify-center my-4">
+    <div className="relative flex justify-end my-4">
       {/* 🔹 Hamburger button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
