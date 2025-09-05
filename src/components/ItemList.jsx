@@ -8,6 +8,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { Trash2 } from "lucide-react";
+
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -74,9 +76,9 @@ export default function ItemList({ user, setSelectedItem }) {
             <div className="space-x-2">
               <button
                 onClick={() => handleDeleteClick(item)}
-                className="text-sm bg-red-500 text-white px-2 py-2 rounded"
+                className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
-                Del
+                <Trash2 size={16} />
               </button>
             </div>
           </li>
