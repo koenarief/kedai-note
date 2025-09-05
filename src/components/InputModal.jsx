@@ -9,7 +9,7 @@ export default function InputModal({
   value,
 }) {
   const [data, setData] = useState(value);
-  
+
   if (!isOpen) return null;
 
   return (
@@ -55,5 +55,5 @@ export default function InputModal({
         </motion.div>
       )}
     </AnimatePresence>
-	);
+  );
 }

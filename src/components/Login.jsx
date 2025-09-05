@@ -111,8 +111,6 @@ export default function Login() {
             />
           )}
 
-          {name && <span>{name}</span>}
-
           <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
