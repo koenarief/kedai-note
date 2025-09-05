@@ -97,62 +97,46 @@ export default function ItemForm({ user, blokir }) {
 
   return (
     <div>
-    <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
+      <div className="bg-white border border-gray-200 p-4 rounded-xl shadow mb-4 flex flex-wrap gap-2 justify-center">
 
-      {items.map((item) => (
-        <ItemCard
-          key={item.id}
-          onAdd={() => addQty(item.id)}
-          onSub={() => minusQty(item.id)}
-          item={item}
-          qty={qty}
-        />
-      ))}
+        {items.map((item) => (
+          <ItemCard
+            key={item.id}
+            onAdd={() => addQty(item.id)}
+            onSub={() => minusQty(item.id)}
+            item={item}
+            qty={qty}
+          />
+        ))}
 
-      {!blokir && (
-        <div className="flex justify-between mt-2">
-          <button
-            onClick={submitForm}
-            className="bg-green-600 text-white px-4 py-1 rounded ml-1"
-          >
-            Submit
-          </button>
+        <div className="basis-full h-0"></div>
+
+        {!blokir && (
+          <div className="-mt-2">
+            <button
+              onClick={submitForm}
+              className="bg-green-600 text-white text-2xl px-4 py-2 rounded hover:border-green-800 hover:shadow-xl cursor-pointer"
+            >
+              Submit
+            </button>
+          </div>
+        )}
+      </div>
+
+      {sumTotal() > 1 && (
+        <div>
+          <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
+            <p className="text-2xl">
+              Total:
+              <span className="px-2">
+                {Intl.NumberFormat("en-US").format(sumTotal())}
+              </span>
+            </p>
+          </div>
+          <ItemList qty={qty} minusQty={minusQty} items={items} />
         </div>
       )}
-    </div>
 
-    {sumTotal() > 9 && (
-    <div>
-    <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
-      <p className="text-2xl">
-        Total:
-        <span className="px-2">
-          {Intl.NumberFormat("en-US").format(sumTotal())}
-        </span>
-      </p>
-    </div>
-
-    <ItemList qty={qty} minusQty={minusQty} items={items} />
-    </div>
-
-    )}
-
-
-    </div>
-  );
-}
-
-function ButtonGroup({ onPrimary, onIcon, item, qty }) {
-  return (
-    <div className="inline-flex overflow-hidden rounded shadow-xl mr-2 mt-2">
-      {/* Primary text button */}
-      <button
-        type="button"
-        onClick={onPrimary}
-        className="w-58 h-10 px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
-      >
-        {item.name} @ {Intl.NumberFormat("en-US").format(item.price / 1000)}K
-      </button>
     </div>
   );
 }
@@ -166,9 +150,10 @@ function ItemList({ items, qty, minusQty }) {
         {items.filter(itm => qty[itm.id] > 0).map((item) => (
           <li
             key={item.id}
-            className="flex justify-between items-center border-b pb-1"
+            className="flex justify-between items-center pb-1"
           >
               <button
+                className=" cursor-pointer"
                 onClick={() => minusQty(item.id)}>
                 {qty[item.id]} x {item.name}
                 <span className="ml-2">
