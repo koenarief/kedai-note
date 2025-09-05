@@ -4,12 +4,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
-import AddIcon from "./icons/AddIcon";
 import AddItemForm from "./components/AddItemForm";
 import HomeIcon from "./icons/HomeIcon";
 import ItemForm from "./components/ItemForm";
 import ItemList from "./components/ItemList";
 import Login from "./components/Login";
+import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
 import SalesForm from "./components/SalesForm";
 import SalesList from "./components/SalesList";
@@ -22,6 +22,7 @@ export default function App() {
   const [name, setName] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
   const [blokir, setBlokir] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -59,30 +60,7 @@ export default function App() {
         {user ? (
           <>
             {/* 🔹 Navigation */}
-            <div className="flex justify-center my-4 gap-2">
-              <button
-                onClick={() => setPage("home")}
-                className={`px-4 py-2 rounded-lg flex items-center gap-1 ${
-                  page === "home"
-                    ? "bg-blue-500 text-white"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                <HomeIcon />
-                <span className="hidden sm:inline">Home</span>
-              </button>
-              <button
-                onClick={() => setPage("settings")}
-                className={`px-4 py-2 rounded-lg flex items-center gap-1 ${
-                  page === "settings"
-                    ? "bg-blue-500 text-white"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                <AddIcon />
-                <span className="hidden sm:inline">Tambah</span>
-              </button>
-            </div>
+            <NavMenu page={page} setPage={setPage} />
 
             {/* 🔹 Page content */}
             {page === "settings" && (
@@ -93,6 +71,7 @@ export default function App() {
                   setSelectedItem={setSelectedItem}
                 />
                 <ItemList user={user} setSelectedItem={setSelectedItem} />
+                <Login />
               </>
             )}
 

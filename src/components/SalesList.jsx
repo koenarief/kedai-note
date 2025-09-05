@@ -84,7 +84,7 @@ export default function SalesList({ user }) {
         {sales.map((sale) => (
           <li
             key={sale.id}
-            className="flex justify-between items-center border-b pb-1"
+            className="flex justify-between items-center border-b pb-1 last:border-b-0"
           >
             <div>
               <p>

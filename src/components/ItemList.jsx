@@ -14,7 +14,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import DeleteIcon from "../icons/DeleteIcon";
-import Login from "./Login";
 
 export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);
@@ -60,7 +59,7 @@ export default function ItemList({ user, setSelectedItem }) {
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex justify-between items-center border-b pb-1"
+            className="flex justify-between items-center border-b pb-1 last:border-b-0"
           >
             <div>
               <button onClick={() => setSelectedItem(item)}>
@@ -91,7 +90,6 @@ export default function ItemList({ user, setSelectedItem }) {
         onCancel={handleCancelDelete}
         item={namaItem}
       />
-      <Login />
     </div>
   );
 }

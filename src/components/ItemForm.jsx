@@ -96,6 +96,7 @@ export default function ItemForm({ user, blokir }) {
 
   return (
     <div>
+      {/* 🔹 Item Grid */}
       <div className="flex flex-wrap gap-4 justify-center">
         {items.map((item) => (
           <ItemCard
@@ -106,32 +107,33 @@ export default function ItemForm({ user, blokir }) {
             qty={qty}
           />
         ))}
-
-        <div className="basis-full h-0"></div>
-
-        {!blokir && (
-          <div className="-mt-4">
-            <button
-              onClick={submitForm}
-              className="bg-green-600 text-white text-2xl px-4 py-2 rounded hover:border-green-800 hover:shadow-xl cursor-pointer"
-            >
-              Submit
-            </button>
-          </div>
-        )}
       </div>
 
+      {/* 🔹 Total & Item List */}
       {sumTotal() > 1 && (
-        <div>
-          <div className="bg-white p-4 rounded-2xl shadow mb-4 text-2xl">
-            <p className="text-2xl">
+        <div className="mt-6">
+          <div className="bg-white p-4 rounded-2xl shadow mb-4">
+            <p className="text-2xl font-semibold">
               Total:
-              <span className="px-2">
+              <span className="ml-2">
                 {Intl.NumberFormat("en-US").format(sumTotal())}
               </span>
             </p>
           </div>
+
           <ItemList qty={qty} minusQty={minusQty} items={items} />
+
+          {/* 🔹 Submit Button (pindah ke bawah) */}
+          {!blokir && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={submitForm}
+                className="bg-green-600 text-white text-xl px-6 py-3 rounded-xl shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              >
+                Submit
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -148,7 +150,7 @@ function ItemList({ items, qty, minusQty }) {
           .map((item) => (
             <li
               key={item.id}
-              className="flex justify-between items-center pb-1"
+              className="flex justify-between items-center border-b pb-1 last:border-b-0"
             >
               <button
                 className=" cursor-pointer"

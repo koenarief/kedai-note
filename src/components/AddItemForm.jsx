@@ -17,7 +17,7 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
 
   // ✅ Whenever selectedItem changes, pre-fill fields
   useEffect(() => {
-    if (selectedItem) {
+    if (selectedItem?.name) {
       setName(selectedItem.name || "");
       setPrice(selectedItem.price || "");
       setKategori(selectedItem.kategori || "");
