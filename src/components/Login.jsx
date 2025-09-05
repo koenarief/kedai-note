@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useState, useEffect } from "react";
+import { LogOut } from "lucide-react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
@@ -99,128 +100,109 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center my-4">
+    <div className="flex justify-center my-6">
       {user ? (
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3 bg-white shadow p-3 rounded-xl">
           {user.photoURL && (
             <img
               src={user.photoURL}
-              alt="av"
-              className="w-8 h-8 rounded-full"
+              alt="avatar"
+              className="w-9 h-9 rounded-full border"
             />
           )}
-
+          <span className="font-medium text-gray-700">
+            {user.displayName || user.email}
+          </span>
           <button
             onClick={handleLogout}
-            className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+            className="flex items-center gap-1 px-3 py-1.5 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
           >
+            <LogOut size={16} />
             Logout
           </button>
         </div>
       ) : (
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm ">
+        <div className="w-full max-w-sm">
+          {/* 🔹 Error message */}
           {error && (
-            <div
-              className="flex items-center p-4 mb-4 mt-4 text-blue-800 rounded-lg bg-white dark:bg-gray-800 dark:text-blue-400"
-              role="alert"
-            >
+            <div className="flex items-center p-3 mb-4 text-red-800 bg-red-100 border border-red-200 rounded-lg text-sm">
               <svg
-                className="shrink-0 w-4 h-4"
-                aria-hidden="true"
+                className="w-4 h-4 mr-2"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
               </svg>
-              <span className="sr-only">Info</span>
-              <div className="ms-3 text-sm font-medium">{error}</div>
+              <span>{error}</span>
               <button
                 type="button"
                 onClick={() => setError(null)}
-                className="ms-auto -mx-1.5 -my-1.5 bg-white text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
-                data-dismiss-target="#alert-1"
-                aria-label="Close"
+                className="ml-auto text-red-600 hover:text-red-800"
               >
-                <span className="sr-only">Close</span>
-                <svg
-                  className="w-3 h-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 14 14"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                  />
-                </svg>
+                ✕
               </button>
             </div>
           )}
 
-          <div className="mt-4 bg-white p-4 rounded-2xl shadow">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          {/* 🔹 Login form */}
+          <div className="bg-white p-6 rounded-2xl shadow-lg space-y-6">
+            <h2 className="text-xl font-semibold text-center text-gray-800">
+              Sign in
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm/6 font-medium text-gray-900">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email address
                 </label>
-                <div className="mt-2">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-900 
-    outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 sm:text-sm/6"
-                  />
-                </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  required
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                />
               </div>
 
               <div>
-                <div className="flex items-center justify-between">
-                  <label className="block text-sm/6 font-medium text-gray-900">
-                    Password
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md bg-gray-100 px-3 py-1.5 text-base text-gray-900
-    outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2
-    focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  />
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                  required
+                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                />
               </div>
 
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3
-            py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Sign in
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="w-full py-2 rounded-lg bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
+              >
+                Sign in
+              </button>
             </form>
 
-            <div className="my-4 text-center text-sm/6 text-gray-500">
-              <button
-                onClick={handleLogin}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-              >
-                Login dengan Google
-              </button>
+            <div className="flex items-center justify-center">
+              <span className="text-gray-500 text-sm">atau</span>
             </div>
+
+            {/* 🔹 Google login */}
+            <button
+              onClick={handleLogin}
+              className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 transition"
+            >
+              <img
+                src="https://www.svgrepo.com/show/355037/google.svg"
+                alt="Google"
+                className="w-4 h-4"
+              />
+              Login dengan Google
+            </button>
           </div>
         </div>
       )}

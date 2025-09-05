@@ -68,7 +68,6 @@ export default function App() {
                   setSelectedItem={setSelectedItem}
                 />
                 <ItemList user={user} setSelectedItem={setSelectedItem} />
-                <Login />
               </>
             )}
 
