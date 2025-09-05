@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 
-export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
+export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [kategori, setKategori] = useState("");

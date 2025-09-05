@@ -3,8 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
-import AddItemForm from "./components/AddItemForm";
 import HomeIcon from "./icons/HomeIcon";
+import ItemAddForm from "./components/ItemAddForm";
 import ItemForm from "./components/ItemForm";
 import ItemList from "./components/ItemList";
 import Login from "./components/Login";
@@ -63,7 +63,7 @@ export default function App() {
             {/* 🔹 Page content */}
             {page === "settings" && (
               <>
-                <AddItemForm
+                <ItemAddForm
                   user={user}
                   selectedItem={selectedItem}
                   setSelectedItem={setSelectedItem}
