@@ -1,8 +1,7 @@
-// src/components/Summary.jsx
-import { useEffect, useState } from "react";
-import { db } from "../firebase";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { format } from "date-fns";
+import { useEffect, useState } from 'react';
+import { db } from '../firebase';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { format } from 'date-fns';
 
 export default function Settings({ user }) {
   const [summary, setSummary] = useState({
@@ -21,8 +20,8 @@ export default function Settings({ user }) {
       today.getDate(),
     );
     const q = query(
-      collection(db, "users", user.uid, "sales"),
-      where("createdAt", ">=", start),
+      collection(db, 'users', user.uid, 'sales'),
+      where('createdAt', '>=', start),
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -50,14 +49,14 @@ export default function Settings({ user }) {
       <p>Jumlah Transaksi: {summary.count}</p>
       <p>Total Unit: {summary.totalQty}</p>
       <p>
-        Total Pendapatan:{" "}
-        {Intl.NumberFormat("en-US").format(summary.total / 1000)}k
+        Total Pendapatan:{' '}
+        {Intl.NumberFormat('en-US').format(summary.total / 1000)}k
       </p>
       <h3 className="mt-2 font-semibold">Pendapatan per item:</h3>
       <ul className="list-disc list-inside">
         {Object.entries(summary.perFlavor).map(([flavor, amt]) => (
           <li key={flavor}>
-            {flavor}: {Intl.NumberFormat("en-US").format(amt / 1000)}k
+            {flavor}: {Intl.NumberFormat('en-US').format(amt / 1000)}k
           </li>
         ))}
       </ul>

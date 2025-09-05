@@ -1,26 +1,25 @@
-// src/components/AddItemForm.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   collection,
   addDoc,
   serverTimestamp,
   doc,
   setDoc,
-} from "firebase/firestore";
-import { db } from "../firebase";
+} from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [kategori, setKategori] = useState("");
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [kategori, setKategori] = useState('');
   const [edit, setEdit] = useState(false);
 
   // ✅ Whenever selectedItem changes, pre-fill fields
   useEffect(() => {
     if (selectedItem?.name) {
-      setName(selectedItem.name || "");
-      setPrice(selectedItem.price || "");
-      setKategori(selectedItem.kategori || "");
+      setName(selectedItem.name || '');
+      setPrice(selectedItem.price || '');
+      setKategori(selectedItem.kategori || '');
       setEdit(true);
     }
   }, [selectedItem]);
@@ -29,12 +28,12 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
     e.preventDefault();
     if (!user) return;
 
-    if (!name || !price || !kategori) return alert("Lengkapi data item..");
+    if (!name || !price || !kategori) return alert('Lengkapi data item..');
 
     const harga = parseInt(price);
 
     if (edit) {
-      const reff = doc(db, "users", user.uid, "items", selectedItem.id);
+      const reff = doc(db, 'users', user.uid, 'items', selectedItem.id);
       await setDoc(
         reff,
         {
@@ -45,7 +44,7 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
         { merge: true },
       );
     } else {
-      await addDoc(collection(db, "users", user.uid, "items"), {
+      await addDoc(collection(db, 'users', user.uid, 'items'), {
         name,
         price: harga < 100 ? harga * 1000 : harga,
         kategori,
@@ -55,9 +54,9 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
 
     setEdit(false);
     setSelectedItem(null);
-    setName("");
-    setPrice("");
-    setKategori("");
+    setName('');
+    setPrice('');
+    setKategori('');
   };
 
   return (
@@ -66,7 +65,7 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
       className="bg-white p-4 rounded-2xl shadow mb-4 space-y-3"
     >
       <h2 className="text-lg font-bold">
-        {edit ? "✏️ Edit Item" : "➕ Tambah Item"}
+        {edit ? '✏️ Edit Item' : '➕ Tambah Item'}
       </h2>
 
       <div className="grid gap-3">
@@ -106,7 +105,7 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
         </div>
 
         <button className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium">
-          {edit ? "Update" : "Entri"}
+          {edit ? 'Update' : 'Entri'}
         </button>
       </div>
     </form>

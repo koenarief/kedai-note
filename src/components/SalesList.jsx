@@ -1,6 +1,5 @@
-// src/components/SalesList.jsx
-import { useEffect, useState } from "react";
-import { db } from "../firebase";
+import { useEffect, useState } from 'react';
+import { db } from '../firebase';
 import {
   collection,
   query,
@@ -8,12 +7,12 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
-} from "firebase/firestore";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+} from 'firebase/firestore';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import DeleteIcon from "../icons/DeleteIcon";
+import ConfirmDeleteModal from './ConfirmDeleteModal';
+import DeleteIcon from '../icons/DeleteIcon';
 
 export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
@@ -41,7 +40,7 @@ export default function SalesList({ user }) {
     // Perform your actual delete logic here, e.g., API call
 
     if (!user) return;
-    await deleteDoc(doc(db, "users", user.uid, "sales", itemToDelete));
+    await deleteDoc(doc(db, 'users', user.uid, 'sales', itemToDelete));
 
     setShowConfirm(false);
     setItemToDelete(null); // Clear itemToDelete
@@ -54,11 +53,11 @@ export default function SalesList({ user }) {
 
   useEffect(() => {
     dayjs.extend(relativeTime);
-    dayjs.locale("id");
+    dayjs.locale('id');
 
     const q = query(
-      collection(db, "users", user.uid, "sales"),
-      orderBy("createdAt", "desc"),
+      collection(db, 'users', user.uid, 'sales'),
+      orderBy('createdAt', 'desc'),
     );
     const unsub = onSnapshot(q, (snap) => {
       setSales(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -88,11 +87,11 @@ export default function SalesList({ user }) {
           >
             <div>
               <p>
-                {sale.flavor} / {sale.qty} x{" "}
-                {Intl.NumberFormat("en-US").format(sale.price / 1000)}k
+                {sale.flavor} / {sale.qty} x{' '}
+                {Intl.NumberFormat('en-US').format(sale.price / 1000)}k
                 <span>
-                  {" "}
-                  / {Intl.NumberFormat("en-US").format(sale.subTotal / 1000)}k
+                  {' '}
+                  / {Intl.NumberFormat('en-US').format(sale.subTotal / 1000)}k
                 </span>
               </p>
               <p className="text-xs">
