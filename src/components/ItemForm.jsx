@@ -98,7 +98,6 @@ export default function ItemForm({ user, blokir }) {
   return (
     <div>
       <div className="bg-white border border-gray-200 p-4 rounded-xl shadow mb-4 flex flex-wrap gap-2 justify-center">
-
         {items.map((item) => (
           <ItemCard
             key={item.id}
@@ -136,34 +135,34 @@ export default function ItemForm({ user, blokir }) {
           <ItemList qty={qty} minusQty={minusQty} items={items} />
         </div>
       )}
-
     </div>
   );
 }
 
 function ItemList({ items, qty, minusQty }) {
-
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">Nota Penjualan</h2>
       <ul className="space-y-2">
-        {items.filter(itm => qty[itm.id] > 0).map((item) => (
-          <li
-            key={item.id}
-            className="flex justify-between items-center pb-1"
-          >
+        {items
+          .filter((itm) => qty[itm.id] > 0)
+          .map((item) => (
+            <li
+              key={item.id}
+              className="flex justify-between items-center pb-1"
+            >
               <button
                 className=" cursor-pointer"
-                onClick={() => minusQty(item.id)}>
+                onClick={() => minusQty(item.id)}
+              >
                 {qty[item.id]} x {item.name}
                 <span className="ml-2">
                   @ {Intl.NumberFormat("en-US").format(item.price / 1000)}k
                 </span>
               </button>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
     </div>
   );
-
 }

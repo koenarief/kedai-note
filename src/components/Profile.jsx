@@ -1,5 +1,11 @@
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, onSnapshot, collection, getDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  collection,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 
@@ -41,7 +47,7 @@ export default function Profile({ setBlokir, blokir }) {
         { merge: true }, // merge biar tidak overwrite semua field
       );
     }
-  }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -62,10 +68,14 @@ export default function Profile({ setBlokir, blokir }) {
     <div className="flex justify-center my-4 bg-white p-4 rounded shadow">
       {blokir && <span>❌ Inactive — Sales Count: {qty}</span>}
       {active && <span>✅ Active</span>}
-      <input value={name}
+      <input
+        value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-80 bg-gray-100 p-2 border"/>
-      <button onClick={saveName} className="ml-2">Save</button>
+        className="w-80 bg-gray-100 p-2 border"
+      />
+      <button onClick={saveName} className="ml-2">
+        Save
+      </button>
     </div>
   );
 }

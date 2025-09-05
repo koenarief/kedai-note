@@ -6,7 +6,13 @@ import {
 } from "firebase/auth";
 import { auth, provider } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { setDoc, getDoc, doc, serverTimestamp, onSnapshot } from "firebase/firestore";
+import {
+  setDoc,
+  getDoc,
+  doc,
+  serverTimestamp,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { useState, useEffect } from "react";
 
@@ -57,7 +63,7 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if(user == null) {
+    if (user == null) {
       return;
     }
     const profileRef = doc(db, "profiles", user.uid);
