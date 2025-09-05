@@ -1,32 +1,32 @@
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   doc,
   onSnapshot,
   collection,
   getDoc,
   setDoc,
-} from 'firebase/firestore';
-import { db, auth } from '../firebase';
-import { useEffect, useState } from 'react';
-import InputModal from './InputModal';
+} from "firebase/firestore";
+import { db, auth } from "../firebase";
+import { useEffect, useState } from "react";
+import InputModal from "./InputModal";
 
 export default function Profile({ setBlokir, blokir }) {
   const [user] = useAuthState(auth);
   const [active, setActive] = useState(false);
   const [qty, setQty] = useState(0);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [inputModal, setInputModal] = useState(false);
-  const [tempName, setTempName] = useState('');
+  const [tempName, setTempName] = useState("");
 
   useEffect(() => {
     if (!user) return;
 
-    const profileRef = doc(db, 'profiles', user.uid);
+    const profileRef = doc(db, "profiles", user.uid);
 
     const unsub = onSnapshot(profileRef, (snap) => {
       if (snap.exists()) {
         const data = snap.data();
-        setName(data.name ?? '');
+        setName(data.name ?? "");
         setActive(data.active ?? false);
         if (data.active) setBlokir(false);
       }
@@ -37,7 +37,7 @@ export default function Profile({ setBlokir, blokir }) {
 
   const saveName = async (newName) => {
     if (!user) return;
-    const profileRef = doc(db, 'profiles', user.uid);
+    const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
     if (profileSnap.exists()) {
@@ -49,7 +49,7 @@ export default function Profile({ setBlokir, blokir }) {
   useEffect(() => {
     if (!user) return;
 
-    const trxRef = collection(db, 'users', user.uid, 'sales');
+    const trxRef = collection(db, "users", user.uid, "sales");
 
     const unsub = onSnapshot(trxRef, (snap) => {
       setQty(snap.size);
@@ -65,7 +65,7 @@ export default function Profile({ setBlokir, blokir }) {
     <div className="flex flex-col items-center gap-2 my-4 bg-white p-4 rounded shadow">
       {blokir && <span>❌ Inactive — Sales Count: {qty}</span>}
       {active && <span>✅ Active</span>}
-      <span className="font-medium">Nama Kedai: {name || 'Belum diisi'}</span>
+      <span className="font-medium">Nama Kedai: {name || "Belum diisi"}</span>
 
       <button
         onClick={() => {

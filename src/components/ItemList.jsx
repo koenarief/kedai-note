@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { db } from '../firebase';
+import { useEffect, useState } from "react";
+import { db } from "../firebase";
 import {
   collection,
   query,
@@ -7,12 +7,12 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
-} from 'firebase/firestore';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+} from "firebase/firestore";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-import ConfirmDeleteModal from './ConfirmDeleteModal';
-import DeleteIcon from '../icons/DeleteIcon';
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import DeleteIcon from "../icons/DeleteIcon";
 
 export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);
@@ -29,7 +29,7 @@ export default function ItemList({ user, setSelectedItem }) {
   const handleConfirmDelete = async () => {
     if (!user) return;
 
-    await deleteDoc(doc(db, 'users', user.uid, 'items', itemToDelete));
+    await deleteDoc(doc(db, "users", user.uid, "items", itemToDelete));
 
     setShowConfirm(false);
     setItemToDelete(null);
@@ -42,8 +42,8 @@ export default function ItemList({ user, setSelectedItem }) {
 
   useEffect(() => {
     const q = query(
-      collection(db, 'users', user.uid, 'items'),
-      orderBy('createdAt', 'asc'),
+      collection(db, "users", user.uid, "items"),
+      orderBy("createdAt", "asc"),
     );
     const unsub = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -64,12 +64,12 @@ export default function ItemList({ user, setSelectedItem }) {
               <button onClick={() => setSelectedItem(item)}>
                 {item.kategori} / {item.name}
                 <span>
-                  {' '}
-                  / {Intl.NumberFormat('en-US').format(item.price / 1000)}k
+                  {" "}
+                  / {Intl.NumberFormat("en-US").format(item.price / 1000)}k
                 </span>
               </button>
               <p className="text-xs">
-                {dayjs(item.createdAt?.toDate()).format('DD/MM/YYYY HH:mm')}
+                {dayjs(item.createdAt?.toDate()).format("DD/MM/YYYY HH:mm")}
               </p>
             </div>
             <div className="space-x-2">

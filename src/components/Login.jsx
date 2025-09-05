@@ -2,25 +2,25 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
-} from 'firebase/auth';
-import { auth, provider } from '../firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+} from "firebase/auth";
+import { auth, provider } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   setDoc,
   getDoc,
   doc,
   serverTimestamp,
   onSnapshot,
-} from 'firebase/firestore';
-import { db } from '../firebase';
-import { useState, useEffect } from 'react';
+} from "firebase/firestore";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -33,12 +33,12 @@ export default function Login() {
       })
       .catch((error) => {
         setError(error.message);
-        console.error('Sign in error:', error.message);
+        console.error("Sign in error:", error.message);
       });
   };
 
   async function saveUserProfile(user) {
-    const profileRef = doc(db, 'profiles', user.uid);
+    const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
     if (profileSnap.exists()) {
@@ -65,7 +65,7 @@ export default function Login() {
     if (user == null) {
       return;
     }
-    const profileRef = doc(db, 'profiles', user.uid);
+    const profileRef = doc(db, "profiles", user.uid);
     const unsub = onSnapshot(profileRef, async (snap) => {
       if (snap.exists()) {
         const data = snap.data();
@@ -83,14 +83,14 @@ export default function Login() {
   }, [user]);
 
   useEffect(() => {
-    if (email || password) setError('');
+    if (email || password) setError("");
   }, [email, password]);
 
   const handleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
-      console.error('Login gagal', err);
+      console.error("Login gagal", err);
     }
   };
 

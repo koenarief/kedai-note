@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from './firebase';
-import { doc, onSnapshot, getDoc } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "./firebase";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
-import AddItemForm from './components/AddItemForm';
-import HomeIcon from './icons/HomeIcon';
-import ItemForm from './components/ItemForm';
-import ItemList from './components/ItemList';
-import Login from './components/Login';
-import NavMenu from './components/NavMenu';
-import Profile from './components/Profile';
-import SalesList from './components/SalesList';
-import Settings from './components/Settings';
-import Summary from './components/Summary';
+import AddItemForm from "./components/AddItemForm";
+import HomeIcon from "./icons/HomeIcon";
+import ItemForm from "./components/ItemForm";
+import ItemList from "./components/ItemList";
+import Login from "./components/Login";
+import NavMenu from "./components/NavMenu";
+import Profile from "./components/Profile";
+import SalesList from "./components/SalesList";
+import Settings from "./components/Settings";
+import Summary from "./components/Summary";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
-  const [page, setPage] = useState('home');
-  const [name, setName] = useState('');
+  const [page, setPage] = useState("home");
+  const [name, setName] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
   const [blokir, setBlokir] = useState(false);
   const [open, setOpen] = useState(false);
@@ -25,13 +25,13 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
 
-    const profileRef = doc(db, 'profiles', user.uid);
+    const profileRef = doc(db, "profiles", user.uid);
 
     // 🔹 sekali fetch awal (biar langsung muncul)
     getDoc(profileRef).then((snap) => {
       if (snap.exists()) {
         const data = snap.data();
-        setName(data.name ?? '');
+        setName(data.name ?? "");
       }
     });
 
@@ -39,7 +39,7 @@ export default function App() {
     const unsub = onSnapshot(profileRef, (snap) => {
       if (snap.exists()) {
         const data = snap.data();
-        setName(data.name ?? '');
+        setName(data.name ?? "");
       }
     });
 
@@ -52,7 +52,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-2xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-center">
-          📊 Jurnal Harian {name || '—'}
+          📊 Jurnal Harian {name || "—"}
         </h1>
 
         {user ? (
@@ -61,7 +61,7 @@ export default function App() {
             <NavMenu page={page} setPage={setPage} />
 
             {/* 🔹 Page content */}
-            {page === 'settings' && (
+            {page === "settings" && (
               <>
                 <AddItemForm
                   user={user}
@@ -73,7 +73,7 @@ export default function App() {
               </>
             )}
 
-            {page === 'home' && (
+            {page === "home" && (
               <>
                 <ItemForm user={user} blokir={blokir} />
                 <Summary user={user} />

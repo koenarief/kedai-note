@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   collection,
   addDoc,
@@ -6,16 +6,16 @@ import {
   query,
   orderBy,
   onSnapshot,
-} from 'firebase/firestore';
-import { db } from '../firebase';
-import short from 'short-uuid';
-import ItemCard from './ItemCard';
+} from "firebase/firestore";
+import { db } from "../firebase";
+import short from "short-uuid";
+import ItemCard from "./ItemCard";
 
 const itemsSample = [
-  { id: 1, name: 'Esteh Manis', price: 2500, kategori: 'Minuman' },
-  { id: 2, name: 'Teh Hangat', price: 2000, kategori: 'Minuman' },
-  { id: 3, name: 'Kopi Hitam', price: 3000, kategori: 'Minuman' },
-  { id: 4, name: 'Kopi Susu', price: 3500, kategori: 'Minuman' },
+  { id: 1, name: "Esteh Manis", price: 2500, kategori: "Minuman" },
+  { id: 2, name: "Teh Hangat", price: 2000, kategori: "Minuman" },
+  { id: 3, name: "Kopi Hitam", price: 3000, kategori: "Minuman" },
+  { id: 4, name: "Kopi Susu", price: 3500, kategori: "Minuman" },
 ];
 
 export default function ItemForm({ user, blokir }) {
@@ -25,7 +25,7 @@ export default function ItemForm({ user, blokir }) {
   let running = false;
 
   useEffect(() => {
-    const q = query(collection(db, 'users', user.uid, 'items'));
+    const q = query(collection(db, "users", user.uid, "items"));
     const unsub = onSnapshot(q, (snap) => {
       if (running) {
         return;
@@ -33,7 +33,7 @@ export default function ItemForm({ user, blokir }) {
       running = true;
       if (snap.empty) {
         itemsSample.forEach(async (item) => {
-          await addDoc(collection(db, 'users', user.uid, 'items'), {
+          await addDoc(collection(db, "users", user.uid, "items"), {
             name: item.name,
             price: item.price,
             kategori: item.kategori,
@@ -47,8 +47,8 @@ export default function ItemForm({ user, blokir }) {
 
   useEffect(() => {
     const q = query(
-      collection(db, 'users', user.uid, 'items'),
-      orderBy('createdAt', 'asc'),
+      collection(db, "users", user.uid, "items"),
+      orderBy("createdAt", "asc"),
     );
     const unsub = onSnapshot(q, (snap) => {
       setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
@@ -85,7 +85,7 @@ export default function ItemForm({ user, blokir }) {
     const shortId = translator.generate();
     items.forEach(async (item) => {
       if (qty[item.id] > 0) {
-        await addDoc(collection(db, 'users', user.uid, 'sales'), {
+        await addDoc(collection(db, "users", user.uid, "sales"), {
           flavor: item.name,
           price: parseInt(item.price),
           qty: parseInt(qty[item.id]),
@@ -120,7 +120,7 @@ export default function ItemForm({ user, blokir }) {
             <p className="text-2xl font-semibold">
               Total:
               <span className="ml-2">
-                {Intl.NumberFormat('en-US').format(sumTotal())}
+                {Intl.NumberFormat("en-US").format(sumTotal())}
               </span>
             </p>
           </div>
@@ -162,7 +162,7 @@ function ItemList({ items, qty, minusQty }) {
               >
                 {qty[item.id]} x {item.name}
                 <span className="ml-2">
-                  @ {Intl.NumberFormat('en-US').format(item.price / 1000)}k
+                  @ {Intl.NumberFormat("en-US").format(item.price / 1000)}k
                 </span>
               </button>
             </li>

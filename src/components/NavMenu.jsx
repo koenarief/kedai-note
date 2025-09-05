@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Menu } from 'lucide-react'; // icon hamburger
+import { useState } from "react";
+import { Menu } from "lucide-react"; // icon hamburger
 
 export default function NavMenu({ page, setPage }) {
   const [open, setOpen] = useState(false);
@@ -19,22 +19,22 @@ export default function NavMenu({ page, setPage }) {
         <div className="absolute top-12 bg-white shadow-lg rounded-lg border w-40 py-2 z-50">
           <button
             onClick={() => {
-              setPage('home');
+              setPage("home");
               setOpen(false);
             }}
             className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
-              page === 'home' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+              page === "home" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             🏠 Home
           </button>
           <button
             onClick={() => {
-              setPage('settings');
+              setPage("settings");
               setOpen(false);
             }}
             className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
-              page === 'settings' ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+              page === "settings" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             ➕ Kelola Item
