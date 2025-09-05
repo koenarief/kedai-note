@@ -2,18 +2,18 @@
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
-import Login from "./components/Login";
 
-import ItemForm from "./components/ItemForm";
+import AddIcon from "./icons/AddIcon";
 import AddItemForm from "./components/AddItemForm";
+import HomeIcon from "./icons/HomeIcon";
+import ItemForm from "./components/ItemForm";
+import ItemList from "./components/ItemList";
+import Login from "./components/Login";
+import Profile from "./components/Profile";
 import SalesForm from "./components/SalesForm";
 import SalesList from "./components/SalesList";
-import ItemList from "./components/ItemList";
-import Summary from "./components/Summary";
 import Settings from "./components/Settings";
-import Profile from "./components/Profile";
-import HomeIcon from "./icons/HomeIcon";
-import AddIcon from "./icons/AddIcon";
+import Summary from "./components/Summary";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
