@@ -25,7 +25,6 @@ export default function App() {
 
   useEffect(() => {
     if (!user) return;
-    if (name) return;
 
     const profileRef = doc(db, "profiles", user.uid);
 
@@ -52,36 +51,52 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-2xl mx-auto space-y-4">
+      <div className="max-w-2xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-center">
-          📊 Jurnal Harian {name}
+          📊 Jurnal Harian {name || "—"}
         </h1>
 
-        {user && (
-          <div className="flex justify-center my-4">
-            <button onClick={() => setPage("home")}>
-              <HomeIcon />
-            </button>
-            <button className="ml-2" onClick={() => setPage("settings")}>
-              <AddIcon />
-            </button>
-          </div>
-        )}
-
-        {page == "settings" && user && (
+        {user ? (
           <>
-            <AddItemForm
-              user={user}
-              selectedItem={selectedItem}
-              setSelectedItem={setSelectedItem}
-            />
-            <ItemList user={user} setSelectedItem={setSelectedItem} />
-          </>
-        )}
+            {/* 🔹 Navigation */}
+            <div className="flex justify-center my-4 gap-2">
+              <button
+                onClick={() => setPage("home")}
+                className={`px-4 py-2 rounded-lg flex items-center gap-1 ${
+                  page === "home"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                <HomeIcon />
+                <span className="hidden sm:inline">Home</span>
+              </button>
+              <button
+                onClick={() => setPage("settings")}
+                className={`px-4 py-2 rounded-lg flex items-center gap-1 ${
+                  page === "settings"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                <AddIcon />
+                <span className="hidden sm:inline">Tambah</span>
+              </button>
+            </div>
 
-        {page == "home" && (
-          <>
-            {user && (
+            {/* 🔹 Page content */}
+            {page === "settings" && (
+              <>
+                <AddItemForm
+                  user={user}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                />
+                <ItemList user={user} setSelectedItem={setSelectedItem} />
+              </>
+            )}
+
+            {page === "home" && (
               <>
                 <ItemForm user={user} blokir={blokir} />
                 <Summary user={user} />
@@ -90,9 +105,10 @@ export default function App() {
               </>
             )}
           </>
+        ) : (
+          // 🔹 Hanya tampilkan login kalau belum ada user
+          <Login />
         )}
-
-        <Login />
       </div>
     </div>
   );

@@ -63,33 +63,50 @@ export default function AddItemForm({ selectedItem, user, setSelectedItem }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-4 rounded-2xl shadow mb-4"
+      className="bg-white p-4 rounded-2xl shadow mb-4 space-y-3"
     >
-      <h2 className="text-lg font-bold mb-2">
-        {edit ? "Edit Item" : "Tambah Item"}
+      <h2 className="text-lg font-bold">
+        {edit ? "✏️ Edit Item" : "➕ Tambah Item"}
       </h2>
-      <div className="grid gap-2">
-        <input
-          className="border p-2 rounded"
-          placeholder="Item"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="number"
-          className="border p-2 rounded"
-          placeholder="Harga"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <input
-          className="border p-2 rounded"
-          placeholder="Kategori"
-          value={kategori}
-          onChange={(e) => setKategori(e.target.value)}
-        />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-          Entri
+
+      <div className="grid gap-3">
+        <div>
+          <label className="block text-sm font-medium mb-1">Nama Item</label>
+          <input
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+            placeholder="Masukkan nama item"
+            value={name}
+            autoFocus={!edit}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Harga</label>
+          <input
+            type="number"
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+            placeholder="0"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            min="0"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Kategori</label>
+          <input
+            className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+            placeholder="Misalnya: Minuman"
+            value={kategori}
+            onChange={(e) => setKategori(e.target.value)}
+          />
+        </div>
+
+        <button className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium">
+          {edit ? "Update" : "Entri"}
         </button>
       </div>
     </form>
