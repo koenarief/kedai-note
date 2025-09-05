@@ -11,7 +11,6 @@ import ItemList from "./components/ItemList";
 import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
-import SalesForm from "./components/SalesForm";
 import SalesList from "./components/SalesList";
 import Settings from "./components/Settings";
 import Summary from "./components/Summary";

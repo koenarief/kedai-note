@@ -70,10 +70,14 @@ export default function ItemForm({ user, blokir }) {
   };
 
   const minusQty = (id) => {
-    setQty((prev) => ({
-      ...prev,
-      [id]: Math.max((prev[id] ?? 0) - 1, 0),
-    }));
+    setQty((prev) => {
+      const current = prev[id] ?? 0;
+      if (current <= 0) return prev; // tidak perlu update kalau sudah 0
+      return {
+        ...prev,
+        [id]: current - 1,
+      };
+    });
   };
 
   const submitForm = () => {
