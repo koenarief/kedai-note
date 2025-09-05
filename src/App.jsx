@@ -5,7 +5,7 @@ import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
 import HomeIcon from "./icons/HomeIcon";
 import ItemAddForm from "./components/ItemAddForm";
-import ItemForm from "./components/ItemForm";
+import ItemCardList from "./components/ItemCardList";
 import ItemList from "./components/ItemList";
 import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
@@ -75,7 +75,7 @@ export default function App() {
 
             {page === "home" && (
               <>
-                <ItemForm user={user} blokir={blokir} />
+                <ItemCardList user={user} blokir={blokir} />
                 <Summary user={user} />
                 <SalesList user={user} />
                 <Profile setBlokir={setBlokir} blokir={blokir} />
