@@ -70,10 +70,9 @@ export default function ItemForm({ user, blokir }) {
   };
 
   const minusQty = (id) => {
-    const newval = (qty[id] ?? 0) - 1;
     setQty((prev) => ({
       ...prev,
-      [id]: newval > -1 ? newval : 0,
+      [id]: Math.max((prev[id] ?? 0) - 1, 0),
     }));
   };
 
@@ -97,7 +96,7 @@ export default function ItemForm({ user, blokir }) {
 
   return (
     <div>
-      <div className="bg-white border border-gray-200 p-4 rounded-xl shadow mb-4 flex flex-wrap gap-2 justify-center">
+      <div className="flex flex-wrap gap-4 justify-center">
         {items.map((item) => (
           <ItemCard
             key={item.id}
@@ -111,7 +110,7 @@ export default function ItemForm({ user, blokir }) {
         <div className="basis-full h-0"></div>
 
         {!blokir && (
-          <div className="-mt-2">
+          <div className="-mt-4">
             <button
               onClick={submitForm}
               className="bg-green-600 text-white text-2xl px-4 py-2 rounded hover:border-green-800 hover:shadow-xl cursor-pointer"
