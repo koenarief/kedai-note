@@ -1,3 +1,13 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+ConfirmDeleteModal.propTypes = {
+  isOpen: PropTypes.object.isRequired,
+  onConfirm: PropTypes.object.isRequired,
+  onCancel: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+};
+
 export default function ConfirmDeleteModal({
   isOpen,
   onConfirm,

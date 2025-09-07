@@ -13,7 +13,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LogOut } from "lucide-react";
 
 export default function Login() {
@@ -25,6 +25,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
+    console.log(name);
 
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {

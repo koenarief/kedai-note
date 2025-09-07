@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import {
   collection,
@@ -14,6 +14,12 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
+import PropTypes from "prop-types";
+
+SalesList.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
 export default function SalesList({ user }) {
   const [sales, setSales] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -25,6 +31,7 @@ export default function SalesList({ user }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date());
+      console.log(time);
     }, 10000);
 
     return () => clearInterval(interval);

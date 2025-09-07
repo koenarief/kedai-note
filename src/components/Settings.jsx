@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { format } from "date-fns";
+import PropTypes from 'prop-types';
+
+Settings.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 export default function Settings({ user }) {
   const [summary, setSummary] = useState({

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import {
   collection,
@@ -11,9 +11,15 @@ import {
 import { Trash2 } from "lucide-react";
 
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import PropTypes from 'prop-types';
+
+ItemList.propTypes = {
+  user: PropTypes.object.isRequired,
+  setSelectedItem: PropTypes.object.isRequired,
+  blokir: PropTypes.boolean,
+};
 
 export default function ItemList({ user, setSelectedItem }) {
   const [items, setItems] = useState([]);

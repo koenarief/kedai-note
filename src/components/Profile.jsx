@@ -1,4 +1,4 @@
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useAuthState } from "react-firebase-hooks/auth";
 import {
   doc,
   onSnapshot,
@@ -9,6 +9,12 @@ import {
 import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 import InputModal from "./InputModal";
+import PropTypes from 'prop-types';
+
+Profile.propTypes = {
+  setBlokir: PropTypes.object.isRequired,
+  blokir: PropTypes.boolean,
+};
 
 export default function Profile({ setBlokir, blokir }) {
   const [user] = useAuthState(auth);

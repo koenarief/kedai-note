@@ -1,5 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import PropTypes from 'prop-types';
+
+InputModal.propTypes = {
+  isOpen: PropTypes.object.isRequired,
+  onConfirm: PropTypes.object.isRequired,
+  onCancel: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  value: PropTypes.object.isRequired,
+};
 
 export default function InputModal({
   isOpen,

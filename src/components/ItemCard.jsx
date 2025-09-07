@@ -1,3 +1,14 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+ItemCard.propTypes = {
+  onAdd: PropTypes.object.isRequired,
+  onSub: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  qty: PropTypes.object.isRequired,
+};
+
+
 export default function ItemCard({ onAdd, onSub, item, qty }) {
   return (
     <div

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   collection,
   addDoc,
@@ -10,6 +10,18 @@ import {
 import { db } from "../firebase";
 import short from "short-uuid";
 import ItemCard from "./ItemCard";
+import PropTypes from 'prop-types';
+
+ItemCardList.propTypes = {
+  user: PropTypes.object.isRequired,
+  blokir: PropTypes.boolean,
+};
+
+ItemList.propTypes = {
+  items: PropTypes.object.isRequired,
+  qty: PropTypes.object.isRequired,
+  minusQty: PropTypes.object.isRequired,
+};
 
 const itemsSample = [
   { id: 1, name: "Esteh Manis", price: 2500, kategori: "Minuman" },

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   collection,
   addDoc,
@@ -7,6 +7,13 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import PropTypes from 'prop-types';
+
+ItemAddForm.propTypes = {
+  user: PropTypes.object.isRequired,
+  selectedItem: PropTypes.object.isRequired,
+  setSelectedItem: PropTypes.object.isRequired,
+};
 
 export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
   const [name, setName] = useState("");

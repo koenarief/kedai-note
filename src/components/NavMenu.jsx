@@ -1,7 +1,13 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Menu, LogOut } from "lucide-react"; // 🔹 tambah icon logout
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import PropTypes from 'prop-types';
+
+NavMenu.propTypes = {
+  setPage: PropTypes.object.isRequired,
+  page: PropTypes.string,
+};
 
 export default function NavMenu({ page, setPage }) {
   const [open, setOpen] = useState(false);
