@@ -10,7 +10,7 @@ import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
 import SalesList from "./components/SalesList";
-import Settings from "./components/Settings";
+// import Settings from "./components/Settings";
 import Summary from "./components/Summary";
 
 export default function App() {

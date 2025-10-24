@@ -1,4 +1,5 @@
-import React, { useAuthState } from "react-firebase-hooks/auth";
+import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   doc,
   onSnapshot,
