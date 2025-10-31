@@ -5,9 +5,53 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kedainote</title>
+
+    <link rel="stylesheet" href="shopo-admin/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="shopo-admin/css/font-awesome-all.min.css" />
+    <link rel="stylesheet" href="shopo-admin/css/charts.min.css" />
+    <link rel="stylesheet" href="shopo-admin/css/datatables.min.css" />
+    <link rel="stylesheet" href="shopo-admin/css/jvector-map.css" />
+    <link rel="stylesheet" href="shopo-admin/css/slickslider.min.css" />
+    <link rel="stylesheet" href="shopo-admin/css/jquery-ui.css" />
+    <link rel="stylesheet" href="shopo-admin/css/reset.css" />
+    <link rel="stylesheet" href="shopo-admin/style.css" />
   </head>
-  <body>
-    <div id="root"></div>
+  <body id="sherah-dark-light">
+
+    <div class="sherah-body-area">
+      <div id="root"></div>
+    </div>
+
     <script type="module" src="/src/main.jsx"></script>
+
+    <script src="shopo-admin/js/jquery.min.js"></script>
+    <script src="shopo-admin/js/jquery-migrate.js"></script>
+    <script src="shopo-admin/js/jquery-ui.min.js"></script>
+    <script src="shopo-admin/js/popper.min.js"></script>
+    <script src="shopo-admin/js/bootstrap.min.js"></script>
+    <script src="shopo-admin/js/charts.js"></script>
+    <script src="shopo-admin/js/datatables.min.js"></script>
+    <script src="shopo-admin/js/circle-progress.min.js"></script>
+    <script src="shopo-admin/js/jquery-jvectormap.js"></script>
+    <script src="shopo-admin/js/jvector-map.js"></script>
+    <script src="shopo-admin/js/main.js"></script>
+    <script>
+      $("#sherah-table__vendor").DataTable({
+        searching: true,
+        info: false,
+        lengthChange: true,
+        scrollCollapse: true,
+        paging: true,
+        language: {
+          paginate: {
+            next: '<i class="fas fa-angle-right"></i>', // Font Awesome class for next button
+            previous: '<i class="fas fa-angle-left"></i>', // Font Awesome class for previous button
+          },
+          lengthMenu: "Showing _MENU_",
+          searchPlaceholder: "Search...",
+          search: '<span class="sherah-data-table-label">Search</span>',
+        },
+      });
+    </script>
   </body>
 </html>
