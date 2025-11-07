@@ -44,11 +44,13 @@ export default function ItemCardList({ user, blokir }) {
       }
       running = true;
       if (snap.empty) {
+		const url = 'https://firebasestorage.googleapis.com/v0/b/rife-522b2.appspot.com/o/esteh-app%2Fdefault.png?alt=media&token=9cfb0007-3a4f-4d12-9d2a-12456c9ebbf0';
         itemsSample.forEach(async (item) => {
           await addDoc(collection(db, "users", user.uid, "items"), {
             name: item.name,
             price: item.price,
             kategori: item.kategori,
+			image: url,
             createdAt: serverTimestamp(),
           });
         });

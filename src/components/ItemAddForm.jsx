@@ -7,7 +7,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import ImageUploaderTailwind from "./ImageUploaderTailwind";
 
 ItemAddForm.propTypes = {
   user: PropTypes.object.isRequired,
@@ -16,6 +17,7 @@ ItemAddForm.propTypes = {
 };
 
 export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
+  const [imageUrl, setImageUrl] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [kategori, setKategori] = useState("");
@@ -27,6 +29,7 @@ export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
       setName(selectedItem.name || "");
       setPrice(selectedItem.price || "");
       setKategori(selectedItem.kategori || "");
+      setImageUrl(selectedItem.image || "");
       setEdit(true);
     }
   }, [selectedItem]);
@@ -47,6 +50,7 @@ export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
           name,
           price: harga < 100 ? harga * 1000 : harga,
           kategori,
+          image: imageUrl,
         },
         { merge: true },
       );
@@ -55,12 +59,14 @@ export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
         name,
         price: harga < 100 ? harga * 1000 : harga,
         kategori,
+        image: imageUrl,
         createdAt: serverTimestamp(),
       });
     }
 
     setEdit(false);
     setSelectedItem(null);
+    setImageUrl(null);
     setName("");
     setPrice("");
     setKategori("");
@@ -109,6 +115,10 @@ export default function ItemAddForm({ selectedItem, user, setSelectedItem }) {
             value={kategori}
             onChange={(e) => setKategori(e.target.value)}
           />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Image</label>
+          <ImageUploaderTailwind imageUrl={imageUrl} setImageUrl={setImageUrl} />
         </div>
 
         <button className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium">

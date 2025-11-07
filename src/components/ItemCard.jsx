@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 ItemCard.propTypes = {
   onAdd: PropTypes.object.isRequired,
@@ -8,12 +8,15 @@ ItemCard.propTypes = {
   qty: PropTypes.object.isRequired,
 };
 
-
 export default function ItemCard({ onAdd, onSub, item, qty }) {
+
   return (
     <div
       onClick={onAdd}
-      className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 mb-6group relative rounded-2xl hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px]"
+      style={{
+        backgroundImage: `url(${item.image})`,
+      }}
+      className="bg-cover bg-center rounded-xl shadow-lg p-6 mb-6 group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px]"
     >
       {qty[item.id] > 0 && (
         <div onClick={(e) => e.stopPropagation()}>
