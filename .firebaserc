@@ -1,12 +1,13 @@
 {
   "projects": {
-    "default": "gemilang-bsbr"
+    "default-old": "gemilang-bsbr",
+    "default": "smarthome-782c5"
   },
   "targets": {
-    "gemilang-bsbr": {
+    "default": {
       "hosting": {
-        "kopiku": [
-          "kopiku"
+        "site-01": [
+          "smarthome-782c5"
         ]
       }
     }

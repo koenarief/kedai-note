@@ -5,12 +5,13 @@ import {
   onSnapshot,
   collection,
   getDoc,
+  serverTimestamp,
   setDoc,
 } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 import InputModal from "./InputModal";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 Profile.propTypes = {
   setBlokir: PropTypes.object.isRequired,
@@ -36,6 +37,13 @@ export default function Profile({ setBlokir, blokir }) {
         setName(data.name ?? "");
         setActive(data.active ?? false);
         if (data.active) setBlokir(false);
+      } else {
+        setDoc(profileRef, {
+          email: user.email,
+          name: user.displayName,
+          createdAt: serverTimestamp(),
+          active: false,
+        });
       }
     });
 
@@ -49,6 +57,13 @@ export default function Profile({ setBlokir, blokir }) {
 
     if (profileSnap.exists()) {
       await setDoc(profileRef, { name: newName }, { merge: true });
+    } else {
+      setDoc(profileRef, {
+        email: user.email,
+        name: newName,
+        createdAt: serverTimestamp(),
+        active: false,
+      });
     }
     setInputModal(false);
   };
