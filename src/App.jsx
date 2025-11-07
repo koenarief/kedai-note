@@ -60,6 +60,10 @@ export default function App() {
             <NavMenu page={page} setPage={setPage} />
 
             {/* 🔹 Page content */}
+            {page === "profile" && (
+                <Profile setBlokir={setBlokir} blokir={blokir} />
+            )}
+
             {page === "settings" && (
               <>
                 <ItemAddForm
@@ -76,7 +80,6 @@ export default function App() {
                 <ItemCardList user={user} blokir={blokir} />
                 <Summary user={user} />
                 <SalesList user={user} />
-                <Profile setBlokir={setBlokir} blokir={blokir} />
               </>
             )}
           </>

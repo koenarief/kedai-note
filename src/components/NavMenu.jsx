@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Menu, LogOut } from "lucide-react"; // 🔹 tambah icon logout
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { ShoppingCart, Home, Wallet, BarChart3, Settings, User } from "lucide-react";
 
 NavMenu.propTypes = {
   setPage: PropTypes.object.isRequired,
@@ -14,6 +15,11 @@ export default function NavMenu({ page, setPage }) {
 
   const handleLogout = async () => {
     await signOut(auth);
+    setOpen(false);
+  };
+
+  const openPage = (page) => {
+    setPage(page);
     setOpen(false);
   };
 
@@ -29,35 +35,74 @@ export default function NavMenu({ page, setPage }) {
 
       {/* 🔹 Dropdown menu */}
       {open && (
-        <div className="absolute top-12 bg-white shadow-lg rounded-lg border w-40 py-2 z-50">
+        <div className="absolute top-12 bg-white shadow-lg rounded-lg border w-48 py-2 z-50">
+          {/* 🏠 Penjualan */}
           <button
-            onClick={() => {
-              setPage("home");
-              setOpen(false);
-            }}
-            className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
+            onClick={() => openPage("home")}
+            className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
               page === "home" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
-            🏠 Home
+            <ShoppingCart className="w-4 h-4" />
+            Penjualan
           </button>
 
+          {/* 💸 Pengeluaran */}
           <button
-            onClick={() => {
-              setPage("settings");
-              setOpen(false);
-            }}
-            className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "settings" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+            onClick={() => openPage("pengeluaran")}
+            className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
+              page === "pengeluaran"
+                ? "bg-blue-50 text-blue-600"
+                : "text-gray-700"
             }`}
           >
-            ➕ Kelola Item
+            <Wallet className="w-4 h-4" />
+            Pengeluaran
           </button>
 
           {/* 🔹 Separator */}
           <div className="border-t my-2"></div>
 
-          {/* 🔹 Logout */}
+          {/* 📊 Laba Rugi */}
+          <button
+            onClick={() => openPage("labarugi")}
+            className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
+              page === "labarugi" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+            }`}
+          >
+            <BarChart3 className="w-4 h-4" />
+            Laba - Rugi
+          </button>
+
+          {/* 🔹 Separator */}
+          <div className="border-t my-2"></div>
+
+          {/* ⚙️ Kelola Item */}
+          <button
+            onClick={() => openPage("settings")}
+            className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
+              page === "settings" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+            }`}
+          >
+            <Settings className="w-4 h-4" />
+            Kelola Item
+          </button>
+
+          {/* 👤 Profile */}
+          <button
+            onClick={() => openPage("profile")}
+            className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
+              page === "profile" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+            }`}
+          >
+            <User className="w-4 h-4" />
+            Profile
+          </button>
+
+          {/* 🔹 Separator */}
+          <div className="border-t my-2"></div>
+
+          {/* 🚪 Logout */}
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 text-red-600"

@@ -87,7 +87,7 @@ export default function Profile({ setBlokir, blokir }) {
     <div className="flex flex-col items-center gap-2 my-4 bg-white p-4 rounded shadow">
       {blokir && <span>❌ Inactive — Sales Count: {qty}</span>}
       {active && <span>✅ Active</span>}
-      <span className="font-medium">Nama Kedai: {name || "Belum diisi"}</span>
+      <span className="font-medium">Nama Merchant: {name || "Belum diisi"}</span>
 
       <button
         onClick={() => {
@@ -105,7 +105,7 @@ export default function Profile({ setBlokir, blokir }) {
           value={tempName}
           onConfirm={saveName}
           onCancel={() => setInputModal(false)}
-          item="Nama Kedai"
+          item="Nama Merchant"
         />
       )}
     </div>

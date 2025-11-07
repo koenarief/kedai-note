@@ -13,7 +13,7 @@ function ImageUploaderTailwind({ imageUrl, setImageUrl }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(null);
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   // --- Fungsi Upload Utama ---
   const handleUpload = (file) => {

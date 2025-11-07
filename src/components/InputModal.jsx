@@ -37,7 +37,7 @@ export default function InputModal({
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <h2 className="text-xl font-semibold">Input {item}</h2>
+            <h2 className="text-xl font-semibold">{item}</h2>
 
             <input
               value={data}
