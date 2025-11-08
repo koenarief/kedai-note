@@ -98,7 +98,7 @@ export default function ItemCardList() {
     items.forEach(async (item) => {
       if (qty[item.id] > 0) {
         await addDoc(collection(db, "users", user.uid, "sales"), {
-          flavor: item.name,
+          name: item.name,
           price: parseInt(item.price),
           qty: parseInt(qty[item.id]),
           subTotal: item.price * qty[item.id],

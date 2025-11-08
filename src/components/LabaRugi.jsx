@@ -15,7 +15,7 @@ export default function LabaRugi() {
     count: 0,
     totalQty: 0,
     total: 0,
-    perFlavor: {},
+    perName: {},
   });
 
   const [summaryBelanja, setSummaryBelanja] = useState({
@@ -79,16 +79,16 @@ export default function LabaRugi() {
       let count = 0,
         totalQty = 0,
         total = 0;
-      let perFlavor = {};
+      let perName = {};
       snap.forEach((d) => {
         const data = d.data();
         count++;
         totalQty += data.qty;
         total += data.price * data.qty;
-        perFlavor[data.flavor] =
-          (perFlavor[data.flavor] || 0) + data.price * data.qty;
+        perName[data.name] =
+          (perName[data.name] || 0) + data.price * data.qty;
       });
-      setSummary({ count, totalQty, total, perFlavor });
+      setSummary({ count, totalQty, total, perName });
     });
 
     const qBelanja = query(
@@ -139,9 +139,9 @@ export default function LabaRugi() {
 
       <h3 className="mt-2 font-semibold flex items-center"><ChevronRight className="w-4 h-4 mr-2" /> Pendapatan:</h3>
       <ul className="list-disc list-inside">
-        {Object.entries(summary.perFlavor).map(([flavor, amt]) => (
-          <li key={flavor} className="ml-6">
-            {flavor}: {Intl.NumberFormat("en-US").format(amt / 1000)}k
+        {Object.entries(summary.perName).map(([name, amt]) => (
+          <li key={name} className="ml-6">
+            {name}: {Intl.NumberFormat("en-US").format(amt / 1000)}k
           </li>
         ))}
       </ul>

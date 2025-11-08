@@ -35,7 +35,7 @@ export default function SalesList() {
 
   const handleDeleteClick = (sale) => {
     setItemToDelete(sale.id);
-    setNamaItem(sale.flavor);
+    setNamaItem(sale.name);
     setShowConfirm(true);
   };
 
@@ -90,7 +90,7 @@ export default function SalesList() {
           >
             <div>
               <p>
-                {sale.flavor} / {sale.qty} x{" "}
+                {sale.name} / {sale.qty} x{" "}
                 {Intl.NumberFormat("en-US").format(sale.price / 1000)}k
                 <span>
                   {" "}
