@@ -11,6 +11,7 @@ import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
 import SalesList from "./components/SalesList";
 import Summary from "./components/Summary";
+import LabaRugi from "./components/LabaRugi";
 
 import { UserContext } from "./context/UserContext";
 
@@ -68,6 +69,8 @@ export default function App() {
             {page === "items" && <ItemAddForm />}
 
             {page === "belanja" && <BelanjaAddForm />}
+
+            {page === "labarugi" && <LabaRugi />}
 
             {page === "home" && (
               <>
