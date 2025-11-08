@@ -49,41 +49,39 @@ export default function App() {
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <UserContext.Provider value={user}>
-      <div className="min-h-screen bg-gray-100 p-4">
-        <div className="max-w-2xl mx-auto space-y-6">
-          <h1 className="text-2xl font-bold text-center">
-            📊 Jurnal Harian {name || "—"}
-          </h1>
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="max-w-2xl mx-auto space-y-2">
+        <h1 className="text-xl font-bold text-center">
+          📊 Jurnal Harian 
+        </h1>
+		<p className="text-4xl font-bold text-center">{name}</p>
 
-          {user ? (
-            <>
-              {/* 🔹 Navigation */}
-              <NavMenu page={page} setPage={setPage} />
+        {user ? (
+          <UserContext.Provider value={user}>
+            {/* 🔹 Navigation */}
+            <NavMenu page={page} setPage={setPage} />
 
-              {/* 🔹 Page content */}
-              {page === "profile" && (
-                <Profile setBlokir={setBlokir} blokir={blokir} />
-              )}
+            {page === "profile" && (
+              <Profile setBlokir={setBlokir} blokir={blokir} />
+            )}
 
-              {page === "items" && <ItemAddForm />}
+            {page === "items" && <ItemAddForm />}
 
-              {page === "belanja" && <BelanjaAddForm />}
+            {page === "belanja" && <BelanjaAddForm />}
 
-              {page === "home" && (
-                <>
-                  <ItemCardList blokir={blokir} />
-                  <Summary />
-                  <SalesList />
-                </>
-              )}
-            </>
-          ) : (
-            // 🔹 Hanya tampilkan login kalau belum ada user
-            <Login />
-          )}
-        </div>
+            {page === "home" && (
+              <>
+                <ItemCardList />
+                <Summary />
+                <SalesList />
+              </>
+            )}
+          </UserContext.Provider>
+        ) : (
+          // 🔹 Hanya tampilkan login kalau belum ada user
+          <Login />
+        )}
       </div>
-    </UserContext.Provider>
+    </div>
   );
 }
