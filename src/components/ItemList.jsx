@@ -59,7 +59,7 @@ export default function ItemList({ user, setSelectedItem }) {
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Item Penjualan</h2>
+      <h2 className="text-lg font-bold mb-2">Item Produk Penjualan</h2>
       <ul className="space-y-2">
         {items.map((item) => (
           <li

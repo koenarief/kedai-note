@@ -77,7 +77,6 @@ export default function NavMenu({ page, setPage }) {
           {/* 🔹 Separator */}
           <div className="border-t my-2"></div>
 
-          {/* ⚙️ Kelola Item */}
           <button
             onClick={() => openPage("items")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
@@ -85,7 +84,7 @@ export default function NavMenu({ page, setPage }) {
             }`}
           >
             <Settings className="w-4 h-4" />
-            Kelola Item
+            Item Produk
           </button>
 
           {/* 👤 Profile */}
