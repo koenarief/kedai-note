@@ -69,7 +69,7 @@ export default function BelanjaAddForm() {
         className="bg-white p-4 rounded-2xl shadow mb-4 space-y-3"
       >
         <h2 className="text-lg font-bold">
-          {edit ? "✏️ Edit Belanja" : "➕ Input Belanja Pengeluaran"}
+          {edit ? "✏️ Edit Pengeluaran Belanja" : "➕ Input Pengeluaran Belanja"}
         </h2>
 
         <div className="grid gap-3">

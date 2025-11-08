@@ -59,7 +59,7 @@ export default function BelanjaList({ user, setSelectedBelanja }) {
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Belanja Penjualan</h2>
+      <h2 className="text-lg font-bold mb-2">Pengeluaran Belanja</h2>
       <ul className="space-y-2">
         {belanjas.map((belanja) => (
           <li
@@ -93,7 +93,7 @@ export default function BelanjaList({ user, setSelectedBelanja }) {
         isOpen={showConfirm}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
-        belanja={namaBelanja}
+        item={namaBelanja}
       />
     </div>
   );
