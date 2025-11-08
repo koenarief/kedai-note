@@ -1,5 +1,4 @@
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import {
   doc,
   onSnapshot,
@@ -8,7 +7,7 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
-import { db, auth } from "../firebase";
+import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import InputModal from "./InputModal";
 import PropTypes from "prop-types";
