@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import PropTypes from 'prop-types';
+import { useUserContext } from "../context/UserContext";
 
-Settings.propTypes = {
-  user: PropTypes.object.isRequired,
-};
-
-export default function Settings({ user }) {
+export default function Settings() {
+  const user = useUserContext();
   const [summary, setSummary] = useState({
     count: 0,
     totalQty: 0,
