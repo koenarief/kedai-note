@@ -9,10 +9,11 @@ import {
 } from "firebase/firestore";
 import short from "short-uuid";
 import ItemCard from "./ItemCard";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import { db } from "../../firebase";
 import { useUserContext } from "../../context/UserContext";
+import SearchInput from "./SearchInput";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,
@@ -28,6 +29,7 @@ const itemsSample = [
 ];
 
 export default function ItemCardList() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [qty, setQty] = useState({});
   const [items, setItems] = useState(itemsSample);
   const blokir = false;
@@ -43,31 +45,49 @@ export default function ItemCardList() {
       }
       running = true;
       if (snap.empty) {
-		const url = 'https://firebasestorage.googleapis.com/v0/b/rife-522b2.appspot.com/o/esteh-app%2Fdefault.png?alt=media&token=9cfb0007-3a4f-4d12-9d2a-12456c9ebbf0';
+        const url =
+          "https://firebasestorage.googleapis.com/v0/b/rife-522b2.appspot.com/o/esteh-app%2Fdefault.png?alt=media&token=9cfb0007-3a4f-4d12-9d2a-12456c9ebbf0";
         itemsSample.forEach(async (item) => {
           await addDoc(collection(db, "users", user.uid, "items"), {
             name: item.name,
             price: item.price,
             kategori: item.kategori,
-			image: url,
+            image: url,
             createdAt: serverTimestamp(),
           });
         });
       }
     });
     return () => unsub();
-  }, []);
+  }, [db, user.uid]);
 
   useEffect(() => {
-    const q = query(
-      collection(db, "users", user.uid, "items"),
-      orderBy("createdAt", "asc"),
-    );
-    const unsub = onSnapshot(q, (snap) => {
-      setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+    const itemsRef = collection(db, "users", user.uid, "items");
+    let baseQuery = query(itemsRef, orderBy("name"));
+
+    const unsub = onSnapshot(baseQuery, (snap) => {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase(); // Konversi search term ke huruf kecil
+
+      const filteredItems = snap.docs
+        // 1. Filter di JavaScript (Client-Side)
+        .filter((doc) => {
+          // Ambil nama dari data dokumen
+          const name = doc.data().name || "";
+
+          // Konversi nama dokumen ke huruf kecil sebelum membandingkan
+          return name.toLowerCase().includes(lowerCaseSearchTerm);
+        })
+        // 2. Map hasilnya
+        .map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
+
+      setItems(filteredItems);
     });
+
     return () => unsub();
-  }, []);
+  }, [db, user.uid, searchTerm]);
 
   const sumTotal = () =>
     items.reduce((sum, item) => {
@@ -113,6 +133,7 @@ export default function ItemCardList() {
 
   return (
     <div>
+      <SearchInput onSearch={(val) => setSearchTerm(val)} />;
       {/* 🔹 Item Grid */}
       <div className="flex flex-wrap gap-4 justify-center">
         {items.map((item) => (
@@ -125,7 +146,6 @@ export default function ItemCardList() {
           />
         ))}
       </div>
-
       {/* 🔹 Total & Item List */}
       {sumTotal() > 1 && (
         <div className="mt-6">
