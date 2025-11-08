@@ -10,17 +10,19 @@ import {
 import { Trash2 } from "lucide-react";
 
 import dayjs from "dayjs";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import { db } from "../../firebase";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import { useUserContext } from "../../context/UserContext";
+import SearchInput from "../sales/SearchInput";
 
 ItemList.propTypes = {
   setSelectedItem: PropTypes.func.isRequired,
 };
 
 export default function ItemList({ setSelectedItem }) {
+  const [searchTerm, setSearchTerm] = useState("");
   const [items, setItems] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -52,14 +54,32 @@ export default function ItemList({ setSelectedItem }) {
       collection(db, "users", user.uid, "items"),
       orderBy("createdAt", "desc"),
     );
+
     const unsub = onSnapshot(q, (snap) => {
-      setItems(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      const lowerCaseSearchTerm = searchTerm.toLowerCase(); // Konversi search term ke huruf kecil
+      const filteredItems = snap.docs
+        // 1. Filter di JavaScript (Client-Side)
+        .filter((doc) => {
+          // Ambil nama dari data dokumen
+          const name = doc.data().name || "";
+
+          // Konversi nama dokumen ke huruf kecil sebelum membandingkan
+          return name.toLowerCase().includes(lowerCaseSearchTerm);
+        })
+        // 2. Map hasilnya
+        .map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
+      setItems(filteredItems);
     });
+
     return () => unsub();
-  }, []);
+  }, [db, user.uid, searchTerm]);
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
+      <SearchInput onSearch={(val) => setSearchTerm(val)} />
       <h2 className="text-lg font-bold mb-2">Item Produk Penjualan</h2>
       <ul className="space-y-2">
         {items.map((item) => (
