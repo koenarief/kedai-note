@@ -7,11 +7,12 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../firebase";
 import short from "short-uuid";
 import ItemCard from "./ItemCard";
 import PropTypes from 'prop-types';
-import { useUserContext } from "../context/UserContext";
+
+import { db } from "../../firebase";
+import { useUserContext } from "../../context/UserContext";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,

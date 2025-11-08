@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
 import {
   collection,
   query,
@@ -11,20 +10,22 @@ import {
 import { Trash2 } from "lucide-react";
 
 import dayjs from "dayjs";
-
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import PropTypes from 'prop-types';
 
+import { db } from "../../firebase";
+import ConfirmDeleteModal from "../ConfirmDeleteModal";
+import { useUserContext } from "../../context/UserContext";
+
 ItemList.propTypes = {
-  user: PropTypes.object.isRequired,
-  setSelectedItem: PropTypes.object.isRequired,
+  setSelectedItem: PropTypes.func.isRequired,
 };
 
-export default function ItemList({ user, setSelectedItem }) {
+export default function ItemList({ setSelectedItem }) {
   const [items, setItems] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [namaItem, setNamaItem] = useState(null);
+  const user = useUserContext();
 
   const handleDeleteClick = (item) => {
     setItemToDelete(item.id);

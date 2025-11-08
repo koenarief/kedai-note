@@ -3,14 +3,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
-import BelanjaAddForm from "./components/BelanjaAddForm";
-import ItemAddForm from "./components/ItemAddForm";
-import ItemCardList from "./components/ItemCardList";
+import BelanjaAddForm from "./components/belanja/BelanjaAddForm";
+import ItemAddForm from "./components/items/ItemAddForm";
+import ItemCardList from "./components/sales/ItemCardList";
+import SalesList from "./components/sales/SalesList";
+import Summary from "./components/sales/Summary";
+
 import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
-import SalesList from "./components/SalesList";
-import Summary from "./components/Summary";
 import LabaRugi from "./components/LabaRugi";
 
 import { UserContext } from "./context/UserContext";

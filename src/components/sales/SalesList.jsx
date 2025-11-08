@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
 import {
   collection,
   query,
@@ -12,8 +11,10 @@ import { Trash2 } from "lucide-react";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { useUserContext } from "../context/UserContext";
+
+import ConfirmDeleteModal from "../ConfirmDeleteModal";
+import { useUserContext } from "../../context/UserContext";
+import { db } from "../../firebase";
 
 export default function SalesList() {
   const [sales, setSales] = useState([]);

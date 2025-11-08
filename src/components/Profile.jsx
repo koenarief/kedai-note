@@ -12,19 +12,20 @@ import { db, auth } from "../firebase";
 import { useEffect, useState } from "react";
 import InputModal from "./InputModal";
 import PropTypes from "prop-types";
+import { useUserContext } from "../context/UserContext";
 
 Profile.propTypes = {
-  setBlokir: PropTypes.object.isRequired,
+  setBlokir: PropTypes.func.isRequired,
   blokir: PropTypes.boolean,
 };
 
 export default function Profile({ setBlokir, blokir }) {
-  const [user] = useAuthState(auth);
   const [active, setActive] = useState(false);
   const [qty, setQty] = useState(0);
   const [name, setName] = useState("");
   const [inputModal, setInputModal] = useState(false);
   const [tempName, setTempName] = useState("");
+  const user = useUserContext();
 
   useEffect(() => {
     if (!user) return;

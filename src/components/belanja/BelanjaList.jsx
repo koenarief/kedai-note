@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
+import { Trash2 } from "lucide-react";
+import dayjs from "dayjs";
+import PropTypes from 'prop-types';
 import {
   collection,
   query,
@@ -8,23 +10,21 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { Trash2 } from "lucide-react";
 
-import dayjs from "dayjs";
-
-import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import PropTypes from 'prop-types';
+import { db } from "../../firebase";
+import ConfirmDeleteModal from "../ConfirmDeleteModal";
+import { useUserContext } from "../../context/UserContext";
 
 BelanjaList.propTypes = {
-  user: PropTypes.object.isRequired,
-  setSelectedBelanja: PropTypes.object.isRequired,
+  setSelectedBelanja: PropTypes.func.isRequired,
 };
 
-export default function BelanjaList({ user, setSelectedBelanja }) {
+export default function BelanjaList({ setSelectedBelanja }) {
   const [belanjas, setBelanjas] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [belanjaToDelete, setBelanjaToDelete] = useState(null);
   const [namaBelanja, setNamaBelanja] = useState(null);
+  const user = useUserContext();
 
   const handleDeleteClick = (belanja) => {
     setBelanjaToDelete(belanja.id);
