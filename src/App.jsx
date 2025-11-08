@@ -51,7 +51,7 @@ export default function App() {
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-indigo-100 p-4">
       <div className="max-w-2xl mx-auto space-y-2">
         <h1 className="text-xl font-bold text-center">
           📊 Jurnal Harian 

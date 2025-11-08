@@ -9,14 +9,13 @@ ItemCard.propTypes = {
 };
 
 export default function ItemCard({ onAdd, onSub, item, qty }) {
-
   return (
     <div
       onClick={onAdd}
       style={{
         backgroundImage: `url(${item.image})`,
       }}
-      className="bg-cover bg-center rounded-xl shadow-lg p-6 mb-6 group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px]"
+      className="bg-cover bg-center rounded-xl shadow-lg p-6 group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px]"
     >
       {qty[item.id] > 0 && (
         <div onClick={(e) => e.stopPropagation()}>

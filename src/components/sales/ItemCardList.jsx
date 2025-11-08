@@ -73,9 +73,13 @@ export default function ItemCardList() {
         .filter((doc) => {
           // Ambil nama dari data dokumen
           const name = doc.data().name || "";
+          const kategori = doc.data().kategori || "";
 
           // Konversi nama dokumen ke huruf kecil sebelum membandingkan
-          return name.toLowerCase().includes(lowerCaseSearchTerm);
+          return (
+            name.toLowerCase().includes(lowerCaseSearchTerm) ||
+            kategori.toLowerCase().includes(lowerCaseSearchTerm)
+          );
         })
         // 2. Map hasilnya
         .map((d) => ({
@@ -156,21 +160,20 @@ export default function ItemCardList() {
                 {Intl.NumberFormat("en-US").format(sumTotal())}
               </span>
             </p>
+            {/* 🔹 Submit Button (pindah ke bawah) */}
+            {!blokir && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={submitForm}
+                  className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
+                >
+                  Save
+                </button>
+              </div>
+            )}
           </div>
 
           <ItemList qty={qty} minusQty={minusQty} items={items} />
-
-          {/* 🔹 Submit Button (pindah ke bawah) */}
-          {!blokir && (
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={submitForm}
-                className="bg-green-600 text-white text-xl px-6 py-3 rounded-xl shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-              >
-                Submit
-              </button>
-            </div>
-          )}
         </div>
       )}
     </div>
@@ -180,7 +183,7 @@ export default function ItemCardList() {
 function ItemList({ items, qty, minusQty }) {
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
-      <h2 className="text-lg font-bold mb-2">Nota Penjualan</h2>
+      <h2 className="text-lg font-bold">Nota Penjualan</h2>
       <ul className="space-y-2">
         {items
           .filter((itm) => qty[itm.id] > 0)

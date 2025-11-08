@@ -62,9 +62,13 @@ export default function ItemList({ setSelectedItem }) {
         .filter((doc) => {
           // Ambil nama dari data dokumen
           const name = doc.data().name || "";
+          const kategori = doc.data().kategori || "";
 
           // Konversi nama dokumen ke huruf kecil sebelum membandingkan
-          return name.toLowerCase().includes(lowerCaseSearchTerm);
+          return (
+            name.toLowerCase().includes(lowerCaseSearchTerm) ||
+            kategori.toLowerCase().includes(lowerCaseSearchTerm)
+          );
         })
         // 2. Map hasilnya
         .map((d) => ({
