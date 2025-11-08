@@ -3,15 +3,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
+import BelanjaAddForm from "./components/BelanjaAddForm";
 import ItemAddForm from "./components/ItemAddForm";
 import ItemCardList from "./components/ItemCardList";
-import ItemList from "./components/ItemList";
 import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
 import Profile from "./components/Profile";
 import SalesList from "./components/SalesList";
-// import Settings from "./components/Settings";
 import Summary from "./components/Summary";
+
+import { UserContext } from "./context/UserContext";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
@@ -48,46 +49,41 @@ export default function App() {
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-center">
-          📊 Jurnal Harian {name || "—"}
-        </h1>
+    <UserContext.Provider value={user}>
+      <div className="min-h-screen bg-gray-100 p-4">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <h1 className="text-2xl font-bold text-center">
+            📊 Jurnal Harian {name || "—"}
+          </h1>
 
-        {user ? (
-          <>
-            {/* 🔹 Navigation */}
-            <NavMenu page={page} setPage={setPage} />
+          {user ? (
+            <>
+              {/* 🔹 Navigation */}
+              <NavMenu page={page} setPage={setPage} />
 
-            {/* 🔹 Page content */}
-            {page === "profile" && (
+              {/* 🔹 Page content */}
+              {page === "profile" && (
                 <Profile setBlokir={setBlokir} blokir={blokir} />
-            )}
+              )}
 
-            {page === "settings" && (
-              <>
-                <ItemAddForm
-                  user={user}
-                  selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
-                />
-                <ItemList user={user} setSelectedItem={setSelectedItem} />
-              </>
-            )}
+              {page === "items" && <ItemAddForm />}
 
-            {page === "home" && (
-              <>
-                <ItemCardList user={user} blokir={blokir} />
-                <Summary user={user} />
-                <SalesList user={user} />
-              </>
-            )}
-          </>
-        ) : (
-          // 🔹 Hanya tampilkan login kalau belum ada user
-          <Login />
-        )}
+              {page === "belanja" && <BelanjaAddForm />}
+
+              {page === "home" && (
+                <>
+                  <ItemCardList blokir={blokir} />
+                  <Summary />
+                  <SalesList />
+                </>
+              )}
+            </>
+          ) : (
+            // 🔹 Hanya tampilkan login kalau belum ada user
+            <Login />
+          )}
+        </div>
       </div>
-    </div>
+    </UserContext.Provider>
   );
 }

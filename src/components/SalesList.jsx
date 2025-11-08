@@ -13,18 +13,14 @@ import { Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { useUserContext } from "../context/UserContext";
 
-import PropTypes from "prop-types";
-
-SalesList.propTypes = {
-  user: PropTypes.object.isRequired,
-};
-
-export default function SalesList({ user }) {
+export default function SalesList() {
   const [sales, setSales] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [namaItem, setNamaItem] = useState(null);
+  const user = useUserContext();
 
   const [time, setTime] = useState(new Date());
 

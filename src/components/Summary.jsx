@@ -2,19 +2,16 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
-import PropTypes from 'prop-types';
+import { useUserContext } from "../context/UserContext";
 
-Summary.propTypes = {
-  user: PropTypes.object.isRequired,
-};
-
-export default function Summary({ user }) {
+export default function Summary() {
   const [summary, setSummary] = useState({
     count: 0,
     totalQty: 0,
     total: 0,
     perFlavor: {},
   });
+  const user = useUserContext();
 
   useEffect(() => {
     if (!user) return;

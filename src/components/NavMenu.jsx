@@ -3,7 +3,7 @@ import { Menu, LogOut } from "lucide-react"; // 🔹 tambah icon logout
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import PropTypes from "prop-types";
-import { ShoppingCart, Home, Wallet, BarChart3, Settings, User } from "lucide-react";
+import { ShoppingCart, Wallet, BarChart3, Settings, User } from "lucide-react";
 
 NavMenu.propTypes = {
   setPage: PropTypes.object.isRequired,
@@ -49,7 +49,7 @@ export default function NavMenu({ page, setPage }) {
 
           {/* 💸 Pengeluaran */}
           <button
-            onClick={() => openPage("pengeluaran")}
+            onClick={() => openPage("belanja")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
               page === "pengeluaran"
                 ? "bg-blue-50 text-blue-600"
@@ -79,9 +79,9 @@ export default function NavMenu({ page, setPage }) {
 
           {/* ⚙️ Kelola Item */}
           <button
-            onClick={() => openPage("settings")}
+            onClick={() => openPage("items")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "settings" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+              page === "items" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             <Settings className="w-4 h-4" />

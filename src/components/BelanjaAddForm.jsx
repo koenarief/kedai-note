@@ -7,65 +7,58 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import ImageUploaderTailwind from "./ImageUploaderTailwind";
-import ItemList from "./ItemList";
+import BelanjaList from "./BelanjaList";
 import { useUserContext } from "../context/UserContext";
 
-export default function ItemAddForm() {
-  const [imageUrl, setImageUrl] = useState("");
+export default function BelanjaAddForm() {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [nominal, setNominal] = useState("");
   const [kategori, setKategori] = useState("");
   const [edit, setEdit] = useState(false);
-  const [selectedItem, setSelectedItem] = useState({});
+  const [selectedBelanja, setSelectedBelanja] = useState({});
   const user = useUserContext();
 
-  // ✅ Whenever selectedItem changes, pre-fill fields
   useEffect(() => {
-    if (selectedItem?.name) {
-      setName(selectedItem.name || "");
-      setPrice(selectedItem.price || "");
-      setKategori(selectedItem.kategori || "");
-      setImageUrl(selectedItem.image || "");
+    if (selectedBelanja?.name) {
+      setName(selectedBelanja.name || "");
+      setNominal(selectedBelanja.nominal || "");
+      setKategori(selectedBelanja.kategori || "");
       setEdit(true);
     }
-  }, [selectedItem]);
+  }, [selectedBelanja]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return;
 
-    if (!name || !price || !kategori) return alert("Lengkapi data item..");
+    if (!name || !nominal || !kategori) return alert("Lengkapi data belanja..");
 
-    const harga = parseInt(price);
+    const harga = parseInt(nominal);
 
     if (edit) {
-      const reff = doc(db, "users", user.uid, "items", selectedItem.id);
+      const reff = doc(db, "users", user.uid, "belanja", selectedBelanja.id);
       await setDoc(
         reff,
         {
           name,
-          price: harga < 100 ? harga * 1000 : harga,
+          nominal: harga < 100 ? harga * 1000 : harga,
           kategori,
-          image: imageUrl,
         },
         { merge: true },
       );
     } else {
-      await addDoc(collection(db, "users", user.uid, "items"), {
+      await addDoc(collection(db, "users", user.uid, "belanja"), {
         name,
-        price: harga < 100 ? harga * 1000 : harga,
+        nominal: harga < 100 ? harga * 1000 : harga,
         kategori,
-        image: imageUrl,
         createdAt: serverTimestamp(),
       });
     }
 
     setEdit(false);
-    setSelectedItem(null);
-    setImageUrl(null);
+    setSelectedBelanja(null);
     setName("");
-    setPrice("");
+    setNominal("");
     setKategori("");
   };
 
@@ -76,15 +69,17 @@ export default function ItemAddForm() {
         className="bg-white p-4 rounded-2xl shadow mb-4 space-y-3"
       >
         <h2 className="text-lg font-bold">
-          {edit ? "✏️ Edit Item" : "➕ Tambah Item"}
+          {edit ? "✏️ Edit Belanja" : "➕ Tambah Belanja"}
         </h2>
 
         <div className="grid gap-3">
           <div>
-            <label className="block text-sm font-medium mb-1">Nama Item</label>
+            <label className="block text-sm font-medium mb-1">
+              Nama Belanja
+            </label>
             <input
               className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-              placeholder="Masukkan nama item"
+              placeholder="Masukkan keterangan"
               value={name}
               autoFocus={!edit}
               onChange={(e) => setName(e.target.value)}
@@ -93,13 +88,13 @@ export default function ItemAddForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Harga</label>
+            <label className="block text-sm font-medium mb-1">Nominal</label>
             <input
               type="number"
               className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
               placeholder="0"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={nominal}
+              onChange={(e) => setNominal(e.target.value)}
               min="0"
               required
             />
@@ -109,16 +104,9 @@ export default function ItemAddForm() {
             <label className="block text-sm font-medium mb-1">Kategori</label>
             <input
               className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
-              placeholder="Misalnya: Minuman"
+              placeholder="Misalnya: pengeluaran harian"
               value={kategori}
               onChange={(e) => setKategori(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Image</label>
-            <ImageUploaderTailwind
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
             />
           </div>
 
@@ -127,7 +115,7 @@ export default function ItemAddForm() {
           </button>
         </div>
       </form>
-      <ItemList user={user} setSelectedItem={setSelectedItem} />
+      <BelanjaList user={user} setSelectedBelanja={setSelectedBelanja} />
     </>
   );
 }

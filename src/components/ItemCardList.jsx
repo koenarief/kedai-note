@@ -11,11 +11,7 @@ import { db } from "../firebase";
 import short from "short-uuid";
 import ItemCard from "./ItemCard";
 import PropTypes from 'prop-types';
-
-ItemCardList.propTypes = {
-  user: PropTypes.object.isRequired,
-  blokir: PropTypes.boolean,
-};
+import { useUserContext } from "../context/UserContext";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,
@@ -30,11 +26,13 @@ const itemsSample = [
   { id: 4, name: "Kopi Susu", price: 3500, kategori: "Minuman" },
 ];
 
-export default function ItemCardList({ user, blokir }) {
+export default function ItemCardList() {
   const [qty, setQty] = useState({});
   const [items, setItems] = useState(itemsSample);
+  const blokir = false;
   const translator = short();
   let running = false;
+  const user = useUserContext();
 
   useEffect(() => {
     const q = query(collection(db, "users", user.uid, "items"));
