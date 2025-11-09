@@ -137,9 +137,9 @@ export default function ItemCardList() {
 
   return (
     <div>
-      <SearchInput onSearch={(val) => setSearchTerm(val)} />;
+      <SearchInput onSearch={(val) => setSearchTerm(val)} />
       {/* 🔹 Item Grid */}
-      <div className="flex flex-wrap gap-4 justify-center">
+      <div className="flex flex-wrap gap-4 justify-center mt-4">
         {items.map((item) => (
           <ItemCard
             key={item.id}

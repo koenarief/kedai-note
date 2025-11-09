@@ -17,7 +17,7 @@ export default function ItemCard({ onAdd, onSub, item, qty }) {
       }}
       className="bg-cover bg-center rounded-xl shadow-lg group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px] min-h-[160px]"
     >
-      <div className="px-2 absolute bottom-0 bg-gray-100 w-full">
+      <div className="px-2 absolute bottom-0 bg-white bg-opacity-80 w-full">
         {/* Nama produk */}
         <h3 className="font-semibold text-indigo text-xl group-hover:text-blue-600 transition-colors">
           {item.name}
