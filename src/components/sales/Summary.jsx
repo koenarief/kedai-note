@@ -51,7 +51,7 @@ export default function Summary() {
         Ringkasan Penjualan ({format(new Date(), "d-M-yyyy")})
       </h2>
       <p>Jumlah Transaksi: {summary.count}</p>
-      <p>Total Unit: {summary.totalQty}</p>
+      <p>Total qty: {summary.totalQty}</p>
       <p>
         Total Pendapatan:{" "}
         {Intl.NumberFormat("en-US").format(summary.total / 1000)}k

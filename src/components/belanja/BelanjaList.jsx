@@ -75,7 +75,7 @@ export default function BelanjaList({ setSelectedBelanja }) {
                 </span>
               </button>
               <p className="text-xs">
-                {dayjs(belanja.createdAt?.toDate()).format("d-M-yyy HH:mm")}
+                {dayjs(belanja.createdAt?.toDate()).format("d-M-YYYY HH:mm")}
               </p>
             </div>
             <div className="space-x-2">

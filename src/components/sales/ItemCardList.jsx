@@ -200,6 +200,11 @@ function ItemList({ items, qty, minusQty }) {
                 <span className="ml-2">
                   @ {Intl.NumberFormat("en-US").format(item.price / 1000)}k
                 </span>
+                {" / "}
+                {Intl.NumberFormat("en-US").format(
+                  (item.price * qty[item.id]) / 1000,
+                )}
+                k
               </button>
             </li>
           ))}

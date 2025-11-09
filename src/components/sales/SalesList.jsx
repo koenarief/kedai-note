@@ -91,21 +91,15 @@ export default function SalesList() {
           >
             <div>
               <p>
-                {sale.name} / {sale.qty} x{" "}
+                {sale.qty} x {sale.name} @
                 {Intl.NumberFormat("en-US").format(sale.price / 1000)}k
                 <span>
-                  {" "}
-                  / {Intl.NumberFormat("en-US").format(sale.subTotal / 1000)}k
+                  {" / "}
+                  {Intl.NumberFormat("en-US").format(sale.subTotal / 1000)}k
                 </span>
               </p>
               <p className="text-xs">
                 {dayjs(sale.createdAt?.toDate()).fromNow()}
-                <span className="ml-1">/</span>
-                {sale.note && (
-                  <span className="text-sm text-gray-500 ml-1">
-                    {sale.note}
-                  </span>
-                )}
               </p>
             </div>
             <div className="space-x-2">

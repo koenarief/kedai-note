@@ -100,7 +100,7 @@ export default function ItemList({ setSelectedItem }) {
                 </span>
               </button>
               <p className="text-xs">
-                {dayjs(item.createdAt?.toDate()).format("d-M-yyyy HH:mm")}
+                {dayjs(item.createdAt?.toDate()).format("d-M-YYYY HH:mm")}
               </p>
             </div>
             <div className="space-x-2">
