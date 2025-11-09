@@ -15,8 +15,22 @@ export default function ItemCard({ onAdd, onSub, item, qty }) {
       style={{
         backgroundImage: `url(${item.image})`,
       }}
-      className="bg-cover bg-center rounded-xl shadow-lg p-6 group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px]"
+      className="bg-cover bg-center rounded-xl shadow-lg group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px] min-h-[160px]"
     >
+      <div className="px-2 absolute bottom-0 bg-gray-100 w-full">
+        {/* Nama produk */}
+        <h3 className="font-semibold text-indigo text-xl group-hover:text-blue-600 transition-colors">
+          {item.name}
+        </h3>
+
+        {/* Harga */}
+        <div>
+          <span className="text-blue-400 text-sm">
+            Rp {item.price.toLocaleString("id-ID")}
+          </span>
+        </div>
+      </div>
+
       {qty[item.id] > 0 && (
         <div onClick={(e) => e.stopPropagation()}>
           <button
@@ -27,20 +41,6 @@ export default function ItemCard({ onAdd, onSub, item, qty }) {
           </button>
         </div>
       )}
-
-      <div className="p-3 space-y-2 w-full flex flex-col items-center text-center">
-        {/* Nama produk */}
-        <h3 className="font-semibold text-white text-xl group-hover:text-blue-600 transition-colors">
-          {item.name}
-        </h3>
-
-        {/* Harga */}
-        <div>
-          <span className="text-blue-100 font-bold text-sm">
-            Rp {item.price.toLocaleString("id-ID")}
-          </span>
-        </div>
-      </div>
     </div>
   );
 }
