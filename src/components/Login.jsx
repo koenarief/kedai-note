@@ -202,7 +202,7 @@ export default function Login() {
                 alt="Google"
                 className="w-4 h-4"
               />
-              Login dengan Google
+              Daftar/Login dengan Google
             </button>
           </div>
         </div>

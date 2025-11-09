@@ -48,7 +48,7 @@ export default function Summary() {
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">
-        Ringkasan Penjualan ({format(new Date(), "dd/MM/yyyy")})
+        Ringkasan Penjualan ({format(new Date(), "d-M-yyyy")})
       </h2>
       <p>Jumlah Transaksi: {summary.count}</p>
       <p>Total Unit: {summary.totalQty}</p>

@@ -117,9 +117,9 @@ export default function LabaRugi() {
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">
-        Laba Rugi ({format(awalTgl, "dd-MM-yyyy")}
+        Laba Rugi ({format(awalTgl, "d-M-yyyy")}
         {" s/d "}
-        {format(akhirTgl, "dd-MM-yyyy")})
+        {format(akhirTgl, "d-M-yyyy")})
       </h2>
 
       <div className="">
