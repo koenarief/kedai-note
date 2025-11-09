@@ -91,8 +91,11 @@ export default function SalesList() {
           >
             <div>
               <p>
-                {sale.qty} x {sale.name} @
-                {Intl.NumberFormat("en-US").format(sale.price / 1000)}k
+                {sale.qty} x {sale.name}
+                <span>
+                  {" @ "}
+                  {Intl.NumberFormat("en-US").format(sale.price / 1000)}k
+                </span>
                 <span>
                   {" / "}
                   {Intl.NumberFormat("en-US").format(sale.subTotal / 1000)}k
