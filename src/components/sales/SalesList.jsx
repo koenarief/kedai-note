@@ -37,15 +37,13 @@ export default function SalesList() {
 
   const handleDeleteClick = (sale) => {
     setItemToDelete(sale);
-    // setNamaItem(sale.name);
+    setNamaItem(sale);
     setShowConfirm(true);
   };
 
   const handleConfirmDelete = async () => {
-    // Perform your actual delete logic here, e.g., API call
 
     if (!user) return;
-    // await deleteDoc(doc(db, "users", user.uid, "sales", itemToDelete));
     salesById(itemToDelete).forEach((item) => deleteDoc(doc(db, "users", user.uid, "sales", item.id)));
 
     setShowConfirm(false);

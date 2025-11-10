@@ -21,7 +21,7 @@ export default defineConfig({
       registerType: "autoUpdate", // Mengatur bagaimana Service Worker didaftarkan dan diperbarui
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"], // Aset statis yang akan di-cache
       manifest: {
-        name: "Jurnal Harian Kasir",
+        name: "ID Kasir",
         short_name: "ID Kasir",
         description: "Aplikasi untuk input data penjualan",
         theme_color: "#ffffff",
