@@ -4,6 +4,17 @@ import { VitePWA } from "vite-plugin-pwa"; // Impor plugin
 
 // https://vite.dev/config/
 export default defineConfig({
+  // --- MULAI PENYESUAIAN DI SINI ---
+  build: {
+    // Mengatur batas peringatan ukuran chunk menjadi 1000 kB (1MB).
+    // Nilai default-nya adalah 500.
+    chunkSizeWarningLimit: 1000,
+
+    // Opsi tambahan untuk memastikan kode di-split dengan baik:
+    // Contoh untuk menonaktifkan code splitting saat di build (tidak disarankan)
+    // cssCodeSplit: false,
+  },
+  // --- AKHIR PENYESUAIAN ---
   plugins: [
     react(),
     VitePWA({
