@@ -33,10 +33,30 @@ export default function ItemCardList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [qty, setQty] = useState({});
   const [items, setItems] = useState(itemsSample);
+  const [kategories, setKategories] = useState([]);
   const blokir = false;
   const translator = short();
   let running = false;
   const user = useUserContext();
+
+  const getKategories = (items) => {
+    const allCategories = items.map((item) => item.kategori);
+    const uniqueCategories = [...new Set(allCategories)];
+    return uniqueCategories;
+  };
+
+  const lastIndex = kategories.length - 1;
+
+  const Kategori = () => (
+    <div className="mt-2">
+      <span>Kategori:</span>
+      {kategories.map((kat, index) => (
+        <button key={kat} onClick={() => setSearchTerm(kat)}>
+          &nbsp; {kat} {index !== lastIndex && " \u00B7 "}
+        </button>
+      ))}
+    </div>
+  );
 
   useEffect(() => {
     const q = query(collection(db, "users", user.uid, "items"));
@@ -68,6 +88,13 @@ export default function ItemCardList() {
 
     const unsub = onSnapshot(baseQuery, (snap) => {
       const lowerCaseSearchTerm = searchTerm.toLowerCase(); // Konversi search term ke huruf kecil
+
+      const allItems = snap.docs.map((d) => ({
+        id: d.id,
+        ...d.data(),
+      }));
+
+      setKategories(getKategories(allItems));
 
       const filteredItems = snap.docs
         // 1. Filter di JavaScript (Client-Side)
@@ -139,6 +166,7 @@ export default function ItemCardList() {
   return (
     <div>
       <SearchInput onSearch={(val) => setSearchTerm(val)} />
+      <Kategori />
       {/* 🔹 Item Grid */}
       <div className="flex flex-wrap gap-4 justify-center mt-4">
         {items.map((item) => (
@@ -154,27 +182,27 @@ export default function ItemCardList() {
       {/* 🔹 Total & Item List */}
       {sumTotal() > 1 && (
         <div className="mt-6">
-<FloatingContainer>
-          <div className="bg-white p-4 rounded-2xl shadow mb-4">
-            <p className="text-2xl font-semibold">
-              Total:
-              <span className="ml-2">
-                {Intl.NumberFormat("en-US").format(sumTotal())}
-              </span>
-            </p>
-            {/* 🔹 Submit Button (pindah ke bawah) */}
-            {!blokir && (
-              <div className="flex justify-center mt-6">
-                <button
-                  onClick={submitForm}
-                  className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
-                >
-                  Save
-                </button>
-              </div>
-            )}
-          </div>
-</FloatingContainer>
+          <FloatingContainer>
+            <div className="bg-white p-4 rounded-2xl shadow mb-4">
+              <p className="text-2xl font-semibold">
+                Total:
+                <span className="ml-2">
+                  {Intl.NumberFormat("en-US").format(sumTotal())}
+                </span>
+              </p>
+              {/* 🔹 Submit Button (pindah ke bawah) */}
+              {!blokir && (
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={submitForm}
+                    className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
+                  >
+                    Save
+                  </button>
+                </div>
+              )}
+            </div>
+          </FloatingContainer>
 
           <ItemList qty={qty} minusQty={minusQty} items={items} />
         </div>
