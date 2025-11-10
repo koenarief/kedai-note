@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { db } from "../../firebase";
 import { useUserContext } from "../../context/UserContext";
 import SearchInput from "./SearchInput";
+import FloatingContainer from "../FloatingContainer";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,
@@ -153,6 +154,7 @@ export default function ItemCardList() {
       {/* 🔹 Total & Item List */}
       {sumTotal() > 1 && (
         <div className="mt-6">
+<FloatingContainer>
           <div className="bg-white p-4 rounded-2xl shadow mb-4">
             <p className="text-2xl font-semibold">
               Total:
@@ -172,6 +174,7 @@ export default function ItemCardList() {
               </div>
             )}
           </div>
+</FloatingContainer>
 
           <ItemList qty={qty} minusQty={minusQty} items={items} />
         </div>
