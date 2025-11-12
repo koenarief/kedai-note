@@ -16,6 +16,7 @@ import { db } from "../../firebase";
 import { useUserContext } from "../../context/UserContext";
 import SearchInput from "./SearchInput";
 import FloatingContainer from "../FloatingContainer";
+import BayarModal from "./BayarModal";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,
@@ -40,6 +41,7 @@ export default function ItemCardList() {
   let running = false;
   const user = useUserContext();
   const [profile, setProfile] = useState({});
+  const [bayarModal, setBayarModal] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -166,8 +168,8 @@ export default function ItemCardList() {
     if (!user) return;
 
     // TODO: cek status profile.active n count trx
-    if(!profile.active) {
-		// tolak jika sudah memenuhi kuota 1000
+    if (!profile.active) {
+      // tolak jika sudah memenuhi kuota 1000
     }
 
     const shortId = translator.generate();
@@ -184,6 +186,7 @@ export default function ItemCardList() {
       }
     });
     setQty({});
+    setBayarModal(false);
   };
 
   return (
@@ -217,10 +220,10 @@ export default function ItemCardList() {
               {!blokir && (
                 <div className="flex justify-center mt-6">
                   <button
-                    onClick={submitForm}
+                    onClick={() => setBayarModal(true)}
                     className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
                   >
-                    Save
+                    Bayar
                   </button>
                 </div>
               )}
@@ -229,6 +232,14 @@ export default function ItemCardList() {
 
           <ItemList qty={qty} minusQty={minusQty} items={items} />
         </div>
+      )}
+      {bayarModal && (
+        <BayarModal
+          total={sumTotal()}
+          isOpen={bayarModal}
+          onCancel={() => setBayarModal(false)}
+          onConfirm={submitForm}
+        />
       )}
     </div>
   );
