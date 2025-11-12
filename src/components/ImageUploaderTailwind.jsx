@@ -72,9 +72,20 @@ function ImageUploaderTailwind({ imageUrl, setImageUrl }) {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-2 p-6 bg-white">
-      <div className="p-4">
+    <div className="max-w-xl mx-auto bg-white">
+      <div className="p-2">
         
+        {/* Hasil Unggahan (URL dan Gambar) */}
+        {imageUrl && !isUploading && (
+          <div className="">
+            {/* Preview Gambar */}
+            <img 
+                src={imageUrl} 
+                alt="Uploaded Preview" 
+                className="mt-4 max-h-48 w-full object-contain" 
+            />
+          </div>
+        )}
         {/* Input File */}
         <div className="mb-6">
           <input 
@@ -110,17 +121,6 @@ function ImageUploaderTailwind({ imageUrl, setImageUrl }) {
           </div>
         )}
 
-        {/* Hasil Unggahan (URL dan Gambar) */}
-        {imageUrl && !isUploading && (
-          <div className="m-6 p-4">
-            {/* Preview Gambar */}
-            <img 
-                src={imageUrl} 
-                alt="Uploaded Preview" 
-                className="mt-4 max-h-48 w-full object-contain" 
-            />
-          </div>
-        )}
       </div>
     </div>
   );

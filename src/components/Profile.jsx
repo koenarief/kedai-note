@@ -13,6 +13,7 @@ import InputModal from "./InputModal";
 import { useUserContext } from "../context/UserContext";
 import dayjs from "dayjs";
 import { Pencil } from "lucide-react";
+import ImageUploaderTailwind from "./ImageUploaderTailwind";
 
 export default function Profile() {
   const [active, setActive] = useState(false);
@@ -21,6 +22,17 @@ export default function Profile() {
   const [inputModal, setInputModal] = useState(false);
   const [inputPhoneModal, setInputPhoneModal] = useState(false);
   const user = useUserContext();
+  // const [imageUrl, setImageUrl] = useState("");
+  const setImageUrl = async (imageUrl) => {
+    if (!imageUrl) return;
+    if (!user) return;
+    const profileRef = doc(db, "profiles", user.uid);
+    const profileSnap = await getDoc(profileRef);
+
+    if (profileSnap.exists()) {
+      await setDoc(profileRef, { imageUrl: imageUrl }, { merge: true });
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -145,15 +157,6 @@ export default function Profile() {
         </div>
       )}
 
-      <button
-        onClick={() => {
-          setInputModal(true);
-        }}
-        className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition"
-      >
-        Ganti foto profile
-      </button>
-
       {inputModal && (
         <InputModal
           isOpen={inputModal}
@@ -172,6 +175,12 @@ export default function Profile() {
           item="Telp."
         />
       )}
+      <div>
+        <ImageUploaderTailwind
+          imageUrl={profile.imageUrl}
+          setImageUrl={setImageUrl}
+        />
+      </div>
     </div>
   );
 }
