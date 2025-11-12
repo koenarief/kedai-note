@@ -1,5 +1,6 @@
 // FloatingContainer.jsx
-import React from 'react';
+import React from "react";
+import PropTypes from "prop-types";
 
 const FloatingContainer = ({ children }) => {
   return (
@@ -24,6 +25,10 @@ const FloatingContainer = ({ children }) => {
       {children}
     </div>
   );
+};
+
+FloatingContainer.propTypes = {
+  children: PropTypes.node.isRequired, // Or PropTypes.node if not always required
 };
 
 export default FloatingContainer;

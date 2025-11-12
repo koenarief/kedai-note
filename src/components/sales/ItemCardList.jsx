@@ -6,6 +6,7 @@ import {
   query,
   orderBy,
   onSnapshot,
+  doc,
 } from "firebase/firestore";
 import short from "short-uuid";
 import ItemCard from "./ItemCard";
@@ -38,6 +39,22 @@ export default function ItemCardList() {
   const translator = short();
   let running = false;
   const user = useUserContext();
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    if (!user) return;
+
+    const profileRef = doc(db, "profiles", user.uid);
+
+    const unsub = onSnapshot(profileRef, (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        setProfile(data);
+      }
+    });
+
+    return () => unsub();
+  }, [user]);
 
   const getKategories = (items) => {
     const allCategories = items.map((item) => item.kategori);
@@ -147,6 +164,12 @@ export default function ItemCardList() {
 
   const submitForm = () => {
     if (!user) return;
+
+    // TODO: cek status profile.active n count trx
+    if(!profile.active) {
+		// tolak jika sudah memenuhi kuota 1000
+    }
+
     const shortId = translator.generate();
     items.forEach(async (item) => {
       if (qty[item.id] > 0) {

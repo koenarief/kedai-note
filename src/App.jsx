@@ -21,7 +21,6 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [name, setName] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
-  const [blokir, setBlokir] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export default function App() {
             <NavMenu page={page} setPage={setPage} />
 
             {page === "profile" && (
-              <Profile setBlokir={setBlokir} blokir={blokir} />
+              <Profile />
             )}
 
             {page === "items" && <ItemAddForm />}
