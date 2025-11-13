@@ -35,6 +35,7 @@ export default function ItemCardList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [qty, setQty] = useState({});
   const [items, setItems] = useState(itemsSample);
+  const [products, setProducts] = useState([]);
   const [kategories, setKategories] = useState([]);
   const blokir = false;
   const translator = short();
@@ -113,6 +114,7 @@ export default function ItemCardList() {
         id: d.id,
         ...d.data(),
       }));
+      setProducts(allItems);
 
       setKategories(getKategories(allItems));
 
@@ -142,7 +144,7 @@ export default function ItemCardList() {
   }, [db, user.uid, searchTerm]);
 
   const sumTotal = () =>
-    items.reduce((sum, item) => {
+    products.reduce((sum, item) => {
       const jml = qty[item.id] ?? 0;
       return sum + jml * item.price;
     }, 0);
@@ -231,7 +233,7 @@ export default function ItemCardList() {
             </div>
           </FloatingContainer>
 
-          <ItemList qty={qty} minusQty={minusQty} items={items} />
+          <ItemList qty={qty} minusQty={minusQty} items={products} />
         </div>
       )}
       {bayarModal && (
