@@ -77,6 +77,7 @@ export default function ItemAddForm() {
       >
         <h2 className="text-lg font-bold">
           {edit ? "✏️ Edit item produk" : "➕ Buat item produk baru"}
+			{selectedItem?.name}
         </h2>
 
         <div className="grid gap-3">

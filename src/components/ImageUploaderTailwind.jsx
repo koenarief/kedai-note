@@ -16,8 +16,9 @@ function ImageUploaderTailwind({ imageUrl, setImageUrl }) {
   const [user] = useAuthState(auth);
   const fileInputRef = useRef(null);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e) => {
     // Pastikan ref ada sebelum memanggil klik
+    e.preventDefault();
     fileInputRef.current.click();
   };
 
@@ -73,6 +74,7 @@ function ImageUploaderTailwind({ imageUrl, setImageUrl }) {
 
   // --- Handler Perubahan File (Instant Upload) ---
   const handleFileChange = (e) => {
+    e.preventDefault();
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       // Panggil fungsi upload saat file dipilih

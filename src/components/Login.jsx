@@ -18,9 +18,9 @@ import { LogOut } from "lucide-react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
-  const [email, setEmail] = useState("kasir-online@nomail.com");
+  const [email, setEmail] = useState("bakso@online.com");
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("demo-online");
+  const [password, setPassword] = useState("112233");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
@@ -34,7 +34,7 @@ export default function Login() {
         await saveUserProfile(user);
       })
       .catch((error) => {
-        setError(error.message);
+        setError("Kesalahan input email/password");
         console.error("Sign in error:", error.message);
       });
   };

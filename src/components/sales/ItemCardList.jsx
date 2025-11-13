@@ -69,9 +69,10 @@ export default function ItemCardList() {
   const Kategori = () => (
     <div className="mt-2">
       <span>Kategori:</span>
+      <button className="ml-2" onClick={() => setSearchTerm("")}>Semua {"\u00B7 "}</button>
       {kategories.map((kat, index) => (
-        <button key={kat} onClick={() => setSearchTerm(kat)}>
-          &nbsp; {kat} {index !== lastIndex && " \u00B7 "}
+        <button className="ml-2" key={kat} onClick={() => setSearchTerm(kat)}>
+          {kat} {index !== lastIndex && " \u00B7 "}
         </button>
       ))}
     </div>

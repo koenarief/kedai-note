@@ -14,9 +14,11 @@ import { useUserContext } from "../context/UserContext";
 import dayjs from "dayjs";
 import { Pencil } from "lucide-react";
 import ImageUploaderTailwind from "./ImageUploaderTailwind";
+import UpdatePassword from "./UpdatePassword";
 
 export default function Profile() {
   const [active, setActive] = useState(false);
+  const [ubahPassword, setUbahPassword] = useState(false);
   const [qty, setQty] = useState(0);
   const [profile, setProfile] = useState({});
   const [inputModal, setInputModal] = useState(false);
@@ -181,6 +183,12 @@ export default function Profile() {
           setImageUrl={setImageUrl}
         />
       </div>
+      {!ubahPassword && (
+        <button className="mb-6" onClick={() => setUbahPassword(true)}>
+          Ubah kata sandi
+        </button>
+      )}
+      {ubahPassword && <UpdatePassword setUbahPassword={setUbahPassword} />}
     </div>
   );
 }
