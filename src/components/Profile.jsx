@@ -19,7 +19,6 @@ import UpdatePassword from "./UpdatePassword";
 export default function Profile() {
   const [active, setActive] = useState(false);
   const [ubahPassword, setUbahPassword] = useState(false);
-  const [qty, setQty] = useState(0);
   const [profile, setProfile] = useState({});
   const [inputModal, setInputModal] = useState(false);
   const [inputPhoneModal, setInputPhoneModal] = useState(false);
@@ -91,20 +90,6 @@ export default function Profile() {
 
   const freeKuota = 1000;
 
-  useEffect(() => {
-    if (!user) return;
-
-    if (!active) {
-      const trxRef = collection(db, "users", user.uid, "sales");
-
-      const unsub = onSnapshot(trxRef, (snap) => {
-        setQty(snap.size);
-      });
-
-      return () => unsub();
-    }
-  }, [active, user]);
-
   return (
     <div className="flex flex-col items-center gap-2 my-4 bg-white p-4 rounded shadow">
       <div className="font-medium">
@@ -147,17 +132,9 @@ export default function Profile() {
       <div className="font-medium">
         Status:
         <span className="font-bold ml-2">
-          {profile.active ? "Verified ✅" : "Belum verifikasi"}
+          {profile.active ? "Verified ✅" : "Belum verifikasi (free 1 bln)"}
         </span>
       </div>
-      {!profile.active && (
-        <div>
-          Penjualan:
-          <span className="font-bold ml-2">
-            {qty} (free {freeKuota})
-          </span>
-        </div>
-      )}
 
       {inputModal && (
         <InputModal

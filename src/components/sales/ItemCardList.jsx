@@ -17,6 +17,7 @@ import { useUserContext } from "../../context/UserContext";
 import SearchInput from "./SearchInput";
 import FloatingContainer from "../FloatingContainer";
 import BayarModal from "./BayarModal";
+import { toast } from "react-toastify";
 
 ItemList.propTypes = {
   items: PropTypes.object.isRequired,
@@ -37,7 +38,7 @@ export default function ItemCardList() {
   const [items, setItems] = useState(itemsSample);
   const [products, setProducts] = useState([]);
   const [kategories, setKategories] = useState([]);
-  const blokir = false;
+  const [blokir, setBlokir] = useState(false);
   const translator = short();
   let running = false;
   const user = useUserContext();
@@ -70,7 +71,9 @@ export default function ItemCardList() {
   const Kategori = () => (
     <div className="mt-2">
       <span>Kategori:</span>
-      <button className="ml-2" onClick={() => setSearchTerm("")}>Semua {"\u00B7 "}</button>
+      <button className="ml-2" onClick={() => setSearchTerm("")}>
+        Semua {"\u00B7 "}
+      </button>
       {kategories.map((kat, index) => (
         <button className="ml-2" key={kat} onClick={() => setSearchTerm(kat)}>
           {kat} {index !== lastIndex && " \u00B7 "}
@@ -137,7 +140,13 @@ export default function ItemCardList() {
           ...d.data(),
         }));
 
-      setItems(filteredItems);
+      setItems(
+        filteredItems.sort(
+          (a, b) =>
+            a.kategori.localeCompare(b.kategori) ||
+            a.name.localeCompare(b.name),
+        ),
+      );
     });
 
     return () => unsub();
@@ -167,12 +176,26 @@ export default function ItemCardList() {
     });
   };
 
+  const lebihSebulan = (createdAt) => {
+    if (!createdAt) return true;
+    const firestoreDate = createdAt.toDate();
+    const now = new Date();
+    const differenceInMilliseconds = Math.abs(
+      now.getTime() - firestoreDate.getTime(),
+    );
+    const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+    // return differenceInMinutes > 60; // for testing
+    return differenceInMinutes > 60 * 24 * 30;
+  };
+
   const submitForm = () => {
     if (!user) return;
 
-    // TODO: cek status profile.active n count trx
-    if (!profile.active) {
-      // tolak jika sudah memenuhi kuota 1000
+    if (!profile.active && lebihSebulan(profile.createdAt)) {
+      // jika lebih dari 1 bulan
+      setBlokir(true);
+      toast("Akun belum aktivasi dan sudah melebihi free kuota");
+      return;
     }
 
     const shortId = translator.generate();
@@ -190,6 +213,7 @@ export default function ItemCardList() {
     });
     setQty({});
     setBayarModal(false);
+    toast('Data berhasil disimpan');
   };
 
   return (

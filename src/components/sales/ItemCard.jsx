@@ -15,7 +15,7 @@ export default function ItemCard({ onAdd, onSub, item, qty }) {
       style={{
         backgroundImage: `url(${item.image})`,
       }}
-      className="bg-cover bg-center rounded-xl shadow-lg group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[160px] min-h-[160px]"
+      className="bg-cover bg-center rounded-xl shadow-lg group relative hover:border-blue-800 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer flex-1 min-w-[140px] min-h-[140px] max-w-[220px]"
     >
       <div className="px-2 absolute bottom-0 bg-white bg-opacity-80 w-full">
         {/* Nama produk */}

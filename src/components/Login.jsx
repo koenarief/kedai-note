@@ -18,9 +18,9 @@ import { LogOut } from "lucide-react";
 
 export default function Login() {
   const [user] = useAuthState(auth);
-  const [email, setEmail] = useState("bakso@online.com");
+  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("112233");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {

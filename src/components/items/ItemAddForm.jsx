@@ -10,6 +10,7 @@ import { db } from "../../firebase";
 import { useUserContext } from "../../context/UserContext";
 import ImageUploaderTailwind from "../ImageUploaderTailwind";
 import ItemList from "./ItemList";
+import { toast } from "react-toastify";
 
 export default function ItemAddForm() {
   const [imageUrl, setImageUrl] = useState("");
@@ -67,6 +68,7 @@ export default function ItemAddForm() {
     setName("");
     setPrice("");
     setKategori("");
+    toast('Data berhasil disimpan');
   };
 
   return (

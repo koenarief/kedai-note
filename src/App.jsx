@@ -15,6 +15,7 @@ import Profile from "./components/Profile";
 import LabaRugi from "./components/LabaRugi";
 
 import { UserContext } from "./context/UserContext";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
@@ -55,6 +56,7 @@ export default function App() {
         <h1 className="text-xl font-bold text-center">
           📊 Jurnal Harian 
         </h1>
+        <ToastContainer />
 		<p className="text-4xl font-bold text-center">{name}</p>
 
         {user ? (
