@@ -4,6 +4,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
 import { useUserContext } from "../context/UserContext";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { bulanIni, bulanSebelumnya } from "./tgl";
 
 export default function LabaRugi() {
   const today = new Date();
@@ -13,7 +14,6 @@ export default function LabaRugi() {
 
   const [summary, setSummary] = useState({
     count: 0,
-    totalQty: 0,
     total: 0,
     perName: {},
   });
@@ -26,42 +26,6 @@ export default function LabaRugi() {
 
   const user = useUserContext();
 
-  const bulanSebelumnya = (n) => {
-    if (n == 0) return bulanIni();
-
-    const today = new Date();
-
-    // 1. **Awal Bulan Sebelumnya**
-    // Ambil tahun dan bulan saat ini
-    const previousMonthStart = new Date(
-      today.getFullYear(),
-      today.getMonth() - n, // Kurangi 1 dari bulan saat ini
-      1, // Selalu set hari ke 1
-    );
-
-    // 2. **Akhir Bulan Sebelumnya**
-    // Mulai dari awal bulan saat ini (hari ke-1 bulan ini)
-    const currentMonthStart = new Date(
-      previousMonthStart.getFullYear(),
-      previousMonthStart.getMonth() + 1,
-      1,
-    );
-
-    // Kurangi 1 milidetik dari awal bulan ini
-    // Ini akan membawa kita ke hari terakhir bulan sebelumnya
-    const previousMonthEnd = new Date(currentMonthStart.getTime() - 1);
-
-    return [previousMonthStart, previousMonthEnd];
-  };
-
-  const bulanIni = () => {
-    const today = new Date();
-    const start = new Date(today.getFullYear(), today.getMonth(), 1);
-    const endMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    const akhir = new Date(endMonth.getTime() - 1);
-    return [start, akhir];
-  };
-
   useEffect(() => {
     if (!user) return;
 
@@ -70,25 +34,24 @@ export default function LabaRugi() {
     setAkhirTgl(tgl[1]);
 
     const q = query(
-      collection(db, "users", user.uid, "sales"),
+      collection(db, "users", user.uid, "penjualans"),
       where("createdAt", ">=", tgl[0]),
       where("createdAt", "<=", tgl[1]),
     );
 
     const unsub = onSnapshot(q, (snap) => {
       let count = 0,
-        totalQty = 0,
         total = 0;
       let perName = {};
       snap.forEach((d) => {
         const data = d.data();
         count++;
-        totalQty += data.qty;
-        total += data.price * data.qty;
-        perName[data.name] =
-          (perName[data.name] || 0) + data.price * data.qty;
+        total += data.total;
+        data.items.forEach((item) => {
+          perName[item.name] = (perName[item.name] || 0) + item.subTotal;
+        });
       });
-      setSummary({ count, totalQty, total, perName });
+      setSummary({ count, total, perName });
     });
 
     const qBelanja = query(
@@ -111,7 +74,10 @@ export default function LabaRugi() {
       setSummaryBelanja({ count, total, perKategori });
     });
 
-    return () => { unsub(); unsubBelanja(); }
+    return () => {
+      unsub();
+      unsubBelanja();
+    };
   }, [bln]);
 
   return (
@@ -137,7 +103,9 @@ export default function LabaRugi() {
         </button>
       </div>
 
-      <h3 className="mt-2 font-semibold flex items-center"><ChevronRight className="w-4 h-4 mr-2" /> Pendapatan:</h3>
+      <h3 className="mt-2 font-semibold flex items-center">
+        <ChevronRight className="w-4 h-4 mr-2" /> Pendapatan:
+      </h3>
       <ul className="list-disc list-inside">
         {Object.entries(summary.perName).map(([name, amt]) => (
           <li key={name} className="ml-6">
@@ -145,8 +113,13 @@ export default function LabaRugi() {
           </li>
         ))}
       </ul>
-      <h3 className="mt-2 font-semibold">Total Pendapatan: {Intl.NumberFormat("en-US").format(summary.total / 1000)}k</h3>
-      <h3 className="mt-2 font-semibold flex items-center"><ChevronRight className="w-4 h-4 mr-2" /> Pengeluaran</h3>
+      <h3 className="mt-2 font-semibold">
+        Total Pendapatan:{" "}
+        {Intl.NumberFormat("en-US").format(summary.total / 1000)}k
+      </h3>
+      <h3 className="mt-2 font-semibold flex items-center">
+        <ChevronRight className="w-4 h-4 mr-2" /> Pengeluaran
+      </h3>
       <ul className="list-disc list-inside">
         {Object.entries(summaryBelanja.perKategori).map(([kategori, amt]) => (
           <li key={kategori} className="ml-6">
@@ -154,8 +127,17 @@ export default function LabaRugi() {
           </li>
         ))}
       </ul>
-      <h3 className="mt-2 font-semibold">Total Pengeluaran: {Intl.NumberFormat("en-US").format(summaryBelanja.total / 1000)}k</h3>
-      <h3 className="mt-2 font-semibold">Laba Rugi: {Intl.NumberFormat("en-US").format((summary.total - summaryBelanja.total) / 1000)}k</h3>
+      <h3 className="mt-2 font-semibold">
+        Total Pengeluaran:{" "}
+        {Intl.NumberFormat("en-US").format(summaryBelanja.total / 1000)}k
+      </h3>
+      <h3 className="mt-2 font-semibold">
+        Laba Rugi:{" "}
+        {Intl.NumberFormat("en-US").format(
+          (summary.total - summaryBelanja.total) / 1000,
+        )}
+        k
+      </h3>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { db } from "../../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
 import { useUserContext } from "../../context/UserContext";
+import { hariIni } from "../tgl";
 
 export default function Summary() {
   const [summary, setSummary] = useState({
@@ -15,15 +16,10 @@ export default function Summary() {
 
   useEffect(() => {
     if (!user) return;
-    const today = new Date();
-    const start = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate(),
-    );
+
     const q = query(
-      collection(db, "users", user.uid, "sales"),
-      where("createdAt", ">=", start),
+      collection(db, "users", user.uid, "penjualans"),
+      where("createdAt", ">=", hariIni()),
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -34,10 +30,12 @@ export default function Summary() {
       snap.forEach((d) => {
         const data = d.data();
         count++;
-        totalQty += data.qty;
-        total += data.price * data.qty;
-        perName[data.name] =
-          (perName[data.name] || 0) + data.price * data.qty;
+        total += data.total;
+        data.items.forEach((item) => {
+          totalQty += item.qty;
+          perName[item.name] =
+            (perName[item.name] || 0) + item.subTotal;
+        });
       });
       setSummary({ count, totalQty, total, perName });
     });

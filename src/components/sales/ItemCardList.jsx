@@ -201,18 +201,6 @@ export default function ItemCardList() {
     const shortId = translator.generate();
     const createdAt = serverTimestamp();
 
-    items.forEach(async (item) => {
-      if (qty[item.id] > 0) {
-        await addDoc(collection(db, "users", user.uid, "sales"), {
-          name: item.name,
-          price: parseInt(item.price),
-          qty: parseInt(qty[item.id]),
-          subTotal: item.price * qty[item.id],
-          note: shortId,
-          createdAt: createdAt,
-        });
-      }
-    });
     const total = sumTotal();
     const details = items
       .filter((item) => qty[item.id] > 0)

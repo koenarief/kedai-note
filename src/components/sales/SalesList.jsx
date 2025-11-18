@@ -6,6 +6,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  where,
 } from "firebase/firestore";
 import { Trash2 } from "lucide-react";
 
@@ -15,10 +16,10 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import { useUserContext } from "../../context/UserContext";
 import { db } from "../../firebase";
+import { hariIni } from "../tgl";
 
 export default function SalesList() {
-  const [sales, setSales] = useState([]);
-  const [salesIds, setSalesIds] = useState([]);
+  const [penjualans, setPenjualans] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [namaItem, setNamaItem] = useState(null);
@@ -27,6 +28,8 @@ export default function SalesList() {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
+    dayjs.extend(relativeTime);
+
     const interval = setInterval(() => {
       setTime(new Date());
       console.log(time);
@@ -37,16 +40,14 @@ export default function SalesList() {
 
   const handleDeleteClick = (sale) => {
     setItemToDelete(sale);
-    setNamaItem(sale);
+    setNamaItem(sale.id);
     setShowConfirm(true);
   };
 
   const handleConfirmDelete = async () => {
-
     if (!user) return;
-    salesById(itemToDelete).forEach((item) => deleteDoc(doc(db, "users", user.uid, "sales", item.id)));
-
-    setShowConfirm(false);
+    (deleteDoc(doc(db, "users", user.uid, "penjualans", itemToDelete.id)),
+      setShowConfirm(false));
     setItemToDelete(null); // Clear itemToDelete
   };
 
@@ -55,26 +56,16 @@ export default function SalesList() {
     setItemToDelete(null); // Clear itemToDelete
   };
 
-  const salesById = (note) => sales.filter((sale) => sale.note == note);
-  const totalSales = (note) =>
-    sales
-      .filter((sale) => sale.note == note)
-      .reduce((total, sale) => total + sale.qty * sale.price, 0);
-
   useEffect(() => {
-    dayjs.extend(relativeTime);
-    dayjs.locale("id");
-
     const q = query(
-      collection(db, "users", user.uid, "sales"),
+      collection(db, "users", user.uid, "penjualans"),
+      where("createdAt", ">=", hariIni()),
       orderBy("createdAt", "desc"),
     );
+
     const unsub = onSnapshot(q, (snap) => {
-      const sales = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      const allIds = sales.map((sale) => sale.note);
-      const uniqueIds = [...new Set(allIds)];
-      setSalesIds(uniqueIds);
-      setSales(sales);
+      const penjualans = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setPenjualans(penjualans);
     });
     return () => unsub();
   }, []);
@@ -94,14 +85,14 @@ export default function SalesList() {
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">Penjualan Hari Ini</h2>
       <ul className="space-y-3">
-        {salesIds.map((note) => (
+        {penjualans.map((note) => (
           <li
-            key={note}
+            key={note.id}
             className="p-3 rounded-xl border shadow-sm hover:shadow-md transition bg-white"
           >
             <div className="flex justify-between items-start">
               <div className="space-y-1 w-full">
-                {salesById(note).map((sale) => (
+                {note.items.map((sale) => (
                   <div
                     key={sale.id}
                     className="flex justify-between items-center text-sm"
@@ -125,8 +116,8 @@ export default function SalesList() {
 
             <div className="flex justify-between items-center mt-2 text-xs text-gray-500 border-t pt-1">
               <span>
-                🧾 {dayjs(salesById(note)[0].createdAt?.toDate()).fromNow()}
-                {diffMinutes(salesById(note)[0].createdAt) && (
+                🧾 {dayjs(note.createdAt?.toDate()).fromNow()}
+                {diffMinutes(note.createdAt) && (
                   <button
                     onClick={() => handleDeleteClick(note)}
                     className="ml-4 bg-gray-100 text-gray rounded hover:bg-gray-200"
@@ -135,7 +126,7 @@ export default function SalesList() {
                   </button>
                 )}
               </span>
-              <span>Total: {totalSales(note) / 1000}k</span>
+              <span>Total: {note.total / 1000}k</span>
             </div>
           </li>
         ))}
