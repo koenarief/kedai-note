@@ -199,6 +199,8 @@ export default function ItemCardList() {
     }
 
     const shortId = translator.generate();
+    const createdAt = serverTimestamp();
+
     items.forEach(async (item) => {
       if (qty[item.id] > 0) {
         await addDoc(collection(db, "users", user.uid, "sales"), {
@@ -207,13 +209,31 @@ export default function ItemCardList() {
           qty: parseInt(qty[item.id]),
           subTotal: item.price * qty[item.id],
           note: shortId,
-          createdAt: serverTimestamp(),
+          createdAt: createdAt,
         });
       }
     });
+    const total = sumTotal();
+    const details = items
+      .filter((item) => qty[item.id] > 0)
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: parseInt(item.price),
+        qty: parseInt(qty[item.id]),
+        subTotal: item.price * qty[item.id],
+      }));
+
+    addDoc(collection(db, "users", user.uid, "penjualans"), {
+      total: total,
+      note: shortId,
+      items: details,
+      createdAt: createdAt,
+    });
+
     setQty({});
     setBayarModal(false);
-    toast('Data berhasil disimpan');
+    toast("Data berhasil disimpan");
   };
 
   return (
