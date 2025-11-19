@@ -178,7 +178,7 @@ const UpdatePassword = ({ setUbahPassword }) => {
 };
 
 UpdatePassword.propTypes = {
-  setUbahPassword: PropTypes.func.isRequired, // Or PropTypes.node if not always required
+  setUbahPassword: PropTypes.func.isRequired,
 };
 
 export default UpdatePassword;
