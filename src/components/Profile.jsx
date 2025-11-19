@@ -2,7 +2,6 @@ import React from "react";
 import {
   doc,
   onSnapshot,
-  collection,
   getDoc,
   serverTimestamp,
   setDoc,
@@ -69,8 +68,6 @@ export default function Profile() {
       await setDoc(profileRef, field, { merge: true });
     }
   };
-
-  const freeKuota = 1000;
 
   return (
     <div className="flex flex-col items-center gap-2 my-4 bg-white p-4 rounded shadow">

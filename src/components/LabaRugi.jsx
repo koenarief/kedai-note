@@ -4,7 +4,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
 import { useUserContext } from "../context/UserContext";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
-import { bulanIni, bulanSebelumnya } from "./tgl";
+import { bulanSebelumnya } from "./tgl";
 
 export default function LabaRugi() {
   const today = new Date();

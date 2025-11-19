@@ -1,17 +1,17 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+
 import {
-  getAuth,
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from "firebase/auth";
+
 import { useUserContext } from "../context/UserContext";
-import { auth } from "../firebase";
 
 // Asumsi Anda memiliki AuthContext atau cara lain untuk mendapatkan objek auth dan user
 
 const UpdatePassword = ({ setUbahPassword }) => {
-  // const auth = getAuth(); // Ambil instance auth
   const user = useUserContext();
 
   const [currentPassword, setCurrentPassword] = useState("");
@@ -175,6 +175,10 @@ const UpdatePassword = ({ setUbahPassword }) => {
       )}
     </div>
   );
+};
+
+UpdatePassword.propTypes = {
+  setUbahPassword: PropTypes.func.isRequired, // Or PropTypes.node if not always required
 };
 
 export default UpdatePassword;
