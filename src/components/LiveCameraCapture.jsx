@@ -2,8 +2,14 @@ import React, { useRef, useEffect, useState } from "react";
 import { auth, storage } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import PropTypes from "prop-types";
 
-const LiveCameraCapture = () => {
+LiveCameraCapture.propTypes = {
+  onConfirm: PropTypes.object.isRequired,
+  onCancel: PropTypes.object.isRequired,
+};
+
+export default function LiveCameraCapture({ onConfirm, onCancel }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
@@ -52,20 +58,24 @@ const LiveCameraCapture = () => {
         track.stop(); // Stop each individual track
       });
       mediaStream = null;
+      uploadToFirebase();
     }
   };
 
   const uploadToFirebase = () => {
-    const storageRef = ref(storage, `users/${user.uid}/${Date.now()}_canvas_image.jpg`); // Path in Storage
+    const storageRef = ref(
+      storage,
+      `users/${user.uid}/${Date.now()}_idkasir.jpg`,
+    ); // Path in Storage
     const canvas = canvasRef.current;
 
     canvas.toBlob(
       (blob) => {
         uploadBytes(storageRef, blob)
           .then((snapshot) => {
-            console.log("Uploaded a blob!");
             getDownloadURL(snapshot.ref).then((downloadUrl) => {
-              console.log(downloadUrl);
+              onConfirm(downloadUrl);
+              onCancel(); // close dialog
             });
           })
           .catch((error) => {
@@ -78,17 +88,29 @@ const LiveCameraCapture = () => {
   };
 
   return (
-    <div>
-      {imageSrc ? (
-        <img src={imageSrc} alt="Captured" />
-      ) : (
-        <video ref={videoRef} autoPlay playsInline />
-      )}
-      <button onClick={capturePhoto}>Take Photo</button>
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-      <button onClick={() => uploadToFirebase()}>Upload</button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg mx-auto">
+        {imageSrc ? (
+          <img src={imageSrc} alt="Captured" />
+        ) : (
+          <video ref={videoRef} autoPlay playsInline />
+        )}
+        <canvas ref={canvasRef} style={{ display: "none" }} />
+        <div className="flex justify-end space-x-4 mt-4">
+          <button
+            onClick={capturePhoto}
+            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            Take Photo
+          </button>
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default LiveCameraCapture;
+}

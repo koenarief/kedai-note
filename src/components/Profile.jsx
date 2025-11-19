@@ -12,11 +12,12 @@ import InputModal from "./InputModal";
 import { useUserContext } from "../context/UserContext";
 import dayjs from "dayjs";
 import { Pencil } from "lucide-react";
-import ImageUploader from "./ImageUploader";
+import LiveCameraCapture from "./LiveCameraCapture";
 import UpdatePassword from "./UpdatePassword";
 
 export default function Profile() {
   const [ubahPassword, setUbahPassword] = useState(false);
+  const [openCamera, setOpenCamera] = useState(false);
   const [profile, setProfile] = useState({});
   const [inputModal, setInputModal] = useState(false);
   const [inputPhoneModal, setInputPhoneModal] = useState(false);
@@ -133,16 +134,36 @@ export default function Profile() {
           item="Telp."
         />
       )}
-      <div>
-        <ImageUploader imageUrl={profile.imageUrl} setImageUrl={setImageUrl} />
+      <div className="aspect-square w-48">
+        <img src={profile.imageUrl} className="object-cover w-full h-full rounded-full"/>
       </div>
-      {!ubahPassword && (
-        <button className="mb-6" onClick={() => setUbahPassword(true)}>
+      <div className="flex justify-end space-x-4 my-4">
+        <button
+          className="rounded-md border px-4 py-2"
+          onClick={() => setOpenCamera(true)}
+        >
+          Ganti foto profile
+        </button>
+
+        <button
+          className="rounded-md border px-4 py-2"
+          onClick={() => setUbahPassword(true)}
+        >
           Ubah kata sandi
         </button>
-      )}
+      </div>
+
       {ubahPassword && <UpdatePassword setUbahPassword={setUbahPassword} />}
 
+      {openCamera && (
+        <LiveCameraCapture
+          onCancel={() => setOpenCamera(false)}
+          onConfirm={(url) => {
+            console.log(url);
+            setImageUrl(url);
+          }}
+        />
+      )}
     </div>
   );
 }
