@@ -17,7 +17,6 @@ import ImageUploaderTailwind from "./ImageUploaderTailwind";
 import UpdatePassword from "./UpdatePassword";
 
 export default function Profile() {
-  const [active, setActive] = useState(false);
   const [ubahPassword, setUbahPassword] = useState(false);
   const [profile, setProfile] = useState({});
   const [inputModal, setInputModal] = useState(false);
@@ -33,8 +32,6 @@ export default function Profile() {
       if (snap.exists()) {
         const data = snap.data();
         setProfile(data);
-
-        setActive(data.active ?? false);
       } else {
         setDoc(profileRef, {
           email: user.email,
