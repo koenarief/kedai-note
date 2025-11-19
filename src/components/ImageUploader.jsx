@@ -151,4 +151,4 @@ function ImageUploader({ imageUrl, setImageUrl }) {
   );
 }
 
-export default ImageUploaderTailwind;
+export default ImageUploader;
