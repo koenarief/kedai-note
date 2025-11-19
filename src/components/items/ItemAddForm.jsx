@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useUserContext } from "../../context/UserContext";
-import ImageUploaderTailwind from "../ImageUploaderTailwind";
+import ImageUploader from "../ImageUploader";
 import ItemList from "./ItemList";
 import { toast } from "react-toastify";
 
@@ -119,7 +119,7 @@ export default function ItemAddForm() {
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Image</label>
-            <ImageUploaderTailwind
+            <ImageUploader
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
             />

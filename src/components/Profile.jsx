@@ -13,7 +13,7 @@ import InputModal from "./InputModal";
 import { useUserContext } from "../context/UserContext";
 import dayjs from "dayjs";
 import { Pencil } from "lucide-react";
-import ImageUploaderTailwind from "./ImageUploaderTailwind";
+import ImageUploader from "./ImageUploader";
 import UpdatePassword from "./UpdatePassword";
 
 export default function Profile() {
@@ -137,7 +137,7 @@ export default function Profile() {
         />
       )}
       <div>
-        <ImageUploaderTailwind
+        <ImageUploader
           imageUrl={profile.imageUrl}
           setImageUrl={setImageUrl}
         />
