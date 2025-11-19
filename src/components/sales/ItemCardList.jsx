@@ -8,7 +8,6 @@ import {
   onSnapshot,
   doc,
 } from "firebase/firestore";
-import short from "short-uuid";
 import ItemCard from "./ItemCard";
 import PropTypes from "prop-types";
 
@@ -39,7 +38,6 @@ export default function ItemCardList() {
   const [products, setProducts] = useState([]);
   const [kategories, setKategories] = useState([]);
   const [blokir, setBlokir] = useState(false);
-  const translator = short();
   let running = false;
   const user = useUserContext();
   const [profile, setProfile] = useState({});
@@ -198,7 +196,6 @@ export default function ItemCardList() {
       return;
     }
 
-    const shortId = translator.generate();
     const createdAt = serverTimestamp();
 
     const total = sumTotal();
@@ -214,7 +211,6 @@ export default function ItemCardList() {
 
     addDoc(collection(db, "users", user.uid, "penjualans"), {
       total: total,
-      note: shortId,
       items: details,
       createdAt: createdAt,
     });

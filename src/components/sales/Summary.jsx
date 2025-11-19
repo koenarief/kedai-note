@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { db } from "../../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { format } from "date-fns";
 import { useUserContext } from "../../context/UserContext";
-import { hariIni } from "../tgl";
+import { kemarin } from "../tgl";
 
 export default function Summary() {
+  const [tgl, setTgl] = useState(0);
+  const [tglLap, setTglLap] = useState("");
   const [summary, setSummary] = useState({
     count: 0,
     totalQty: 0,
@@ -17,9 +20,13 @@ export default function Summary() {
   useEffect(() => {
     if (!user) return;
 
+    const tgls = kemarin(tgl);
+	setTglLap(format(tgls[0], "d-M-yyyy"));
+
     const q = query(
       collection(db, "users", user.uid, "penjualans"),
-      where("createdAt", ">=", hariIni()),
+      where("createdAt", ">=", tgls[0]),
+      where("createdAt", "<=", tgls[1]),
     );
 
     const unsub = onSnapshot(q, (snap) => {
@@ -41,12 +48,15 @@ export default function Summary() {
     });
 
     return () => unsub();
-  }, []);
+  }, [tgl]);
 
   return (
     <div className="bg-white p-4 rounded-2xl shadow mb-4">
       <h2 className="text-lg font-bold mb-2">
-        Ringkasan Penjualan ({format(new Date(), "d-M-yyyy")})
+        Ringkasan Penjualan ({tglLap})
+		  <button className="p-0 ml-2 border" onClick={() => setTgl(tgl + 1)}><ChevronLeft /></button>
+		  <button className="p-0 ml-2 border" onClick={() => setTgl(0)}><Calendar /></button>
+		  <button className="p-0 ml-2 border" onClick={() => setTgl(tgl - 1)}><ChevronRight /></button>
       </h2>
       <p>Jumlah Transaksi: {summary.count}</p>
       <p>Total qty: {summary.totalQty}</p>
