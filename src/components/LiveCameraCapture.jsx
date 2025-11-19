@@ -3,6 +3,7 @@ import { auth, storage } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import PropTypes from "prop-types";
+import { SwitchCamera, Camera, X } from 'lucide-react';
 
 LiveCameraCapture.propTypes = {
   onConfirm: PropTypes.object.isRequired,
@@ -13,13 +14,14 @@ export default function LiveCameraCapture({ onConfirm, onCancel }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [imageSrc, setImageSrc] = useState(null);
+  const [depan, setDepan] = useState(false);
   const [user] = useAuthState(auth);
 
   useEffect(() => {
     async function getCameraStream() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: { facingMode: depan ? "user" : "environment" },
         });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
@@ -37,7 +39,7 @@ export default function LiveCameraCapture({ onConfirm, onCancel }) {
         tracks.forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [depan]);
 
   const capturePhoto = () => {
     const video = videoRef.current;
@@ -98,16 +100,22 @@ export default function LiveCameraCapture({ onConfirm, onCancel }) {
         <canvas ref={canvasRef} style={{ display: "none" }} />
         <div className="flex justify-end space-x-4 mt-4">
           <button
+            onClick={() => setDepan(!depan)}
+            className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            <SwitchCamera className="w-4 h-4"/>
+          </button>
+          <button
             onClick={capturePhoto}
             className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
           >
-            Take Photo
+            <Camera className="w-4 h-4"/>
           </button>
           <button
             onClick={onCancel}
             className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
           >
-            Cancel
+            <X className="w-4 h-4"/>
           </button>
         </div>
       </div>

@@ -78,13 +78,13 @@ export default function ItemAddForm() {
         className="bg-white p-4 rounded-2xl shadow mb-4 space-y-3"
       >
         <h2 className="text-lg font-bold">
-          {edit ? "✏️ Edit item produk" : "➕ Buat item produk baru"}
+          {edit ? "✏️ Edit produk " : "➕ Buat produk baru"}
 			{selectedItem?.name}
         </h2>
 
         <div className="grid gap-3">
           <div>
-            <label className="block text-sm font-medium mb-1">Nama Item Produk</label>
+            <label className="block text-sm font-medium mb-1">Nama Produk</label>
             <input
               className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
               placeholder="Masukkan nama item"
@@ -118,7 +118,7 @@ export default function ItemAddForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Image</label>
+            <label className="block text-sm font-medium mb-1">Foto</label>
             <ImageUploader
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}

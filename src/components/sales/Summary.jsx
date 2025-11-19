@@ -51,7 +51,7 @@ export default function Summary() {
   }, [tgl]);
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow mb-4">
+    <div className="bg-white p-4 rounded-2xl shadow my-4">
       <h2 className="text-lg font-bold mb-2">
         Ringkasan Penjualan ({tglLap})
 		  <button className="p-0 ml-2 border" onClick={() => setTgl(tgl + 1)}><ChevronLeft /></button>

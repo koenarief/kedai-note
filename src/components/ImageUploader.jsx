@@ -3,6 +3,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { auth, storage } from "../firebase";
 import PropTypes from "prop-types";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { File, Camera } from "lucide-react";
+import LiveCameraCapture from "./LiveCameraCapture";
 
 ImageUploader.propTypes = {
   imageUrl: PropTypes.string.isRequired,
@@ -12,14 +14,19 @@ ImageUploader.propTypes = {
 function ImageUploader({ imageUrl, setImageUrl }) {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [openCamera, setOpenCamera] = useState(false);
   const [error, setError] = useState(null);
   const [user] = useAuthState(auth);
   const fileInputRef = useRef(null);
 
   const handleButtonClick = (e) => {
-    // Pastikan ref ada sebelum memanggil klik
     e.preventDefault();
     fileInputRef.current.click();
+  };
+
+  const cameraButtonClick = (e) => {
+    e.preventDefault();
+    setOpenCamera(true);
   };
 
   // --- Fungsi Upload Utama ---
@@ -89,12 +96,11 @@ function ImageUploader({ imageUrl, setImageUrl }) {
       <div className="p-2 text-center">
         {/* Hasil Unggahan (URL dan Gambar) */}
         {imageUrl && !isUploading && (
-          <div className="">
-            {/* Preview Gambar */}
+          <div className="mt-4 w-48 h-48 rounded-lg overflow-hidden mx-auto">
             <img
               src={imageUrl}
               alt="Uploaded Preview"
-              className="mt-4 max-h-48 w-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
         )}
@@ -102,10 +108,24 @@ function ImageUploader({ imageUrl, setImageUrl }) {
         <button
           onClick={handleButtonClick}
           disabled={isUploading}
-          className="mt-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 disabled:opacity-50"
+          className="mt-4 px-4 py-2 text-sm font-semibold text-gray-800 bg-indigo-100 rounded-lg shadow-md hover:bg-indigo-200 disabled:opacity-50"
         >
-          {isUploading ? "Mengunggah..." : "Pilih File untuk Diunggah"}
+          <File />
         </button>
+        <button
+          className="mt-4 ml-2 px-4 py-2 text-sm font-semibold text-gray-800 bg-indigo-100 rounded-lg shadow-md hover:bg-indigo-200 disabled:opacity-50"
+          onClick={cameraButtonClick}
+        >
+          <Camera />
+        </button>
+        {openCamera && (
+          <LiveCameraCapture
+            onCancel={() => setOpenCamera(false)}
+            onConfirm={(url) => {
+              setImageUrl(url);
+            }}
+          />
+        )}
 
         <div className="mb-6">
           <input

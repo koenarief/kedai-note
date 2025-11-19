@@ -134,7 +134,7 @@ export default function Profile() {
           item="Telp."
         />
       )}
-      <div className="aspect-square w-48">
+      <div className="h-48 w-48">
         <img src={profile.imageUrl} className="object-cover w-full h-full rounded-full"/>
       </div>
       <div className="flex justify-end space-x-4 my-4">
