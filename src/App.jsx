@@ -43,7 +43,7 @@ export default function App() {
     });
 
     return () => unsub();
-  }, []);
+  }, [user]);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
@@ -53,9 +53,9 @@ export default function App() {
         <h1 className="text-xl font-bold text-center">📊 Jurnal Harian</h1>
         {user ? (
           <UserContext.Provider value={user}>
-            <p className="text-4xl font-bold text-center">{name}</p>
             {/* 🔹 Navigation */}
             <BrowserRouter>
+              <p className="text-4xl font-bold text-center">{name}</p>
               <NavMenu />
               <Routes>
                 <Route path="/" element={<ItemCardList />} />
