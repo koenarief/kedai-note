@@ -23,17 +23,6 @@ export default function Profile() {
   const [inputModal, setInputModal] = useState(false);
   const [inputPhoneModal, setInputPhoneModal] = useState(false);
   const user = useUserContext();
-  // const [imageUrl, setImageUrl] = useState("");
-  const setImageUrl = async (imageUrl) => {
-    if (!imageUrl) return;
-    if (!user) return;
-    const profileRef = doc(db, "profiles", user.uid);
-    const profileSnap = await getDoc(profileRef);
-
-    if (profileSnap.exists()) {
-      await setDoc(profileRef, { imageUrl: imageUrl }, { merge: true });
-    }
-  };
 
   useEffect(() => {
     if (!user) return;
@@ -60,32 +49,28 @@ export default function Profile() {
   }, [user]);
 
   const saveName = async (newName) => {
-    if (!user) return;
-    const profileRef = doc(db, "profiles", user.uid);
-    const profileSnap = await getDoc(profileRef);
-
-    if (profileSnap.exists()) {
-      await setDoc(profileRef, { name: newName }, { merge: true });
-    } else {
-      setDoc(profileRef, {
-        email: user.email,
-        name: newName,
-        createdAt: serverTimestamp(),
-        active: false,
-      });
-    }
+    updateProfile({ name: newName });
     setInputModal(false);
   };
 
   const savePhone = async (newPhone) => {
+    updateProfile({ phone: newPhone });
+    setInputPhoneModal(false);
+  };
+
+  const setImageUrl = async (imageUrl) => {
+    if (!imageUrl) return;
+    updateProfile({ imageUrl: imageUrl });
+  };
+
+  const updateProfile = async (field) => {
     if (!user) return;
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
     if (profileSnap.exists()) {
-      await setDoc(profileRef, { phone: newPhone }, { merge: true });
+      await setDoc(profileRef, field, { merge: true });
     }
-    setInputPhoneModal(false);
   };
 
   const freeKuota = 1000;
