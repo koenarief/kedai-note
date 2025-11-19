@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import { Menu, LogOut } from "lucide-react"; // 🔹 tambah icon logout
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
-import PropTypes from "prop-types";
 import { ShoppingCart, Wallet, BarChart3, Settings, User } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-NavMenu.propTypes = {
-  setPage: PropTypes.object.isRequired,
-  page: PropTypes.string,
-};
-
-export default function NavMenu({ page, setPage }) {
+export default function NavMenu() {
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState("home");
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -19,7 +16,8 @@ export default function NavMenu({ page, setPage }) {
   };
 
   const openPage = (page) => {
-    setPage(page);
+    navigate(page);
+	setPage(page);
     setOpen(false);
   };
 
@@ -38,9 +36,9 @@ export default function NavMenu({ page, setPage }) {
         <div className="absolute top-12 bg-white shadow-lg rounded-lg border w-48 py-2 z-50">
           {/* 🏠 Penjualan */}
           <button
-            onClick={() => openPage("home")}
+            onClick={() => openPage("/")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "home" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+              page === "/" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             <ShoppingCart className="w-4 h-4" />
@@ -49,9 +47,9 @@ export default function NavMenu({ page, setPage }) {
 
           {/* 💸 Pengeluaran */}
           <button
-            onClick={() => openPage("belanja")}
+            onClick={() => openPage("/belanja")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "pengeluaran"
+              page === "/belanja"
                 ? "bg-blue-50 text-blue-600"
                 : "text-gray-700"
             }`}
@@ -65,9 +63,9 @@ export default function NavMenu({ page, setPage }) {
 
           {/* 📊 Laba Rugi */}
           <button
-            onClick={() => openPage("labarugi")}
+            onClick={() => openPage("/laba-rugi")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "labarugi" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+              page === "/laba-rugi" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             <BarChart3 className="w-4 h-4" />
@@ -78,9 +76,9 @@ export default function NavMenu({ page, setPage }) {
           <div className="border-t my-2"></div>
 
           <button
-            onClick={() => openPage("items")}
+            onClick={() => openPage("/items")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "items" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+              page === "/items" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             <Settings className="w-4 h-4" />
@@ -89,9 +87,9 @@ export default function NavMenu({ page, setPage }) {
 
           {/* 👤 Profile */}
           <button
-            onClick={() => openPage("profile")}
+            onClick={() => openPage("/profile")}
             className={`w-full flex items-center gap-2 text-left px-4 py-2 hover:bg-gray-100 ${
-              page === "profile" ? "bg-blue-50 text-blue-600" : "text-gray-700"
+              page === "/profile" ? "bg-blue-50 text-blue-600" : "text-gray-700"
             }`}
           >
             <User className="w-4 h-4" />

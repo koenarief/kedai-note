@@ -16,6 +16,8 @@ import { useUserContext } from "../../context/UserContext";
 import SearchInput from "./SearchInput";
 import FloatingContainer from "../FloatingContainer";
 import BayarModal from "./BayarModal";
+import Summary from "./Summary";
+import SalesList from "./SalesList";
 import { toast } from "react-toastify";
 
 ItemList.propTypes = {
@@ -272,6 +274,8 @@ export default function ItemCardList() {
           onConfirm={submitForm}
         />
       )}
+      <Summary />
+      <SalesList />
     </div>
   );
 }

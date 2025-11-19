@@ -134,10 +134,7 @@ export default function Profile() {
         />
       )}
       <div>
-        <ImageUploader
-          imageUrl={profile.imageUrl}
-          setImageUrl={setImageUrl}
-        />
+        <ImageUploader imageUrl={profile.imageUrl} setImageUrl={setImageUrl} />
       </div>
       {!ubahPassword && (
         <button className="mb-6" onClick={() => setUbahPassword(true)}>
@@ -145,6 +142,7 @@ export default function Profile() {
         </button>
       )}
       {ubahPassword && <UpdatePassword setUbahPassword={setUbahPassword} />}
+
     </div>
   );
 }

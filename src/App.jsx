@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
@@ -6,8 +8,6 @@ import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import BelanjaAddForm from "./components/belanja/BelanjaAddForm";
 import ItemAddForm from "./components/items/ItemAddForm";
 import ItemCardList from "./components/sales/ItemCardList";
-import SalesList from "./components/sales/SalesList";
-import Summary from "./components/sales/Summary";
 
 import Login from "./components/Login";
 import NavMenu from "./components/NavMenu";
@@ -19,10 +19,7 @@ import { ToastContainer } from "react-toastify";
 
 export default function App() {
   const [user, loading] = useAuthState(auth);
-  const [page, setPage] = useState("home");
   const [name, setName] = useState("");
-  const [selectedItem, setSelectedItem] = useState({});
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -46,47 +43,35 @@ export default function App() {
     });
 
     return () => unsub();
-  }, [user]);
+  }, []);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-indigo-100 p-4">
       <div className="max-w-2xl mx-auto space-y-2">
-        <h1 className="text-xl font-bold text-center">
-          📊 Jurnal Harian 
-        </h1>
-        <ToastContainer />
-		<p className="text-4xl font-bold text-center">{name}</p>
-
+        <h1 className="text-xl font-bold text-center">📊 Jurnal Harian</h1>
         {user ? (
           <UserContext.Provider value={user}>
+            <p className="text-4xl font-bold text-center">{name}</p>
             {/* 🔹 Navigation */}
-            <NavMenu page={page} setPage={setPage} />
-
-            {page === "profile" && (
-              <Profile />
-            )}
-
-            {page === "items" && <ItemAddForm />}
-
-            {page === "belanja" && <BelanjaAddForm />}
-
-            {page === "labarugi" && <LabaRugi />}
-
-            {page === "home" && (
-              <>
-                <ItemCardList />
-                <Summary />
-                <SalesList />
-              </>
-            )}
+            <BrowserRouter>
+              <NavMenu />
+              <Routes>
+                <Route path="/" element={<ItemCardList />} />
+                <Route path="/laba-rugi" element={<LabaRugi />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/belanja" element={<BelanjaAddForm />} />
+                <Route path="/items" element={<ItemAddForm />} />
+              </Routes>
+            </BrowserRouter>
           </UserContext.Provider>
         ) : (
           // 🔹 Hanya tampilkan login kalau belum ada user
           <Login />
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 }

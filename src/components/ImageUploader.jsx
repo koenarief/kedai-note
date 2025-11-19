@@ -119,7 +119,6 @@ function ImageUploader({ imageUrl, setImageUrl }) {
             onChange={handleFileChange}
             accept="image/*"
             disabled={isUploading}
-            capture="environment"
           />
         </div>
 
