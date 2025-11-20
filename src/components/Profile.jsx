@@ -134,6 +134,7 @@ export default function Profile() {
           item="Telp."
         />
       )}
+      <h1>Versi: {import.meta.env.VITE_REACT_APP_VERSION}</h1>
       <div className="h-48 w-48">
         <img src={profile.imageUrl} className="object-cover w-full h-full rounded-full"/>
       </div>
