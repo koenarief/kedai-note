@@ -68,6 +68,7 @@ export default function SalesList() {
     doc.text(`Total: ${Intl.NumberFormat("en-US").format(sale.total)}`, 10, y);
 
     // Save the PDF, which triggers a download
+    doc.autoPrint();
     doc.save(`invoice_${sale.id}.pdf`);
     toast("Data berhasil dicetak");
   };
