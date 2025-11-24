@@ -23,6 +23,15 @@ export default function Profile() {
   const [inputPhoneModal, setInputPhoneModal] = useState(false);
   const user = useUserContext();
 
+  const usiaUser = () => {
+    const tgl = new Date(user.metadata.creationTime);
+    const now = new Date();
+    const timeDifferenceMs = now.getTime() - tgl.getTime();
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const daysDifference = timeDifferenceMs / millisecondsPerDay;
+    return Math.floor(daysDifference);
+  };
+
   useEffect(() => {
     if (!user) return;
 
@@ -33,12 +42,14 @@ export default function Profile() {
         const data = snap.data();
         setProfile(data);
       } else {
-        setDoc(profileRef, {
-          email: user.email,
-          name: user.displayName,
-          createdAt: serverTimestamp(),
-          active: false,
-        });
+        if (usiaUser() < 3) { // agar tdk nimpa jika offline
+          setDoc(profileRef, {
+            email: user.email,
+            name: user.displayName,
+            createdAt: serverTimestamp(),
+            active: false,
+          });
+        }
       }
     });
 
@@ -136,7 +147,10 @@ export default function Profile() {
       )}
       <h1>Versi: {import.meta.env.VITE_REACT_APP_VERSION}</h1>
       <div className="h-48 w-48">
-        <img src={profile.imageUrl} className="object-cover w-full h-full rounded-full"/>
+        <img
+          src={profile.imageUrl}
+          className="object-cover w-full h-full rounded-full"
+        />
       </div>
       <div className="flex justify-end space-x-4 my-4">
         <button

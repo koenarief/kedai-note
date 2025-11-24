@@ -66,17 +66,30 @@ export default function ItemCardList() {
     return uniqueCategories;
   };
 
-  const lastIndex = kategories.length - 1;
+  const usiaUser = () => {
+    const tgl = new Date(user.metadata.creationTime);
+    const now = new Date();
+    const timeDifferenceMs = now.getTime() - tgl.getTime();
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    const daysDifference = timeDifferenceMs / millisecondsPerDay;
+    return Math.floor(daysDifference);
+  };
 
   const Kategori = () => (
     <div className="mt-2">
-      <span>Kategori:</span>
-      <button className="ml-2" onClick={() => setSearchTerm("")}>
-        Semua {"\u00B7 "}
+      <button
+        className="mr-1 border p-1 bg-gray-100 hover:bg-gray-200"
+        onClick={() => setSearchTerm("")}
+      >
+        Semua
       </button>
       {kategories.map((kat, index) => (
-        <button className="ml-2" key={kat} onClick={() => setSearchTerm(kat)}>
-          {kat} {index !== lastIndex && " \u00B7 "}
+        <button
+          className="mr-1 border p-1 bg-gray-100 hover:bg-gray-200"
+          key={kat}
+          onClick={() => setSearchTerm(kat)}
+        >
+          {kat}
         </button>
       ))}
     </div>
@@ -89,7 +102,8 @@ export default function ItemCardList() {
         return;
       }
       running = true;
-      if (snap.empty) {
+      // cek usia user agar tdk nimpa jika offline
+      if (snap.empty && usiaUser() < 3) {
         const url =
           "https://firebasestorage.googleapis.com/v0/b/rife-522b2.appspot.com/o/esteh-app%2Fdefault.png?alt=media&token=9cfb0007-3a4f-4d12-9d2a-12456c9ebbf0";
         itemsSample.forEach(async (item) => {
