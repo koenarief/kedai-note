@@ -18,8 +18,8 @@ import ConfirmDeleteModal from "../ConfirmDeleteModal";
 import { useUserContext } from "../../context/UserContext";
 import { db } from "../../firebase";
 import { hariIni } from "../tgl";
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable'; // Optional: for easier table creation
+import { jsPDF } from "jspdf";
+import "jspdf-autotable"; // Optional: for easier table creation
 import { toast } from "react-toastify";
 
 export default function SalesList() {
@@ -49,28 +49,83 @@ export default function SalesList() {
   };
 
   const handlePrint = (sale) => {
-	const doc = new jsPDF();
+    const doc = new jsPDF({
+      unit: "mm",
+      format: [58, 100], // Tinggi besar untuk antisipasi item banyak
+    });
 
-    // Add content to the PDF using hardcoded data
-    doc.setFontSize(22);
-    doc.text("Invoice", 10, 20); // (Text, X-coordinate, Y-coordinate)
+    const merchant = {
+      name: "ID Kasir",
+      address: "Jl. Merdeka No. 123",
+      phone: "0818-278-205",
+    };
 
+    let y = 5;
+
+    // Header
     doc.setFontSize(12);
-    doc.text(`ID: ${sale.id}`, 10, 30);
-    doc.text(`Date: ${format(sale.createdAt?.toDate(), "d-M-yyyy")}`, 10, 40);
+    doc.text(merchant.name, 29, y, { align: "center" });
+    y += 5;
+    doc.setFontSize(8);
+    doc.text(merchant.address, 29, y, { align: "center" });
+    y += 4;
+    doc.text(`Telp: ${merchant.phone}`, 29, y, { align: "center" });
 
-    let y = 50;
+    y += 4;
+    doc.line(2, y, 56, y);
+    y += 4;
+
+    // Info invoice
+    doc.setFontSize(8);
+    doc.text(`ID: ${sale.id}`, 2, y);
+    y += 4;
+    doc.text(
+      `Tanggal: ${format(sale.createdAt?.toDate(), "d-M-yyyy HH:mm")}`,
+      2,
+      y,
+    );
+    y += 4;
+    doc.line(2, y, 56, y);
+    y += 4;
+
+    // Items
     sale.items.forEach((item) => {
-		doc.text(`${item.qty} x ${item.name} @ ${Intl.NumberFormat("en-US").format(item.price)}`, 10, y);
-		y = y + 10;
-	});
+      const subtotal = item.qty * item.price;
+      doc.setFontSize(8);
 
-    doc.text(`Total: ${Intl.NumberFormat("en-US").format(sale.total)}`, 10, y);
+      doc.text(item.name, 2, y);
+      y += 4;
 
-    // Save the PDF, which triggers a download
+      doc.text(
+        `${item.qty} x ${Intl.NumberFormat("id-ID").format(item.price)}`,
+        2,
+        y,
+      );
+      doc.text(Intl.NumberFormat("id-ID").format(subtotal), 56, y, {
+        align: "right",
+      });
+
+      y += 5;
+    });
+
+    y += 2;
+    doc.line(2, y, 56, y);
+    y += 5;
+
+    // Total
+    doc.setFontSize(10);
+    doc.text("TOTAL", 2, y);
+    doc.text(Intl.NumberFormat("id-ID").format(sale.total), 56, y, {
+      align: "right",
+    });
+    y += 10;
+
+    doc.setFontSize(8);
+    doc.text("Terima kasih!", 29, y, { align: "center" });
+
+    // Auto print & save
     doc.autoPrint();
     doc.save(`invoice_${sale.id}.pdf`);
-    toast("Data berhasil dicetak");
   };
 
   const handleConfirmDelete = async () => {
