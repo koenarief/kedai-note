@@ -155,13 +155,27 @@ export default function SalesList() {
   }, []);
 
   const diffMinutes = (createdAt) => {
-    if (!createdAt) return true;
-    const firestoreDate = createdAt.toDate();
-    const now = new Date();
-    const differenceInMilliseconds = Math.abs(
-      now.getTime() - firestoreDate.getTime(),
-    );
-    const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+    if (!createdAt) return false;
+
+    let date;
+    if (createdAt.toDate && typeof createdAt.toDate === "function") {
+      // Firebase Timestamp
+      date = createdAt.toDate();
+    } else if (createdAt instanceof Date) {
+      date = createdAt;
+    } else if (typeof createdAt === "number") {
+      date = new Date(createdAt);
+    } else {
+      return false;
+    }
+
+    const now = Date.now();
+    const time = date.getTime();
+    const differenceInMinutes = (now - time) / (1000 * 60);
+
+    // Jika waktu di masa depan atau invalid, jangan tampilkan aksi
+    if (!isFinite(differenceInMinutes) || differenceInMinutes < 0) return false;
+
     return differenceInMinutes < 60;
   };
 
