@@ -2,15 +2,11 @@
 
 import React from "react";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
-// import "@testing-library/jest-dom/extend-expect";
 import '@testing-library/jest-dom'
 
 import ImageUploader from "./ImageUploader";
 import { uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-// We recommend installing an extension to run jest tests.
-
 
 jest.mock("firebase/storage", () => ({
     ref: jest.fn(),
