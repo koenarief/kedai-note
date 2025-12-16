@@ -59,7 +59,7 @@ function ImageUploader({ imageUrl, setImageUrl }) {
       },
       (uploadError) => {
         // Tangani error
-        console.error("Upload error:", uploadError);
+        // console.error("Upload error:", uploadError);
         setError("Gagal mengunggah file. Silakan coba lagi.");
         setIsUploading(false);
       },
@@ -71,7 +71,7 @@ function ImageUploader({ imageUrl, setImageUrl }) {
             setIsUploading(false);
           })
           .catch((urlError) => {
-            console.error("Error getting download URL:", urlError);
+            // console.error("Error getting download URL:", urlError);
             setError("Gagal mendapatkan URL publik.");
             setIsUploading(false);
           });
