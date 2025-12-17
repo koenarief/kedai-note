@@ -291,14 +291,14 @@ describe("SalesList Component", () => {
 
     // Kopi Hitam (price 15000, subTotal 15000)
     // Price: 15000 / 1000 = 15.000k
-    // expect(screen.getByText(/@ 15,000k/i)).toBeInTheDocument();
+    expect(screen.getByText(/@ 15,000k/i)).toBeInTheDocument();
     // SubTotal: 15000 / 1000 = 15.000k
-    // expect(screen.getByText(/15,000k/i)).toBeInTheDocument();
+    expect(screen.getByText(/15,000k/i)).toBeInTheDocument();
 
     // Teh Dingin (price 2500, subTotal 5000)
     // Price: 2500 / 1000 = 2.500k
-    // expect(screen.getByText(/@ 2,500k/i)).toBeInTheDocument();
+    expect(screen.getByText(/@ 2,500k/i)).toBeInTheDocument();
     // SubTotal: 5000 / 1000 = 5.000k
-    // expect(screen.getByText(/5,000k/i)).toBeInTheDocument();
+    expect(screen.getByText(/5,000k/i)).toBeInTheDocument();
   });
 });

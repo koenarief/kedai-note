@@ -26,13 +26,13 @@ export default function App() {
 
     const profileRef = doc(db, "profiles", user.uid);
 
-    // 🔹 sekali fetch awal (biar langsung muncul)
-    getDoc(profileRef).then((snap) => {
-      if (snap.exists()) {
-        const data = snap.data();
-        setName(data.name ?? "");
-      }
-    });
+    // // 🔹 sekali fetch awal (biar langsung muncul)
+    // getDoc(profileRef).then((snap) => {
+    //   if (snap.exists()) {
+    //     const data = snap.data();
+    //     setName(data.name ?? "");
+    //   }
+    // });
 
     // 🔹 listener realtime
     const unsub = onSnapshot(profileRef, (snap) => {

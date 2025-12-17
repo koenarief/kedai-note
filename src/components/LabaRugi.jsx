@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
@@ -6,7 +7,9 @@ import { useUserContext } from "../context/UserContext";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import { bulanSebelumnya } from "./tgl";
 
-export default function LabaRugi() {
+const CURRENCY_FORMATTER = Intl.NumberFormat("en-US");
+
+const LabaRugi = () => {
   const today = new Date();
   const [awalTgl, setAwalTgl] = useState(today);
   const [akhirTgl, setAkhirTgl] = useState(today);
@@ -26,58 +29,73 @@ export default function LabaRugi() {
 
   const user = useUserContext();
 
-  useEffect(() => {
+  const fetchSummary = async () => {
     if (!user) return;
 
     const tgl = bulanSebelumnya(bln);
     setAwalTgl(tgl[0]);
     setAkhirTgl(tgl[1]);
 
-    const q = query(
-      collection(db, "users", user.uid, "penjualans"),
-      where("createdAt", ">=", tgl[0]),
-      where("createdAt", "<=", tgl[1]),
-    );
+    const fetchPenjualans = async () => {
+      const q = query(
+        collection(db, "users", user.uid, "penjualans"),
+        where("createdAt", ">=", tgl[0]),
+        where("createdAt", "<=", tgl[1]),
+      );
 
-    const unsub = onSnapshot(q, (snap) => {
-      let count = 0,
-        total = 0;
-      let perName = {};
-      snap.forEach((d) => {
-        const data = d.data();
-        count++;
-        total += data.total;
-        data.items.forEach((item) => {
-          perName[item.name] = (perName[item.name] || 0) + item.subTotal;
+      const unsub = onSnapshot(q, (snap) => {
+        let count = 0,
+          total = 0;
+        let perName = {};
+        snap.forEach((d) => {
+          const data = d.data();
+          count++;
+          total += data.total;
+          data.items.forEach((item) => {
+            perName[item.name] = (perName[item.name] || 0) + item.subTotal;
+          });
         });
+        setSummary({ count, total, perName });
       });
-      setSummary({ count, total, perName });
-    });
 
-    const qBelanja = query(
-      collection(db, "users", user.uid, "belanja"),
-      where("createdAt", ">=", tgl[0]),
-      where("createdAt", "<=", tgl[1]),
-    );
+      return unsub;
+    };
 
-    const unsubBelanja = onSnapshot(qBelanja, (snap) => {
-      let count = 0,
-        total = 0;
-      let perKategori = {};
-      snap.forEach((d) => {
-        const data = d.data();
-        count++;
-        total += data.nominal;
-        perKategori[data.kategori] =
-          (perKategori[data.kategori] || 0) + data.nominal;
+    const fetchBelanja = async () => {
+      const qBelanja = query(
+        collection(db, "users", user.uid, "belanja"),
+        where("createdAt", ">=", tgl[0]),
+        where("createdAt", "<=", tgl[1]),
+      );
+
+      const unsubBelanja = onSnapshot(qBelanja, (snap) => {
+        let count = 0,
+          total = 0;
+        let perKategori = {};
+        snap.forEach((d) => {
+          const data = d.data();
+          count++;
+          total += data.nominal;
+          perKategori[data.kategori] =
+            (perKategori[data.kategori] || 0) + data.nominal;
+        });
+        setSummaryBelanja({ count, total, perKategori });
       });
-      setSummaryBelanja({ count, total, perKategori });
-    });
+
+      return unsubBelanja;
+    };
+
+    const unsub = await fetchPenjualans();
+    const unsubBelanja = await fetchBelanja();
 
     return () => {
       unsub();
       unsubBelanja();
     };
+  };
+
+  useEffect(() => {
+    fetchSummary();
   }, [bln]);
 
   return (
@@ -94,12 +112,14 @@ export default function LabaRugi() {
           onClick={() => setBln((val) => val + 1)}
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
+          Previous Month
         </button>
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 ml-2"
           onClick={() => setBln(0)}
         >
           <Calendar className="w-4 h-4 mr-2" />
+          Current Month
         </button>
       </div>
 
@@ -109,13 +129,12 @@ export default function LabaRugi() {
       <ul className="list-disc list-inside">
         {Object.entries(summary.perName).map(([name, amt]) => (
           <li key={name} className="ml-6">
-            {name}: {Intl.NumberFormat("en-US").format(amt / 1000)}k
+            {name}: {CURRENCY_FORMATTER.format(amt / 1000)}k
           </li>
         ))}
       </ul>
       <h3 className="mt-2 font-semibold">
-        Total Pendapatan:{" "}
-        {Intl.NumberFormat("en-US").format(summary.total / 1000)}k
+        Total Pendapatan: {CURRENCY_FORMATTER.format(summary.total / 1000)}k
       </h3>
       <h3 className="mt-2 font-semibold flex items-center">
         <ChevronRight className="w-4 h-4 mr-2" /> Pengeluaran
@@ -123,21 +142,21 @@ export default function LabaRugi() {
       <ul className="list-disc list-inside">
         {Object.entries(summaryBelanja.perKategori).map(([kategori, amt]) => (
           <li key={kategori} className="ml-6">
-            {kategori}: {Intl.NumberFormat("en-US").format(amt / 1000)}k
+            {kategori}: {CURRENCY_FORMATTER.format(amt / 1000)}k
           </li>
         ))}
       </ul>
       <h3 className="mt-2 font-semibold">
         Total Pengeluaran:{" "}
-        {Intl.NumberFormat("en-US").format(summaryBelanja.total / 1000)}k
+        {CURRENCY_FORMATTER.format(summaryBelanja.total / 1000)}k
       </h3>
       <h3 className="mt-2 font-semibold">
         Laba Rugi:{" "}
-        {Intl.NumberFormat("en-US").format(
-          (summary.total - summaryBelanja.total) / 1000,
-        )}
+        {CURRENCY_FORMATTER.format((summary.total - summaryBelanja.total) / 1000)}
         k
       </h3>
     </div>
   );
-}
+};
+
+export default LabaRugi;
