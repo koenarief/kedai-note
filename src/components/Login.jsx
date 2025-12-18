@@ -25,7 +25,6 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log(name);
 
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
@@ -43,7 +42,7 @@ export default function Login() {
     const profileRef = doc(db, "profiles", user.uid);
     const profileSnap = await getDoc(profileRef);
 
-    if (profileSnap.exists()) {
+    if (profileSnap && profileSnap.exists()) {
       // bisa update atau merge kalau perlu
       setName(profileSnap.data().name);
       await setDoc(
@@ -149,14 +148,15 @@ export default function Login() {
           {/* 🔹 Login form */}
           <div className="bg-white p-6 rounded-2xl shadow-lg space-y-6">
             <h2 className="text-xl font-semibold text-center text-gray-800">
-              Sign in
+              Login
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
                   Email address
                 </label>
                 <input
+                  id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -167,10 +167,11 @@ export default function Login() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">
                   Password
                 </label>
                 <input
+                  id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
